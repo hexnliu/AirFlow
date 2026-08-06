@@ -1,0 +1,19 @@
+{%load tags%}
+{%if missing%}
+<div class="alert alert-danger" role="alert">
+    <span class="material-icons text-danger align-middle">fiber_manual_record</span>
+    Performance Test: {{task.name}} Requires Following Missing Floor Plans:
+    {%for s in missing%}
+    {{s |get_floor_text}},
+    {%endfor%}
+    <a href="{{link}}" class="nav-link" style="display:inline-block">{{title}}</a>
+</div>
+{%else%}
+    {%if request.resolver_match.url_name == "upload_floor_plans"%}
+    <div class="alert alert-success" role="alert">
+        <span class="material-icons text-success align-middle">fiber_manual_record</span>
+        You have successfully uploaded all requires floor Plans for performance test - {{task.name}}
+        <a href="/tasks/sensors_mapping/{{task.id}}" class="nav-link" style="display:inline-block">Click Here to Add Sensor Mapping for Performance Test: {{task.name}} </a>
+    </div>
+    {%endif%}
+{%endif%}

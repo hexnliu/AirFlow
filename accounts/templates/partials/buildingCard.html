@@ -1,0 +1,55 @@
+
+
+{%load tags%}
+
+{% comment %}
+ side bar for the page
+  to include this under container-fluid and col-sm
+
+  context: building
+{% endcomment %}
+<div class="col-sm-12 col-md-12 col-lg-3 col-xl-2 h-100">
+    <div class="card shadow-sm">
+      <a href="/buildings/building_detail/{{building.id}}" style='height: 90%;max-height: 287px; display:flex;'> <img
+          src="{{building.img_path | bin_2_img}}" class="mx-auto" alt="{{building.id}}"></a>
+      <div class="card-body">
+        <h5 class="card-title font-weight-bold" style="color:black;font-size:1.25rem;">Building Information</h5>
+        <table class="table">
+          <tbody>
+            <tr class="table-light table-sm">
+              <th scope="row" class="text-left">Name</th>
+              <td class="text-left"><span id="detailBuilding_name"
+                  class="{{building.id}}">{{building.name}}</span></td>
+            </tr>
+
+            <tr class="table-light table-sm">
+              <th scope="row" class="text-left">Address</th>
+              <td class="text-left"><span id="detailBuilding_address">{{building.address}}</span></td>
+
+            </tr>
+            <tr class="table-light table-sm">
+              <th scope="row" class="text-left">Postal Code</th>
+              <td class="text-left"><span id="detailBuilding_postal_code">{{building.postal}}</span>
+              </td>
+
+            </tr>
+            <tr class="table-light table-sm">
+              <th scope="row" class="text-left">City</th>
+              <td class="text-left"><span id="detailBuilding_city">{{building.city}}</span></td>
+
+            </tr>
+            <tr class="table-light table-sm">
+              <th scope="row" class="text-left">Province</th>
+              <td class="text-left"><span id="detailBuilding_province">{{building.province}}</span></td>
+
+            </tr>
+            <tr class="table-light table-sm">
+              <th scope="row" class="text-left">Country</th>
+              <td class="text-left"><span id="detailBuilding_country">{{building.country}}</span></td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+{% load static %}
+  {% include 'partials/head.html' %}
+  {% comment %} top navbar {% endcomment %}
+  {% include 'partials/navigation.html' %}
+  {% include 'breadcrumb.html' %}
+  {% comment %} main content {% endcomment %}
+  <main role="main" class="container-fluid">
+    {% block content %}
+
+    {% endblock content %}
+  </main>
+
+  {% include 'partials/bottom.html' %}

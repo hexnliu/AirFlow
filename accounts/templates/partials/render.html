@@ -1,0 +1,82 @@
+{% comment %} this return any select option {% endcomment %}
+{%if options%}
+<option value="">{{options.key}}</option>
+{%for p in options.values %}
+<option value="{{p.name}}">{{p.name}}</option>
+{%endfor%}
+{%endif%}
+
+
+
+{%if list%}
+<option value="">Please Choose</option>
+{%if list.key != ""%}
+<option value="{{list.key}}">{{list.key}}</option>
+{%endif%}
+{%for p in list.values %}
+<option value="{{p}}">{{p}}</option>
+{%endfor%}
+{%endif%}
+
+{%if list_sensors%}
+<option value="">Please Choose</option>
+    {%for k,v in list_sensors %}
+    <option value="{{k}}">{{k}} - {{v}}</option>
+    {%endfor%}
+{%endif%}
+
+{%if div %}
+{%for q in div%}
+{{q|safe}}
+{%endfor%}
+{%endif%}
+
+
+{%if image and markers%}
+
+<script>
+/******************** INIT ZoomMarker here *****************************/
+    var data={{markers|safe}};
+    var markers=[];
+    var imgwidth={{image.width |safe}};
+    var imgheight={{image.height |safe}};
+    var image_path ="{{image.img_path | safe}}";
+    var divWidth =$(".modal-content").width();
+    var  divHeight = divWidth*imgheight/imgwidth;
+    $("#zoom-marker-div").css("height",divHeight+"px");
+    if(divWidth>imgwidth){
+      divWidth=imgwidth;
+   }
+    for (var i = 0; i < data.length; i++) {
+        var marker = {};
+        var sensor_num = data[i]["snsr_num"];
+        var num=i+1;
+        var vx = parseFloat(data[i]["x"]);
+        var vy = imgheight -parseFloat(data[i]["y"]);
+        marker["sensor"] =sensor_num;
+        marker["src"] =  "/media/ioAirFlow/marker.png";
+        marker["x"] = vx;
+        marker["y"] = vy;
+        marker["size"] = 30;
+        marker["draggable"]=false
+        marker["hint"] = {
+          "value": num+":" + sensor_num,
+          "style": {
+            "color": "#ffffff",
+            "top": "-25px",
+            "left":"-25%",
+            "position":"relative",
+            // "transform": "translateX(-50%,-50%)",
+            "background": "#055ba6",
+            "padding": "2px",
+            "border-radius": "2px",
+            "font-size": "12px",
+            "width": "max-content"
+          }
+        };
+        markers.push(marker);
+    }
+/******************** INIT ZoomMarker here *****************************/
+</script>
+
+{%endif%}

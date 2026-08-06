@@ -1,0 +1,172 @@
+{%  extends 'placements/base.html' %}
+
+{% block content %}
+{%load tags%}
+{% load static %}
+
+<table id="manageSensors" class='table table-sm display w-100 borderless'  >
+    <thead>
+      <tr>
+        <th style="display:none"></th>
+        <th>Sensor Number
+        <a href="#" class="text-muted" data-placement="bottom" data-toggle="tooltip" title="Select the sensor number from the dropdown list">
+          <span class="material-icons" style="font-size:12px;">info_outlined</span></a>
+          <p style="font-size:12px; visibility: hidden;"> (Required)</p>
+        </th>
+        <th  >Building Floor
+         <a href="#" class="text-muted" data-placement="bottom" data-toggle="tooltip" title="Which building floor/storey is the sensor located on?">
+          <span class="material-icons" style="font-size:12px;">info_outlined</span></a>
+          <p style="font-size:12px; visibility: hidden;"> (Required)</p>
+        </th>
+        <th >Location
+         <a href="#" class="text-muted"  data-placement="bottom" data-toggle="tooltip" title="In which location is the sensor placed in?">
+          <span class="material-icons" style="font-size:12px;">info_outlined</span></a>
+          <p style="font-size:12px; visibility: hidden;"> (Required)</p>
+        </th>
+        <th >Adjacent to an external wall
+           <a href="#" class="text-muted" data-placement="bottom" data-toggle="tooltip" title="Is the location adjacent to an exterior wall (perimeter)?">
+          <span class="material-icons" style="font-size:12px;">info_outlined</span></a>
+          <p style="font-size:12px; visibility: hidden;"> (Required)</p>
+          </th>
+        <th >Next to a thermostat
+            <a href="#" class="text-muted" data-placement="bottom" data-toggle="tooltip" title="Is the sensor placed on an existing building thermostat?">
+              <span class="material-icons" style="font-size:12px;">info_outlined</span></a>
+              <p style="font-size:12px; visibility: hidden;"> (Required)</p>
+          </th>
+
+        <th >Group Name  
+                 <a href="#" class="text-muted" data-placement="bottom" data-toggle="tooltip" title="Please type of a group name for sensors">
+          <span class="material-icons" style="font-size:12px;">info_outlined</span></a>
+          <p style="font-size:12px;"> (Optional)</p>
+       
+        </th>
+        <th >Notes 
+       <a href="#" class="text-muted" data-placement="bottom" data-toggle="tooltip" title="You can add additional sensor placement notes">
+          <span class="material-icons" style="font-size:12px;">info_outlined</span></a>
+          <p style="font-size:12px;"> (Optional)</p>
+        </th>
+        {% if unfinished is None  %}
+        <th>Photos
+           <a href="#" class="text-muted" data-placement="bottom" data-toggle="tooltip" title="If you have pictues of where you placed the sensors, add them here.">
+          <span class="material-icons" style="font-size:12px;">info_outlined</span></a>
+          <p style="font-size:12px;"> (Optional)</p>
+          </th>
+
+        <th>Action <p style="font-size:12px; visibility: hidden;"> (Required)</p></th>
+        {%endif%}
+
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for s in sensor_placement%}
+      <tr>
+        <td style="display:none;"><input type="hidden" name="sensor_id" id="sp_{{s.id}}_id" value="{{s.id}}"></td>
+        <td>
+            <select class="form-control-sm"  id="sp_{{s.id}}_num" name="sensorNumber"  disabled required>
+             <option value="{{s.snsr_num}}" selected>Sensor {{s.snsr_num}} - {{s.snsr_type}}</option>
+            </select>
+        </td>
+        <td>
+          <select class="form-control-sm"  id="sp_{{s.id}}_floor" name="floor" required >
+            <option value=""></option>
+            {%for f in floors%}
+                {%if s.floor == f%}
+                <option value="{{f}}" selected>{{f|get_floor_text}}</option>
+                {%else%}
+                  <option value="{{f}}">{{f|get_floor_text}}</option>
+                {%endif%}
+                 
+            {%endfor%}
+          </select>
+        </td>
+        <td ><select class="form-control-sm" id="sp_{{s.id}}_location" name="location"
+            class="select2">
+            <option value="{{s.location}}">{{s.location}}</option>
+            <option></option>
+            <script>
+              room = {{ locations | safe}};
+
+              $("#sp_{{s.id}}_location").select2({ data: room, tags: true });
+              $("#select2-sp_{{s.id}}_location-container").attr("title","{{s.location}}");
+              $("#select2-sp_{{s.id}}_location-container").text("{{s.location}}");
+            </script> 
+
+          </select></td>
+        <td><select class="form-control-sm"  id="sp_{{s.id}}_perimeter" name="perimeter"
+            required>
+            <option value="{{s.perimeter}}">{{s.perimeter}}</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+            <option value="Other (Add to Notes)">Other (Add to Notes)</option>
+          </select></td>
+        <td><select class="form-control-sm"  id="sp_{{s.id}}_thermostat" name="thermostat">
+            <option value="{{s.thermostat}}">{{s.thermostat}}</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+            <option value="Other (Add to Notes)">Other (Add to Notes)</option>
+          </select></td>
+        <td><select class="form-control-sm" id="sp_{{s.id}}_groupName" name="groupName" class="select2">
+            <option value="{{s.group}}">{{s.group}}</option>
+            <option></option>
+             <script>
+              var group = {{ groups | safe }}
+              $("#sp_{{s.id}}_groupName").select2({
+                data: group,
+                tags: true
+              });
+              $("#select2-sp_{{s.id}}_groupName-container").attr("title","{{s.group}}");
+              $("#select2-sp_{{ s.id}}_groupName-container").text("{{s.group}}");
+            </script> 
+          </select></td>
+
+
+        <td><textarea rows="1" class="form-control-sm" id="sp_{{s.id}}_notes"
+            name="notes">{{s.notes}}</textarea></td>
+        {% if unfinished is None  %}
+        <td >
+          <div class="row">
+            <div class="col align-self-center">
+              <label>
+                <img class="building_images" id="sp_{{s.id}}_img"
+                         src="{{s.img_path | bin_2_img:True}}" alt="{{s.img_path}}" style="width:40px;height:30px;">
+                       <input type="file" accept="image/*" name="img" id="sp_{{s.id}}_img_file"
+                         onchange="previewImage('sp_{{s.id}}',this.files[0])">
+                       <input type="hidden" id="sp_{{s.id}}_img_type" name="img_type"
+                         value="current" />
+              </label>
+              
+                {%if s.img_path != "" %}
+                <a href="#" class="sp_{{s.id}_img_delete ml-3 mr-3" style="color:#C11671"
+              onclick="deleteImage('sp_{{s.id}}');return false;"><i
+                class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
+                  <a href="#" onclick="viewImage('{{s.img_path|bin_2_img:True}}','{{s.floor |get_floor_text}}')"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                  {%endif%}
+            </div>
+          </div>
+        </td>
+          
+        <td >
+           <img class="btn-img btn-img-update"   onclick="updatePlacement('{{s.id}}')"
+              src="/static/images/save-ioairflowblue.svg" />
+           <img class="btn-img btn-img-delete"
+              src="/static/images/delete_outline-pink.svg" 
+              onclick="deleteRecord('/placements/delete_sensor_placement/{{s.id}}','{{s.snsr_num}}')" />
+        </td>
+        {%endif%}
+      </tr>
+ 
+
+      {%endfor%}
+    </tbody>
+  </table>
+  {%if unfinished%}
+  <button class="btn btn-primary mb-3" id="addAllPlacementsBtn">Submit All</button>
+  {%endif%}
+
+  
+  <p class ="mb-5 h6" style="background-color: #666;width: 25%;color: white;padding-top:15px; padding-bottom: 15px; text-align: center;">
+    {{unfinished}} {{finished}}</p>
+    {% include "tasks/uploadSuccessCard.html" with message="You have updated successfully." %}
+{% include "tasks/uploadErrorCard.html"  with message="Error - Failed to update"%}
+{% endblock %}

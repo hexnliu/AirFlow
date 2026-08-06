@@ -1,0 +1,269 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+ {%load tags%}
+ {% load static %}
+
+ <div class="container-fluid">
+    {% comment %} {% with "Sensor Mapping -"|addstr:task.name as p_name2 %} {% endcomment %}
+         {%include "partials/header.html" with page_name="Sensor Mapping" link="tasks"%}
+    {% comment %} {% endwith %} {% endcomment %}
+
+
+    {%include "tasks/missingFloors.html" with link="/buildings/upload_floor_plans/"|addstr:building.id|addstr:"?task="|addstr:task.id title="Add Missing Floor Plans" %}
+    <div class="bg-white p-4 h-100">
+        <div class="row"> 
+            {% comment %} floor list {% endcomment %}
+            <div class="col-sm-12 col-md-12 col-lg-3 col-xl-3">
+                <div class="row p-2 bg-light">
+                    <h5>Floor</h5>
+                </div>
+                    <div class="row">
+                        <ul class="list-group w-100 h-100 ">
+                            {%if floor is none %}
+                                    <a class="list-group-item border-0 list-group-item-action active"
+                                            href="/tasks/sensors_mapping/{{task.id}}">
+                                       Select a Floor
+                                    </a>
+                            {%else%}
+                            <a class="list-group-item border-0 list-group-item-action"
+                                        href="/tasks/sensors_mapping/{{task.id}}">
+                                        Select a Floor
+                                </a>
+                            {%endif%}
+                            {% comment %} floor selection from Performance Test {% endcomment %}
+                            {% for f in intersection%}
+                                {%if floor is not none and f == floor%}
+                                <a class="list-group-item border-0 list-group-item-action active"
+                                        href="/tasks/sensors_mapping/{{task.id}}?floor={{f}}">
+                                    {{f | get_floor_text}}
+                                </a>
+                                {%else%}
+                                    <a class="list-group-item border-0 list-group-item-action"
+                                    href="/tasks/sensors_mapping/{{task.id}}?floor={{f}}">
+                                        {{f | get_floor_text}}
+                                    </a>
+                                {%endif%}
+                              
+                      
+                            {%endfor%}
+                        </ul>
+                    </div>
+                </div>
+            
+                <div class="col-sm">
+                    {% comment %} <div class="row p-2 bg-light">
+                        <h5>Floor</h5>
+                    </div> {% endcomment %}
+                    <div class="row">
+                        {% comment %} set up zoom marker {% endcomment %}
+                        {%if floor is not none%}
+                        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 p-0">
+                            <div id="zoom-marker-div" class="zoom-marker-div" >
+                                <img class="zoom-marker-img" id="zoom-marker-img" alt="..." name="viewArea"
+                                    draggable="false" />
+                            </div>
+                        </div>
+                        <div class="col-sm p-0 m-0">
+                            <div class="mt-3 row">
+                                <div class="col-sm-8">
+                                <p id="successMsg" style="display:none;"><span class="material-icons align-middle text-success">
+                                    check_circle
+                                    </span>Changes Saved</p>
+                                </div>
+                                <div class="col-sm-4">
+                                <button class="btn-sm btn-primary" onclick="submitSensors('{{floor}}','{{task.id}}')">Save</button>
+                                </div>
+                            </div>
+                            <div class="table-responsive mt-3" style="height:700px;">
+                                <table class="table borderless" id="cyTable">
+                                    {% comment %} <thead>
+                                        <th scope="col"></th>
+                                        <th scope="col">Sensor Name</th>
+                                        <th scope="col"></th>
+                                    </thead> {% endcomment %}
+                                    <tbody> 
+                                    </tbody>
+                                </table>
+                        </div>
+                        {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+</div>
+
+
+{% comment %} load zoom marker {% endcomment %}
+{%include "tasks/zoomMarkerElements.html"%}
+
+<script type="text/javascript" src="{% static 'js/zoomMarker.js'%}"></script>
+<script>
+    var sensors_copy_list = {{sensors_copy_list|safe}};
+    var select_sensors_list = {{sensors_copy_list|safe}};
+    var data={{markers|safe}};
+    var list = {};
+    var imgwidth={{floor_plan.width |safe}};
+    var imgheight={{floor_plan.height |safe}};
+    var  divWidth = $("#zoom-marker-div").width();
+    if(divWidth>imgwidth){
+        divWidth=imgwidth;
+    }
+    var  divHeight = imgheight*(divWidth/imgheight);
+    $("#zoom-marker-div").css("height",divHeight+"px");
+    var markers=[];
+    for (var i = 0; i < data.length; i++) {
+        var marker = {};
+        var sensor_num = data[i]["snsr_num"];
+        var num=i+1;
+        var vx = parseFloat(data[i]["x"]);
+        var vy = imgheight -parseFloat(data[i]["y"]);
+        marker["sensor"] =sensor_num;
+        marker["src"] =  "/media/ioAirFlow/marker.png";
+        marker["x"] = vx;
+        marker["y"] = vy;
+        marker["size"] = 30;
+        marker["hint"] = {
+          "value": num+":" + sensor_num,
+          "style": {
+            "color": "#ffffff",
+            "top": "-25px",
+            "left":"-25%",
+            "position":"relative",
+            // "transform": "translateX(-50%,-50%)",
+            "background": "#055ba6",
+            "padding": "2px",
+            "border-radius": "2px",
+            "font-size": "12px",
+            "width": "max-content"
+          }
+        };
+        markers.push(marker);
+        list[i]=Object.assign({}, marker)  ;
+        list[i]["y"]=parseFloat(data[i]["y"]);
+        $("#cyTable tbody").prepend(markerRecord(i));
+        //setup select2
+        $("#select_"+i).select2();
+        console.log(sensor_num);
+        $("#select_"+i).val(sensor_num).trigger("change");
+      }
+
+
+    $('#zoom-marker-btn-clean').click(function(e){
+        $('#zoom-marker-img').zoomMarker_CleanMarker();
+        $('#zoom-marker-img').zoomMarker_CanvasClean();
+    });
+    $('#zoom-marker-img').zoomMarker({
+        src: "{{floor_plan.img_path}}",
+        rate: 0,
+        width: divWidth,
+        max: 3000,
+        markers:markers,
+        enable_drag: false,
+        zoom_lock: true
+    });
+
+    $('#zoom-marker-btn-reset').click(function(e) {
+        $('#zoom-marker-img').zoomMarker_ResetImage();
+    });
+
+
+    // init item
+
+    var initImg = function(item) {
+        // handle "TAP" event and add marker to image
+        item.on("zoom_marker_mouse_click", function(event, position){
+            const marker = item.zoomMarker_AddMarker({
+                src: "/media/ioAirFlow/marker.png",
+                x: position.x,
+                y: position.y,
+                size: 30,
+                dialog: {},
+                hint: {
+                  value: "New Sensor",
+                  style: {
+                    color: "#ffffff",
+                    top: "-25px",
+                    "top": "-25px",
+                    "left":"-25%",
+                    "position":"relative",
+                    background: "#C11671", //change this color on click
+                    padding: "2px",
+                    "border-radius": "2px",
+                    "font-size": "12px",
+                    width: "max-content"
+                  }
+                }
+              });
+               var id = marker["id"];
+                //prepend table
+                $("#cyTable tbody").prepend(markerRecord(id));
+                //setup select2
+                $("#select_"+id).select2();
+                obj = {}
+                obj["sensor"] = $("#select_" + id).val();
+                obj["x"] = position.x
+                obj["y"] = imgheight - position.y;
+                list[id] = obj;
+                select_sensors_list = select_sensors_list.filter(function(el) { return el.name != $("#select_" + id).val(); });
+
+            
+            });
+        
+        //update markerRecord
+         item.on("zoom_marker_move_end", function (event, x, y, marker) {
+                //$("#successMsg").hide();
+                var value = x["markerObj"]["id"];
+                var vx = x["x"];
+                var vy = x["y"];
+                console.log(x);
+                list[value]["x"] = vx;
+                list[value]["y"] = imgheight - vy;
+            
+              });
+        // listen to marker click event, print to console and delete the marker
+        item.on("zoom_marker_click", function(event, marker){
+            console.log(JSON.stringify(marker));
+            $('#zoom-marker-img').zoomMarker_RemoveMarker(marker.id);
+            $("#successMsg").hide();
+            console.log(JSON.stringify(marker));
+            //get sensor 
+            var sensor_name =list[marker.id]["sensor"];
+            var sns_obj = sensors_copy_list.find(o => o.name === sensor_name);
+            if(sns_obj!=undefined){
+                select_sensors_list.push(sns_obj);
+            }
+            delete list[marker.id];
+            var myobj = document.getElementById("row_" + marker.id);
+            myobj.remove();
+            $('#zoom-marker-img').zoomMarker_RemoveMarker(marker.id);
+            
+        });
+
+        // message for the beginning of image loading process
+        item.on("zoom_marker_img_load", function(event, src){
+            console.log("loading started for image : "+src);
+        });
+
+        // message for image loaded
+        item.on("zoom_marker_img_loaded", function (event, size) {
+            $("#successMsg").hide();
+            console.log("image has been loaded with size: " + JSON.stringify(size));
+            imgwidth = size.width;
+            imgheight = size.height;
+            divWidth = $("#zoom-marker-div").width();
+            $("#zoom-marker-div").css("height", (divWidth*imgheight/imgwidth)+"px");
+            $('#zoom-marker-img').zoomMarker_ResetImage(); 
+            // we have to set a timer in order to watching the loader in local environment, cause the loading speed is too fast
+            setTimeout(function () {
+              EasyLoading.hide();
+            }, 3000);
+          });
+    }
+
+    initImg($('#zoom-marker-img'));
+
+</script>
+{%endblock%}

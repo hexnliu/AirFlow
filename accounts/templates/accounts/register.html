@@ -1,0 +1,61 @@
+
+{%  extends 'accounts/account/account.html' %}
+
+{% load static %}
+{% block content %}
+<h1 class="h3 mb-3 fw-normal">Create an account</h1>
+  <form id="registerForm"   method="post" action="" class="mt-3 border p-3 text-left rounded bg-white needs-validation" novalidate >
+    {% csrf_token %}
+
+    <div class="form-row">
+        <label for="id_username" class="small">Username</label>
+
+        {% if form.username.errors%}
+        <input type="text" name="username" maxlength="150" autofocus="" id="id_username" placeholder="Username.." class="form-control is-invalid" required>
+        {%else%}
+        <input type="text" name="username" maxlength="150" autofocus="" id="id_username" placeholder="Username.." class="form-control" required>
+        {%endif%}
+
+        {%if form.username.errors.as_text != "" %}
+        <div class="invalid-feedback">
+           <i class="fa fa-circle" ></i>  {{ form.username.errors.as_text }}
+        </div>
+        {%else%}
+         <div class="invalid-feedback">
+           <i class="fa fa-circle" ></i>  Username is required
+        </div>
+        {%endif%}
+    </div>
+
+    <div class="form-row">
+        <label for="id_email" class="small">Email</label>
+        <input type="email" name="email" maxlength="254" id="id_email" placeholder="Email.." class=" form-control" required>
+        <div class="invalid-feedback">
+           <i class="fa fa-circle" ></i> Invalid Email Address
+        </div>
+    </div>
+
+     <div class="form-row">
+        <label for="id_password1" class="small">Password</label>
+        <input type="password" name="password1" autocomplete="new-password" required="" id="id_password1" placeholder="Enter password..." class="form-control" required>
+        <div class="valid-feedback">
+          <i class="fa fa-circle" ></i>8 characters or more with letters, numbers and symbols <br>
+           <i class="fa fa-circle" ></i>It can not combine your username and email
+        </div>
+        <div class="invalid-feedback">
+            <i class="fa fa-circle" ></i>Password is required<br>
+        </div>
+    </div>
+
+    <div class="form-row">
+      <label for="id_password2" class="small">Re-enter Password</label>
+      <input type="password" name="password2" autocomplete="new-password" required="" id="id_password2" placeholder="Re-enter Password..." class="form-control" required>
+        <div class="invalid-feedback">
+           <i class="fa fa-circle" ></i> Password does not match
+        </div>
+    </div>
+
+    <button id="createBtn" class="w-100 btn btn-lg  mt-3" style="background-color: #055ba6;color: white;" type="submit">Create</button>
+
+
+{%endblock%}

@@ -1,0 +1,22 @@
+<div class="form-group">
+    <label for="{{value.id}}_sensor_{{count}}" class="mb-2 mr-sm-2 font-weight-bold">Select Sensor Number</label>
+    <select class="form-control form-control-sm mb-3 mr-sm-3" id="{{value.id}}_sensor_{{count}}" name="sensor"
+      required>
+      <option value=""> Please Choose</option>
+      {%if key == "Total Volatile Organic Compounds" or key == "Carbon Dioxide"%}
+      {% comment %} remove ieq {% endcomment %}
+          {%for s in sensors_copy_list%}
+          {% comment %} <option value="{{s.name}}">Sensor {{s.name}}</option> {% endcomment %}
+            {%if s.type != "B-IEQ"%}
+                  <option value="{{s.name}}">Sensor {{s.name}} - {{s.type}}</option>
+            {%endif%}
+          {%endfor%}
+      {%else%}
+          {%for s in sensors_copy_list%}
+          {% comment %} <option value="{{s.name}}">Sensor {{s.name}}</option> {% endcomment %}
+          <option value="{{s.name}}">Sensor {{s.name}} - {{s.type}}</option>
+          {%endfor%}
+      {%endif%}
+     
+    </select>
+  </div>

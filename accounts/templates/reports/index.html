@@ -1,0 +1,80 @@
+
+{%  extends 'base.html' %}
+
+{% block content %}
+{%load tags%}
+{% load static %}
+{% comment %}
+purpose:This is the detail task for specific building
+context:
+building: building object that working on
+tasks: all version listed - array of objects
+
+all status should pass to class which having eg. status_1 to indicate level
+
+{% endcomment %}
+
+  <div class="container-fluid">
+    {%include "partials/header.html" with page_name="Performance Report" link="reports"%}
+    {%if status.name|available == True%}   
+<div id="contentDashBoard" class ="bg-white p-5 h-100" >
+   
+    <div class="row bg-light pt-3 pb-3">
+        <div class ="col-sm font-weight-bold">
+        File Name
+        </div>
+        <div class ="col-sm font-weight-bold">
+        Date Generated
+        </div>
+        <div class ="col-sm font-weight-bold">
+        Actions
+        </div>
+    </div>
+
+    <div class="row pt-3 pb-3">
+        <div class ="col-sm">
+            Curated Report  <!--<a href="#" class="text-muted" data-toggle="tooltip" data-placement="right" title="Tooltip on right"><span class="material-icons" style="font-size:12px;" >info_outlined</span></a>-->
+        </div>
+        <div class ="col-sm">
+           {{task.merge_time}}
+        </div>
+        <div class ="col-sm">
+            <a type="button" class="btn btn-sm btn-primary"  href='/reports/view_curated_report/{{task.id}}'>View</a>
+            <a class="btn btn-sm btn-primary" href="/reports/download_curated_report/{{task.id}}"
+            >Download as.pdf</a>
+        </div>
+    </div>
+
+    {%if customized%}  
+     <div class="row pt-3 pb-3">
+        <div class ="col-sm">
+            Building Test Report  <!-- <a href="#" class="text-muted" data-toggle="tooltip" data-placement="right" title="Tooltip on right"><span class="material-icons" style="font-size:12px;" >info_outlined</span></a>-->
+        </div>
+        <div class ="col-sm">
+             {{customized.buildingtest_report_time}}
+        </div>
+        <div class ="col-sm">
+            <a type="button" id="buildingTest" class="btn btn-sm btn-primary" href="/reports/view_customized_report/{{task.id}}">View</a>
+             
+            <a class="btn btn-sm btn-primary" href="/media/{{building.id}}/{{task.id}}/buildingTest.pdf" download
+              >Download as.pdf</a>
+        </div>
+    </div>
+     {%endif%}  
+  
+</div>
+{%else%}
+<div class="row">
+<div class="mx-auto" style="margin-top:10%">
+   Current Performance Test is not ready for report yet.  <a href="/tasks/view_task/{{building.id}}">Click here return to task</a>
+</div>
+</div>
+{%endif%}
+
+  </div>
+
+{% endblock %}
+
+
+
+

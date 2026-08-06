@@ -1,0 +1,20 @@
+{%load tags%}
+<div class="form-group">
+    <label for="{{value.id}}_floor_{{count}}" class="mb-2 mr-sm-2 font-weight-bold">Select Building Floor</label>
+    <select class="form-control form-control-sm mb-3 mr-sm-3" onchange="onBuildingChange('{{value.id}}_floor_{{count}}')" id="{{value.id}}_floor_{{count}}" name="floor"
+      required>
+      <option value=""> Please Choose</option>
+      {%if tab.tab_name == "Floor Plan"  or key == "Floor Plan"%}
+        {% comment %} get the floors that have sensor mapping {% endcomment %}
+        {%for f in floor_plan_floors%}
+        <option value="{{f}}">{{f |get_floor_text}}</option>
+        {%endfor%}
+      {%else%}
+          {%for f in floors%}
+          <option value="{{f}}">{{f |get_floor_text}}</option>
+          {%endfor%}
+      {%endif%}
+
+    </select>
+    
+  </div>

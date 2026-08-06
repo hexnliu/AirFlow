@@ -1,0 +1,11 @@
+<div class="form-group">
+    <label for="{{value.id}}_baseon_{{count}}" class="mb-2 mr-sm-2 font-weight-bold">Based on</label>
+    <select class="form-control form-control-sm mb-3 mr-sm-3" id="{{value.id}}_baseon_{{count}}" name="baseOn"
+      required>
+      <option value=""> Please Choose</option>
+      {% if task.setpoint == True %}
+         <option value="setpoint"> Setpoint</option>
+      {%endif%}
+      <option value="average"> Temperature Average</option>
+    </select>
+  </div>

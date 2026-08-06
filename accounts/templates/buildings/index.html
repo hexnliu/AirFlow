@@ -1,0 +1,27 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+{%load tags%}
+{% load static %}
+{% comment %}
+purpose:This is the detail building main page
+***all variable should contains detailBuilding
+
+context: building
+
+{% endcomment %}
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <h1 class="h2">{{building.name}}</h1>
+      {% comment %} {% include "buildings/buildingNavigation.html" with target="#detailBuildingModal"%} {% endcomment %}
+    </nav>
+    {% comment %} this lists all building information {% endcomment %}
+    
+    <div class="row p-3">
+      {% include "buildings/buildingCard.html" %}
+    </div>
+ 
+  </div>
+
+
+{% endblock %}

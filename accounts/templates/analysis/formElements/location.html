@@ -1,0 +1,11 @@
+<div class="form-group">
+    <label for="{{value.id}}_location_{{count}}" class="mb-2 mr-sm-2 font-weight-bold">Select Location</label>
+    <select class="form-control form-control-sm mb-3 mr-sm-3 " onchange="onLocationChange('{{value.id}}_location_{{count}}')" id="{{value.id}}_location_{{count}}" name="location"
+      required>
+      <option value="">Please Choose</option>
+      <option value="All Locations">All Locations</option>
+      {%for loc in locationList %}
+      <option value="{{loc}}">{{loc}}</option>
+      {%endfor%}
+    </select>
+  </div>

@@ -1,0 +1,130 @@
+{%load tags%}
+
+<div class="my-3 p-3 bg-white rounded box-shadow">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Building Information</h6>
+    <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <strong class="d-block text-gray-dark">Building Name</strong>
+          {{building.name}}
+        </p>
+      </div>
+    <div class="media text-muted pt-3">
+      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <strong class="d-block text-gray-dark">Address</strong>
+        {{building.address}}, {{building.city}}, {{building.province}}, {{building.country}},{{building.postal}}
+      </p>
+    </div>
+    <div class="media text-muted pt-3">
+      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <strong class="d-block text-gray-dark">Contact Information</strong>
+        {%if building.contact != "" %}
+        {{building.contact}} &nbsp;
+        {%endif%}
+        {%if building.phone != "" %}
+         Phone:{{building.phone}}&nbsp;
+         {%endif%}
+         {%if building.email != "" %}
+            Email:{{building.email}}
+        {%endif%}
+      </p>
+    </div>
+    {% comment %} <small class="d-block text-right mt-3">
+      <a href="#">All updates</a>
+    </small> {% endcomment %}
+  </div>
+
+  <div class="my-3 p-3 bg-white rounded box-shadow">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Performance Test Information</h6>
+    <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <strong class="d-block text-gray-dark">Performance Test Name</strong>
+          {{task.name}}
+        </p>
+      </div>
+    <div class="media text-muted pt-3">
+      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <strong class="d-block text-gray-dark">Period</strong>
+        {{task.start_date}} - {{task.end_date}}
+      </p>
+    </div>
+    <div class="media text-muted pt-3">
+      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <strong class="d-block text-gray-dark">Floor</strong>
+        {%for s in task.floor_list%}
+            {{s}}&nbsp;
+        {%endfor%}
+      </p>
+    </div>
+
+      <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <strong class="d-block text-gray-dark"> Weekday Occupied Time</strong>
+            {{task.weekday_occupied_start}} -  {{task.weekday_occupied_end}} &nbsp;
+            {%if  task.setpoint == True %}
+                {{task.weekday_occupied_temperature}} &#8451;
+            {%else%}
+                No setpoint available
+            {%endif%}
+        </p>
+      </div>
+
+      <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <strong class="d-block text-gray-dark"> Weekday Unoccupied Time</strong>
+            {{task.weekday_unoccupied_start}} -  {{task.weekday_unoccupied_end}} &nbsp;
+            {%if  task.setpoint == True %}
+                {{task.weekday_unoccupied_temperature}} &#8451;
+            {%else%}
+                No setpoint available
+            {%endif%}
+        </p>
+      </div>
+
+      
+
+      {%if task.weekend_occupancy == True%}
+      <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <strong class="d-block text-gray-dark"> Weekend Occupied Time</strong>
+            {{task.weekend_occupied_start}} -  {{task.weekend_occupied_end}} &nbsp;
+            {%if  task.setpoint == True %}
+                {{task.weekend_occupied_temperature}} &#8451;
+            {%else%}
+                No setpoint available
+            {%endif%}
+        </p>
+      </div>
+
+      <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <strong class="d-block text-gray-dark"> Weekend Unoccupied Time</strong>
+            {{task.weekend_unoccupied_start}} -  {{task.weekend_unoccupied_end}} &nbsp;
+            {%if  task.setpoint == True %}
+                {{task.weekend_unoccupied_temperature}} &#8451;
+            {%else%}
+                No setpoint available
+            {%endif%}
+        </p>
+      </div>
+      {%endif%}
+    {% comment %} <small class="d-block text-right mt-3">
+      <a href="#">All updates</a>
+    </small> {% endcomment %}
+    <table class="table table-sm borderless" style="width:250px;">
+      <caption>List of sensors</caption>
+      <thead>
+        <tr>
+          <th scope="col">Sensor Number</th>
+          <th scope="col">Sensor Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for s in sensors_copy_list%}
+        <tr>
+          <td>{{s.name}}</td>
+          <td>{{s.type}}</td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>

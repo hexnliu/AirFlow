@@ -1,0 +1,12 @@
+{% comment %} This is the successful message for upload tasks {% endcomment %}
+<div id="successMsgCard" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body p-5">
+          <span class="material-icons align-middle text-success float-left mr-4" style="font-size:50px;"> check_circle </span>
+          <h6>Performance Test "<span id="msgName"></span>" was added for Building "{{building.name}}"</h6>
+          <a href="/tasks/view_task/{{building.id}}" class="btn btn-primary mt-5">Return to Usability Test Building Page</a>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,31 @@
+
+ {% comment %} This is partial bttom part for any base html {% endcomment %}
+ 
+ {% load static %}
+ {% comment %} footer {% endcomment %}
+ {% include 'partials/footer.html' %}
+ {% include 'partials/deleteModal.html'%}
+</body>
+
+<!-- JS, Popper.js, and jQuery -->
+<script type="text/javascript" src="{% static 'lib/jquery/jquery-ui.js'%}"></script>
+<script type="text/javascript" src="{% static 'lib/jquery/jquery.csv.js'%}"></script>
+<script type="text/javascript" src="{% static 'lib/jquery/popper.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'lib/bootstrap/js/bootstrap.js'%}"></script>
+<script type="text/javascript" src="{% static 'lib/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js'%}">
+</script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="{% static 'lib/geodata/jquery.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'lib/intl-tel-input/js/intlTelInput.js'%}"></script>
+<script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+{% comment %} <script type="text/javascript" src="{% static 'js/ui.js'%}"></script> {% endcomment %}
+<script type="text/javascript" src="{% static 'js/helper.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/building.js'%}"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.6.347/build/pdf.min.js"></script>
+
+
+
+
+</html>

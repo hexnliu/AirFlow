@@ -1,0 +1,61 @@
+{% extends 'management/base.html' %}
+
+{% comment %} 
+This is location tab
+context:
+locations: all location data associated with current admin company
+{% endcomment %}
+{%load tags%}
+{%load static%}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="btngroup mt-5">
+    <button data-target="#uploadFileModal" data-toggle="modal" class="btn btn-primary" >Location Types and Definitions File</button>
+  </div>
+    <table id="manageLocations" class='table table-borderless display w-100'>
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Notes</th>
+          <th scope="col">Company</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in locations %}
+        <tr>
+          <td data-search="{{item.name}}" data-order="{{item.name}}"><input type="text" class="form-control form-control-sm" id="{{item.id}}_location_name"
+              value="{{item.name}}" /></td>
+          <td data-search="{{item.description}}" data-order="{{item.description}}"><textarea rows="1" class="form-control form-control-sm"
+              id="{{item.id}}_location_description">{{item.description}}</textarea></td>
+          <td data-search="{{item.notes}}" data-order="{{item.notes}}"><textarea rows="1" class="form-control form-control-sm"
+              id="{{item.id}}_location_notes">{{item.notes}}</textarea></td>
+          <td data-search="{{item.company.name}}" data-order="{{item.company.name}}"><select class="form-control form-control-sm" id="{{item.id}}_location_company"
+              value="{{item.company.name}}">
+              <option value=""></option>
+              {% for s in companies%}
+              {% if s.id  == item.company.id %}
+              <option value="{{s.id}}" selected>{{s.name}}</option>
+              {%else%}
+              <option value="{{s.id}}">{{s.name}}</option>
+              {%endif%}
+              {%endfor%}
+            </select></td> 
+          <td>
+            <img class="btn-img btn-img-update" onclick="updateLocation({{item.id}})"
+              src="/static/images/save-ioairflowblue.svg">
+            <img class="btn-img btn-img-delete" src="/static/images/delete_outline-pink.svg"
+              onclick="deleteRecord('/locations/delete_location/{{item.id}}','{{item.name}}')">
+          </tr>
+          {%endfor%}
+      </tbody>
+    </table>
+    <button class="btn btn-primary mb-5" data-target="#addLocationModal" data-toggle="modal">Add New
+      Location</button>
+
+  </div>
+  {% include 'management/addLocationModal.html' %}
+  {%include "management/uploadFileModal.html" with link="/locations/upload_location_file/" title="Location Types and Definitions File" accept_type=".xlsx"%}
+  {%endblock%}

@@ -1,0 +1,93 @@
+{% comment %}
+This is the detail building page side Menu
+
+check version exits or not. if it does, populate id for navigation
+otherwise, prompt for adding version
+{% endcomment %}
+{% load static %}
+<div class="col-sm" id="detailBuildingMenu">
+    <div class="row">
+        <div class="col-sm-3 align-self-start">
+            <div class="ml-4 mb-5">
+                <h5>Menu</h5>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        {%if status_task_id %}
+        <div class="col-sm-3">
+            <div class="mb-5">
+                <a href="/analysis/view_analysis/{{status_task_id}}"> <img
+                        src="{% static 'images/detailBuilding/Icons - Menu/Icons - Menu_icon_data-analysis_colored.png' %}"
+                        class="card-img-top" alt="dataAnalysis"></a>
+                <div class="text-center">
+                    <h6 class="card-title">Data Analysis</h6>
+                </div>
+            </div>
+        </div>
+{%endif%}
+        <div class="col-sm-3">
+            <div class="mb-5">
+                <a href="/placements/sensor_placement/{{task_id}}"> <img
+                        src="{% static 'images/detailBuilding/Icons - Menu/Icons - Menu_icon_sensor-placement-colored.png' %}"
+                        class="card-img-top" alt="placement"></a>
+                <div class="text-center">
+                    <h6 class="card-title">Sensor Placement</h6>
+                </div>
+            </div>
+        </div>
+
+   {%if status_task_id%}
+        <div class="col-sm-3">
+            <div class="mb-5">
+                <a href="/reports/view_report/{{status_task_id}}"> <img
+                        src="{% static 'images/detailBuilding/Icons - Menu/Icons - Menu_icon_report_colored.png' %}"
+                        class="card-img-top" alt="report"></a>
+                <div class="text-center">
+                    <h6 class="card-title">Performance Report</h6>
+                </div>
+            </div>
+        </div>
+    {%endif%}
+    {%if task_id%}
+        <div class="col-sm-3">
+            <div class="mb-5">
+                <a href="/tasks/view_task/{{building.id}}"> <img
+                        src="{% static 'images/detailBuilding/Icons - Menu/fileupload.png' %}" class="card-img-top"
+                        alt="file upload"></a>
+                <div class="text-center">
+                    <h6 class="card-title">Tasks</h6>
+                </div>
+            </div>
+        </div>
+        {%endif%}
+
+
+        <div class="col-sm-3">
+            <div class="mb-5">
+                <a href="/buildings/upload_floor_plans/{{building.id}}"> <img
+                        src="{% static 'images/detailBuilding/Icons - Menu/blank_floor_plan.png' %}"
+                        class="card-img-top" alt="blank floor plan upload"></a>
+                <div class="text-center">
+                    <h6 class="card-title">Upload Floor Plan</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="mb-5">
+                <a href="/survey/view_survey/{{building.id}}"> <img
+                        src="{% static 'images/detailBuilding/Icons - Menu/Icons - Menu_icon_problem_colored.png' %}"
+                        class="card-img-top" alt="survey"></a>
+                <div class="text-center">
+                    <h6 class="card-title">Additional Building<br/>
+                        Information</h6>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

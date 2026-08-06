@@ -1,0 +1,51 @@
+
+{% load static %}
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#7952b3">
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.css'%}" type="text/css">
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap.min.css'%}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    	<link rel="stylesheet" type="text/css" href="{% static 'css/account.css' %}">
+  </head>
+  <body class="text-center">
+    {% include 'accounts/read_agreement.html'%}
+<main class="form-signin">
+   <img src="{% static 'images/ioairflow-logo-2020-500x323.png' %}" style="width:50%;">
+   
+  {% block content %}
+
+
+
+  {% endblock %}
+</main>
+
+
+</body>
+<script src="{% static 'lib/jquery/jquery.js'%}"></script>
+<script src="{% static 'lib/jquery/jquery.min.js'%}"></script>
+<script src="{% static 'lib/jquery/popper.min.js'%}"></script>
+<script src="{% static 'lib/jquery/jquery.tmpl.min.js'%}"></script>
+<script src="{% static 'lib/jquery/jquery.csv.js'%}"></script>
+<script src="{% static 'lib/jquery/jquery-ui.js'%}"></script>
+<script src="{% static 'lib/bootstrap/js/bootstrap.js'%}"></script>
+<script src="{% static 'js/account.js'%}"></script>
+
+</html>
