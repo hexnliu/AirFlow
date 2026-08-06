@@ -1,0 +1,324 @@
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  background-color: #EBEFF5 !important;
+}
+body p,form{
+  font-size: smaller;
+}
+main{
+  min-height: 100vh;
+}
+.building_images:hover{
+  opacity: 0.7;
+  border-color: #055ba6;
+}
+/* all blue buttons with radius*/
+.theme-color{
+  color: #055ba6;
+}
+.fieldError{
+  border-color: red !important;
+}
+.btn-primary{
+  background-color: #055ba6;
+  border-color: #055ba6;
+}
+.btn-white{
+  color:#055ba6;
+  background-color: #fff;
+  border-color: #055ba6;
+}
+.btn-white:hover>span{
+  color:#fff;
+}
+.btn-delete{
+  background-color: #C11671 !important;
+  border-color: #C11671 !important;
+}
+.btn-delete:hover{
+  background-color: #d83f91 !important;
+  border-color: #d83f91 !important;
+}
+.btn-img{
+  width: 25px;
+  height: 25px;
+}
+.btn-img-update:hover{
+  border: 1px solid #055ba6;
+}
+
+.btn-img-delete:hover{
+  border: 1px solid #C11671;
+}
+.custom-file-label::after{
+  background-color: #055ba6 !important;
+  color: white;
+  border-radius: 3px !important;
+}
+.custom-file-label{
+  border-top-right-radius: 3px !important;
+  border-bottom-right-radius: 3px !important;
+}
+.select2-container{
+  width: 190px !important;
+}
+
+/* pagenation theme override*/
+.page-link {
+  position: relative;
+  display: block;
+  padding: .5rem .75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #343a40 !important;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff !important;
+  background-color: #343a40 !important;
+  border-color: #343a40 !important;
+}
+
+/* all card images fixed size */
+.card img {
+  width: 100%;
+  height: 287px;
+  object-fit: cover;
+  object-position: bottom;
+}
+/* override all file input */
+input[type="file"]{
+  display: none;
+}
+
+/* phone number in building form override */
+.iti__flag {background-image: url("/static/lib/intl-tel-input/img/flags.png");}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .iti__flag {background-image: url("/static/lib/intl-tel-input/img/flags@2x.png");}
+}
+.iti--allow-dropdown{
+  width: 100%;
+}
+/* ajax loader */
+#loading-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: none;
+  z-index: 9999;
+  background-color: rgba(255, 255, 255, 0.7);
+
+}
+
+#loading-text {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #99CA3C;
+  font-weight: bold;
+  width: 100px;
+  height: 30px;
+  margin: -7px 0 0 -45px;
+  text-align: center;
+  font-family: 'PT Sans Narrow', sans-serif;
+  font-size: 15px;
+}
+
+#loading-content {
+  display: block;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  width: 170px;
+  height: 170px;
+  margin: -85px 0 0 -85px;
+  border: 3px solid #F00;
+}
+
+#loading-content:after {
+  content: "";
+  position: absolute;
+  border: 3px solid #0F0;
+  left: 15px;
+  right: 15px;
+  top: 15px;
+  bottom: 15px;
+}
+
+#loading-content:before {
+  content: "";
+  position: absolute;
+  border: 3px solid #00F;
+  left: 5px;
+  right: 5px;
+  top: 5px;
+  bottom: 5px;
+}
+
+#loading-content {
+  border: 3px solid transparent;
+  border-top-color: #1263AB;
+  border-bottom-color: #1263AB;
+  border-radius: 50%;
+  -webkit-animation: loader 2s linear infinite;
+  -moz-animation: loader 2s linear infinite;
+  -o-animation: loader 2s linear infinite;
+  animation: loader 2s linear infinite;
+}
+
+#loading-content:before {
+  border: 3px solid transparent;
+  border-top-color: #99CA3C;
+  border-bottom-color: #99CA3C;
+  border-radius: 50%;
+  -webkit-animation: loader 3s linear infinite;
+  -moz-animation: loader 2s linear infinite;
+  -o-animation: loader 2s linear infinite;
+  animation: loader 3s linear infinite;
+}
+
+#loading-content:after {
+  border: 3px solid transparent;
+  border-top-color: #1263AB;
+  border-bottom-color: #1263AB;
+  border-radius: 50%;
+  -webkit-animation: loader 1.5s linear infinite;
+  animation: loader 1.5s linear infinite;
+  -moz-animation: loader 2s linear infinite;
+  -o-animation: loader 2s linear infinite;
+}
+
+@-webkit-keyframes loaders {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+/* all big images in card */
+.buildingCard {
+  max-width: 750px;
+}
+.buildingCard img{
+    /* override the deault card img */
+    width: 100%;
+    height: 460px !important;
+    object-fit: cover !important;
+    object-position: bottom !important;
+}
+
+/* pages that have header image */
+.building-img-header{
+  width: 100px;
+  height: 100px;
+}
+
+/* tasks table */
+/* end icon  */
+.panel-title {
+  position: relative;
+}
+
+.panel-title::after {
+  content: "\f105";
+  top: 0.35rem;
+  right: 1.5rem;
+  position: absolute;
+  font-family: "FontAwesome";
+  font-size: 30px;
+  color: #055ba6;
+
+}
+
+tr.shown::after {
+  content: "\f107";
+}
+
+tr[aria-expanded="true"] {
+  background-color: #f8f9fa;
+}
+
+/* drop file css */
+.drop-zone {
+  width: 100%;
+  height: 200px;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+  font-size: 20px;
+  cursor: pointer;
+  color: #cccccc;
+  border: 2px solid #055ba6;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.drop-zone--over {
+  border-style: solid;
+}
+
+.drop-zone__input {
+  display: none;
+}
+
+.drop-zone__thumb {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #cccccc;
+  background-size: cover;
+  position: relative;
+}
+
+.drop-zone__thumb::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px 0;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.75);
+  font-size: 14px;
+  text-align: center;
+}
+/* table borderless */
+.borderless tr, .borderless td, .borderless th {
+  border: none !important;
+ }
+
+
+ /* version select box */

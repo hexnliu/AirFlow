@@ -1,0 +1,214 @@
+
+
+  /* home page select box */
+  .searchBox span {
+    font-size: 18px;
+  }
+  .searchBox select,
+  .searchBox input,
+  .searchBox span {
+    height: 100%;
+    border: none;
+  }
+  .searchBox {
+    border: 1px rgb(202, 201, 201) solid;
+    padding: 0px;
+    height: 30px;
+  }
+  #buildingBlock .card:hover{
+    border:1px solid #055ba6 ;
+  }
+/* detail building page */
+#detailBuildingMenu .card-img-top{
+  background-color: white;
+}
+
+#detailBuildingMenu img{
+  height:150px !important;
+  width:150px !important;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+
+/* management page  */
+/*
+ * Sidebar
+ */
+
+ #sidebarMenu{
+  background-color:#fff !important;
+ }
+
+.sidebar {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 48px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+/* @media (max-width: 767.98px) {
+  .sidebar {
+    top: 5rem;
+  }
+} */
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+
+
+.sidebar .nav-link {
+  color: #333;
+  font-size: smaller;
+  font-weight: bold;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+/* task page status */
+/* 1: Not start yet; 2: Missing Data; 3: Ready to be submitted for data analysis; 4: Submitted to ioAirFlow for data analysis; 5: Data analysis and performance report are available
+,*/
+.status_1,.status_2,.status_6{
+  color: #D85B5B;
+}
+
+.status_3,.status_4{
+  color: #F5B639;
+}
+.status_5{
+  color:#99CA3C ;
+}
+
+.bgstatus_1,.bgstatus_2,.bgstatus_6{
+  background-color: #D85B5B;
+  color:white;
+}
+
+.bgstatus_3,.bgstatus_4{
+  background-color: #F5B639;
+  color:white;
+}
+.bgstatus_5{
+  background-color:#99CA3C ;
+  color:white;
+}
+
+/* floor plan view image */
+.floor_plan_img:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+#viewImageModal{
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+#viewImageModal .modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation */
+#viewImageModal .modal-content, #caption {  
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)} 
+  to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+#viewImageModal .close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+#viewImageModal .close:hover,
+#viewImageModal .close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  #viewImageModal .modal-content {
+    width: 100%;
+  }
+}
+
+/* sensor mapping  */
+.bg-highlight{
+  background: #CBDFF4;
+}
+.list-group-item.active{
+  background-color: #CBDFF4;
+  color: #000000;
+}
+

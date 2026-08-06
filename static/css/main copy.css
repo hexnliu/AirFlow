@@ -1,0 +1,347 @@
+
+
+	html {
+    position: relative;
+    min-height: 100%;
+  }
+
+ body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #EBEFF5 !important;
+    margin-bottom: 60px;
+ 
+}
+#container {
+    width: inherit;
+    height: inherit;
+    margin: 0;
+    padding: 0;
+  
+}
+/* override files */
+.custom-file-upload:hover{
+  color: #007bff;
+  }
+  input[type="file"] {
+    display: none !important;
+  }
+body.main{
+  min-height: 100vh;
+  height: 100%;
+}
+nav.main,.container-fluid,.nav-side-menu,.click_advance,#floorPlans div.row:hover{
+  background-color: #EBEFF5 !important;
+}
+
+.container-fluid.p-3{
+  background-color: white !important;
+}
+  
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* Set the fixed height of the footer here */
+  line-height: 60px;
+
+}
+
+
+
+.card-body .col .row, .card-body p{
+  padding:2px;
+  font-size: 10px;
+}
+
+#detailBuildingIndicators img, #placementImagesIndicators img{
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+  object-position: bottom;
+}
+
+#detailBuildingMenu .card-img-top{
+  background-color: white;
+}
+
+#detailBuildingMenu img{
+  height:150px !important;
+  width:150px !important;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.album .card img{
+  width: 100%;
+  height: 287px;
+  object-fit: cover;
+  object-position: bottom;
+}
+
+/* spinning bar */
+.progress-wrp {
+  border: 1px solid #0099CC;
+  padding: 1px;
+  position: relative;
+  border-radius: 3px;
+  margin: 10px;
+  text-align: left;
+  background: #fff;
+  box-shadow: inset 1px 3px 6px rgba(0, 0, 0, 0.12);
+}
+.progress-wrp .progress-bar{
+height: 20px;
+  border-radius: 3px;
+  background-color: #0099CC;
+  width: 0;
+  box-shadow: inset 1px 1px 10px rgba(0, 0, 0, 0.11);
+}
+.progress-wrp .status{
+top:3px;
+left:50%;
+position:absolute;
+display:inline-block;
+color: #000000;
+}
+
+
+
+/* select with custom icons */
+.ui-selectmenu-menu .ui-menu.customicons .ui-menu-item-wrapper {
+  padding: 0.5em 0 0.5em 3em;
+}
+.ui-selectmenu-menu .ui-menu.customicons .ui-menu-item .ui-icon {
+  height: 24px;
+  width: 24px;
+  top: 0.1em;
+}
+.ui-icon.video {
+  background: url("img/24-video-square.png") 0 0 no-repeat;
+}
+.ui-icon.podcast {
+  background: url("img/24-podcast-square.png") 0 0 no-repeat;
+}
+.ui-icon.rss {
+  background: url("img/24-rss-square.png") 0 0 no-repeat;
+}
+
+/* select with CSS avatar icons */
+option.avatar {
+  background-repeat: no-repeat !important;
+  padding-left: 20px;
+}
+.avatar .ui-icon {
+  background-position: left top;
+}
+
+
+.multiselect-native-select div.btn-group{
+  width:100% !important;
+}
+button.multiselect{
+  text-align: left !important;
+}
+
+.ui-autocomplete-input {
+  border: none; 
+  font-size: 14px;
+  width: 300px;
+  height: 24px;
+  margin-bottom: 5px;
+  padding-top: 2px;
+  border: 1px solid #DDD !important;
+  padding-top: 0px !important;
+  z-index: 1511;
+  position: relative;
+}
+.ui-menu .ui-menu-item a {
+  font-size: 12px;
+}
+.ui-autocomplete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1510 !important;
+  float: left;
+  display: none;
+  min-width: 160px;
+  width: 160px;
+  padding: 4px 0;
+  margin: 2px 0 0 0;
+  list-style: none;
+  background-color: #ffffff;
+  border-color: #ccc;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+}
+.ui-menu-item > a.ui-corner-all {
+    display: block;
+    padding: 3px 15px;
+    clear: both;
+    font-weight: normal;
+    line-height: 18px;
+    color: #555555;
+    white-space: nowrap;
+    text-decoration: none;
+}
+.ui-state-hover, .ui-state-active {
+      color: #ffffff;
+      text-decoration: none;
+      background-color: #0088cc;
+      border-radius: 0px;
+      -webkit-border-radius: 0px;
+      -moz-border-radius: 0px;
+      background-image: none;
+}
+
+button, img, input[type=submit], li, a, #cursor_weekend, #cursor_numOfStorys, #cursor_numOfSensors,input[type=button],input[type=reset], input[type=file],select {cursor:pointer;}
+.invalidInput {
+  border-color: red; 
+}
+.arrow:before {
+  float: right;
+  width: 20px;
+  text-align: center;
+  display: inline;
+  font-size: 16px;
+  font-family: FontAwesome;
+  height: auto;
+  content: "\f104";
+  font-weight: 300;
+  text-shadow: none;
+  position: absolute;
+  top: 4px;
+  right: 14px;
+  color: #990;
+ }
+ .arrow.open:before{
+ content: '\f107';
+ }
+ .multiselect-container{
+
+  max-height:200px;
+  overflow:auto;
+}
+textarea {
+  width: 250px;
+ 
+}
+button.btn.add_update{
+  background-color: #165ca8;
+  color: white;
+}
+button.btn.delate_cancel{
+  background-color: transparent; 
+  color: black;
+  border-color: black;
+  border: 2px solid #555555;
+}
+button.btn.add_update:hover:enabled{
+  background-color: #0a548f;
+  color: white;
+  font-weight:bold;
+  
+}
+button.btn.delate_cancel:hover:enabled{
+  background-color: #c11d72; 
+  color: white;
+  border-color: none;
+  font-weight:bold;
+}
+
+.alert_location {
+  border: 2px solid red !important;
+}
+/* Input field */
+.select2-selection__rendered {  font-size: 13px; width: 100% !important;}
+
+
+/* Around the search field */
+.select2-search { font-size: 13px; width: 100% !important;}
+    
+/* Search field */
+.select2-search input { font-size: 13px; width: 100% !important;}
+    
+/* Each result */
+.select2-results { font-size: 13px; width: 100% !important;}
+    
+/* Higlighted (hover) result */
+.select2-results__option--highlighted {font-size: 13px;  width: 100% !important;}
+    
+/* Selected option */
+.select2-results__option[aria-selected=true] { font-size: 13px; width: 100% !important;}
+span.select2.select2-container.select2-container--default {
+  width: 100% !important;
+}
+.select2-selection.select2-selection--single:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* end icon  */
+.panel-title {
+  position: relative;
+}
+
+.panel-title::after {
+  content: "\f105";
+  top: 0.35rem;
+  right: 1.5rem;
+  position: absolute;
+  font-family: "FontAwesome";
+  font-size: 30px;
+  color: #055ba6;
+
+}
+
+.panel-title[aria-expanded="true"]::after {
+  content: "\f107";
+}
+
+tr[aria-expanded="true"] {
+  background-color: #f8f9fa;
+}
+/* all blue buttons */
+.btn-primary {
+  background-color: #055ba6;
+  border-color: #055ba6;
+}
+
+.custom-file-label::after{
+  background-color: #055ba6 !important;
+  color: white;
+  border-radius: 3px !important;
+}
+.custom-file-label{
+  border-top-right-radius: 3px !important;
+  border-bottom-right-radius: 3px !important;
+}
+/* task page end icon */
+.more_vert{
+  color: #6c757d;
+  }
+.more_vert:hover{
+color: #055ba6;
+}
+
+
+
+

@@ -1,0 +1,86 @@
+body {
+  font-size: .875rem !important;
+}
+
+.tab-pane .card{
+  width: 400px;
+  background-color:#F8F9FA !important;
+}
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+
+
+/*
+ * Navbar
+ */
+
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, .25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+
+.navbar .navbar-toggler {
+  top: .25rem;
+  right: 1rem;
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.form-control-dark {
+  color: #fff;
+  background-color: rgba(255, 255, 255, .1);
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+main{
+  background-color:#F8F9FA;
+}
+body { 
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: bold;
+}
+
+/* Input field */
+.select2-selection__rendered {  font-size: 11px; width: 100% !important;}
+
+
+/* Around the search field */
+.select2-search { font-size: 11px; width: 100% !important;}
+    
+/* Search field */
+.select2-search input { font-size: 11px; width: 100% !important;}
+    
+/* Each result */
+.select2-results { font-size: 11px; width: 100% !important;}
+    
+/* Higlighted (hover) result */
+.select2-results__option--highlighted {font-size: 11px;  width: 100% !important;}
+    
+/* Selected option */
+.select2-results__option[aria-selected=true] { font-size: 11px; width: 100% !important;}
+span.select2.select2-container.select2-container--default {
+  width: 100% !important;
+}
+.select2-selection.select2-selection--single:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
