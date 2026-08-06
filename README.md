@@ -38,7 +38,7 @@ This system is divided into two parts according to the service: `Application` an
 ## How to run
 We are using ` visual studio ` for development, in order to avoid problems because of the built environment by running.
 
-After you install , right click the directory folder, open git bush, `git clone git@github.com:ioairflow/ioAirflow.git`.
+After you install , right click the directory folder, open git bush, `git clone https://github.com/hexnliu/AirFlow.git`.
 
 then open `visual studio` File-> `open floder` add airFlow folder to work place.
 * To run `Application`, click Terminal, change powershell to cmd, activate virtual environment, run `python manage.py runserver`
