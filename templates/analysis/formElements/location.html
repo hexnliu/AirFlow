@@ -1,0 +1,17 @@
+<div class="form-group">
+    <label for="{{value.id}}_location_{{count}}" class="mb-2 mr-sm-2 font-weight-bold">Select Location</label>
+    {% comment %} filter out ieq sensor that has no value in these two module because ieq sensor does nopt have relative data {% endcomment %}
+    {%if c.name == "Air Quality" or c.name == "Virus Transmission" %}
+    <select class="form-control form-control-sm mb-3 mr-sm-3 " onchange="onLocationChange('{{value.id}}_location_{{count}}','B-IEQ')" id="{{value.id}}_location_{{count}}" name="location"
+    required>
+    {%else%}
+    <select class="form-control form-control-sm mb-3 mr-sm-3 " onchange="onLocationChange('{{value.id}}_location_{{count}}')" id="{{value.id}}_location_{{count}}" name="location"
+    required>
+    {%endif%}
+   
+      <option value="">Please Choose</option>
+      {%for loc in locationList %}
+      <option value="{{loc}}">{{loc}}</option>
+      {%endfor%}
+    </select>
+  </div>

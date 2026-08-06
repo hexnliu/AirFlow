@@ -1,0 +1,68 @@
+{% comment %} 
+  breadcrumb navigation
+
+  app_name need to be added from all model.py
+  
+  
+{% endcomment %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">My Buildings</a></li>
+      {% if request.resolver_match.app_name == "Building" or request.resolver_match.app_name == "Additional Building Information"%}
+      {% comment %} eg.My Buildings/Building - 55 donald {% endcomment %}
+          {% if request.resolver_match.url_name == "building_detail"%}
+              <li class="breadcrumb-item active" aria-current="page">Building - {{building.name}}</li>
+          {%else%}
+                <li class="breadcrumb-item"><a href="/buildings/building_detail/{{building.id}}">Building - {{building.name}}</a></li>
+          {%endif%}
+          {% if request.resolver_match.url_name == "upload_floor_plans"%}
+              <li class="breadcrumb-item active" aria-current="page">Upload Floor Plan - {{building.name}}</li>
+          {%endif%}
+          {% if request.resolver_match.url_name == "view_survey"%}
+          <li class="breadcrumb-item active" aria-current="page">Additional Building Information</li>
+          {%endif%}
+      {% comment %} My Buildings/Building - 55 donald/Tasks {% endcomment %}
+      {%elif request.resolver_match.app_name == "Tasks" or request.resolver_match.app_name == "Sensor Placement" or request.resolver_match.app_name == "Data Analysis" %}
+             <li class="breadcrumb-item"><a href="/buildings/building_detail/{{building.id}}">Building - {{building.name}}</a></li>
+
+             {% if request.resolver_match.url_name == "view_task"%}
+                    <li class="breadcrumb-item active" aria-current="page">Tasks</li>
+             {%else%}
+                   <li class="breadcrumb-item"><a href="/tasks/view_task/{{building.id}}">Tasks</a></li>
+             {%endif%}
+             
+             {% if request.resolver_match.url_name == "add_performance_test"%}
+                    <li class="breadcrumb-item active" aria-current="page">Add Performance Test</li>
+            {% elif request.resolver_match.url_name == "edit_performance_test"%}
+                    <li class="breadcrumb-item active" aria-current="page">Edit Performance Test</li>
+            {% elif request.resolver_match.url_name == "sensors_mapping"%}
+               <li class="breadcrumb-item active" aria-current="page">Sensors Mapping         
+                   {%if task%}
+                      - {{task.name}}
+                   {%endif%}
+          
+              </li>
+            {% elif request.resolver_match.app_name == "Sensor Placement"%}
+               <li class="breadcrumb-item active" aria-current="page">Sensor Placement</li>
+            {% elif request.resolver_match.app_name == "Data Analysis"%}
+               <li class="breadcrumb-item active" aria-current="page">Data Analysis</li>
+            {%endif%}
+      {%elif request.resolver_match.app_name == "Performance Report"  %}
+            <li class="breadcrumb-item"><a href="/buildings/building_detail/{{building.id}}">Building - {{building.name}}</a></li>
+
+             {% if request.resolver_match.url_name == "view_report"%}
+                    <li class="breadcrumb-item active" aria-current="page">Performance Report</li>
+             {%else%}
+                   <li class="breadcrumb-item"><a href="/reports/view_report/{{status_task_id}}">Performance Report</a></li>
+                   {% if request.resolver_match.url_name == "view_curated_report"%}
+                   <li class="breadcrumb-item active" aria-current="page">Curated Report</li>
+                   {% elif request.resolver_match.url_name == "view_customized_report"%}
+                   <li class="breadcrumb-item active" aria-current="page">Building Test Report</li>
+                   {%endif%}
+             {%endif%}
+          
+
+      {%endif%}
+    
+    </ol>
+  </nav>

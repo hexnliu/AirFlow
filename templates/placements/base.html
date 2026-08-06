@@ -1,0 +1,63 @@
+
+
+{%load static%}
+{%load tags%}
+
+{% comment %} base page for placement module {% endcomment %}
+{% include 'partials/navigation.html' %} 
+{%include "partials/head.html"%}
+{% comment %} breadcrumb link {% endcomment %}
+{% include 'breadcrumb.html' %}
+  <div class="container-fluid">
+    {%include "partials/header.html" with page_name="Sensor Placement" link="placements"%}
+    <ul class="nav nav-tabs" id="placement_overall" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link {{'sensor_placement'|active_class:request.resolver_match.url_name}}" href="/placements/sensor_placement/{{task.id}}">
+            <h5 class="theme-color">Sensor Placement Data</h5>
+          </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link {{'location_placement'|active_class:request.resolver_match.url_name}}" href="/placements/location_placement/{{task.id}}">
+            <h5  class="theme-color" >Location Types and Definitions</h5>
+          </a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link {{'group_placement'|active_class:request.resolver_match.url_name}}" href="/placements/group_placement/{{task.id}}">
+            <h5 class="theme-color">Group Data</h5>
+          </a>
+        </li>
+      </ul>
+      <div class="container-fluid bg-white pt-3"> 
+        {% comment %}  this only show on sensor placement page{% endcomment %}
+        {% if request.resolver_match.url_name == "sensor_placement"%}
+        <h5>Add/Edit Sensor Placement Data</h5>
+        <small>
+          <p style="color: grey;">This describes how each sensor is placed within a location in a building.</p>
+        </small>
+        <small><strong>Building Name: </strong> {{task.building.name}}</small>
+        <br>
+        <small><strong> Test Version: </strong> {{task.name}}</small>
+        <br>
+        <small><strong> Test Version Period: </strong>{{task.start_date}} - {{task.end_date}}</small>
+        <hr>
+        <div class="table-responsive">
+          {%endif%}
+      {% comment %} data table content popluate {% endcomment %}
+      {% block content %}
+
+      {% endblock content %}
+        </div>
+      </div>
+
+  </div>
+
+  {% include 'placements/addModal.html' with p_name="addLocation" link="/locations/add_location/"%}
+  {% include 'placements/addModal.html' with p_name="addGroup" link="/groups/add_group/"%}
+  {% comment %} msg modal for validation of submit all placements {% endcomment %}
+  {% include 'placements/msgModal.html'%}
+  {% comment %} view placement images modal {% endcomment %}
+  {% include 'tasks/viewImageModal.html'%}
+  {% include 'tasks/prompt.html'%}
+  {%include "partials/bottom.html"%}
+  {% comment %} placement js {% endcomment %}
+  <script type="text/javascript" src="{% static 'js/placement.js'%}"></script>

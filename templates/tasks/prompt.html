@@ -1,0 +1,107 @@
+{%load tags%}
+<div id="promptModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Notification</h5>
+                <button type="button" class="promptClose close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {%if step == "Submit for Data Analysis" %}
+                You have compeleted all the tasks for Performance Test: [{{task_name}}]. You can now
+                    {% if user.is_authenticated and request.user.is_superuser %}
+                        run the data analysis!
+                    {%else%}
+                         submit for data analysis!
+                    {%endif%}
+                {%else%}
+                <p> For Performance Test: [{{task_name}}], would you like to <span id="prompt_step"> {{step|safe}}
+                        <span> ?</p>
+                {%endif%}
+            </div>
+            <div class="modal-footer">
+                {% if step == "upload sensor data file" %}
+                    {%if  request.resolver_match.url_name == "view_task"%}
+                    <a href="#loTModal" data-toggle="modal" class="btn btn-primary"
+                        onclick="uploadTask('loT','/tasks/upload_ioT_sensor_file/{{task_id}}','{{task_name}}'); $('#promptModal').hide();">{{step|safe|sep_camel_case}}</a>
+                    {%else%}
+                    <a href="/tasks/view_task/{{building.id}}" class="btn btn-primary">{{step|safe|sep_camel_case}}</a>
+                    {%endif%}
+                {%elif step == "submit for data analysis" %}
+                    {%if user.is_authenticated and request.user.is_superuser%}
+                    <input class="btn btn-sm btn-primary" type="button" value="Run Data Analysis" id="runDataAnalysis"
+                        onclick="runDataAnalysis('/analysis/run_data_analysis/{{task_id}}');" />
+                    {%else%}
+                        {%if  request.resolver_match.url_name == "sensors_mapping"%}
+                        <a href="#" class="btn btn-primary" onclick="sendNotification('/tasks/submit_task/{{task_id}}','{{building.id}}');$('#promptModal').hide();">{{step|safe|sep_camel_case}}</a>
+                        {%else%}
+                        <a href="#" class="btn btn-primary" onclick="sendNotification('/tasks/submit_task/{{task_id}}');$('#promptModal').hide();">{{step|safe|sep_camel_case}}</a>
+                        {%endif%}
+                    {%endif%}
+                {%elif step == "add sensor placement"%}
+                    <a href="/placements/sensor_placement/{{task_id}}" class="btn btn-primary">{{step|safe|sep_camel_case}}</a>
+                {%elif step == "upload floor plan images"%}
+                    <a href="/buildings/upload_floor_plans/{{building.id}}?task={{task_id}}" class="btn btn-primary">
+                        {{step|safe|sep_camel_case}}</a>
+                {%elif step == "add sensor mapping on floor plan"%}
+                <a href="/tasks/sensors_mapping/{{task_id}}" class="btn btn-primary">{{step|safe|sep_camel_case}}</a>
+                {%endif%}
+
+                <button type="button" class="btn btn-secondary" onclick="$('#promptModal').hide();">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{%if request.resolver_match.url_name == "sensor_placement" or request.resolver_match.url_name == "sensors_mapping" or request.resolver_match.url_name == "upload_floor_plans"  or request.resolver_match.url_name == "view_task" %}
+{% if step != "" and step is not None%}
+        {% if  request.resolver_match.url_name == "sensor_placement" %}
+        {%if step != "add sensor placement" %}
+        <script>
+            window.onload = function () {
+                var modal = document.getElementById("promptModal");
+                modal.style.display = "block";
+            };
+        </script>
+        {%endif%}
+
+        {%elif request.resolver_match.url_name == "sensors_mapping" %}
+        {%if step != "add sensor mapping on floor plan"  %}
+        <script>
+            window.onload = function () {
+                var modal = document.getElementById("promptModal");
+                modal.style.display = "block";
+            };
+        </script>
+        {%endif%}
+
+        {%elif request.resolver_match.url_name == "upload_floor_plans"%}
+        {%if  step != "upload floor plan images"%}
+        <script>
+            window.onload = function () {
+                var modal = document.getElementById("promptModal");
+                modal.style.display = "block";
+            };
+        </script>
+        {%endif%}
+        {% elif  request.resolver_match.url_name == "view_task"%}
+        <script>
+            window.onload = function () {
+                var modal = document.getElementById("promptModal");
+                modal.style.display = "block";
+            };
+        </script>
+
+        {%endif%}
+
+
+{%endif%}
+
+
+{%endif%}

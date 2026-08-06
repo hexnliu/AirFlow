@@ -1,0 +1,117 @@
+    {%load tags%}
+    {%load static%}
+    {% comment %} 
+    This lists the specific building by id
+    context: building
+    include: building Menu which is navbar
+     {% endcomment %}
+    <div class="row" id="detailBuilding">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+        <div class="card buildingCard">
+          <div class="row no-gutters">
+            <div class="col-sm">
+              <img src="{{building.img_path | bin_2_img}}"  class="w-100">
+            </div>
+            <div class="col-sm">
+              <div class="card-body">
+                <div class="row">
+                  <h4>Building Information</h4>
+                  <div class="container">
+                    <div class="row">
+                      <table class="table">
+                        <tbody>
+                          <tr class="table-light table-sm">
+                            <th scope="row" class="text-left">Name</th>
+                            <td class="text-left"><span id="detailBuilding_name"
+                                class="{{building.id}}">{{building.name}}</span></td>
+                          </tr>
+
+                          <tr class="table-light table-sm">
+                            <th scope="row" class="text-left">Address</th>
+                            <td class="text-left"><span id="detailBuilding_address">{{building.address}}</span></td>
+
+                          </tr>
+                          <tr class="table-light table-sm">
+                            <th scope="row" class="text-left">Postal Code</th>
+                            <td class="text-left"><span id="detailBuilding_postal_code">{{building.postal}}</span>
+                            </td>
+
+                          </tr>
+                          <tr class="table-light table-sm">
+                            <th scope="row" class="text-left">City</th>
+                            <td class="text-left"><span id="detailBuilding_city">{{building.city}}</span></td>
+
+                          </tr>
+                          <tr class="table-light table-sm">
+                            <th scope="row" class="text-left">Province</th>
+                            <td class="text-left"><span id="detailBuilding_province">{{building.province}}</span></td>
+
+                          </tr>
+                          <tr class="table-light table-sm">
+                            <th scope="row" class="text-left">Country</th>
+                            <td class="text-left"><span id="detailBuilding_country">{{building.country}}</span></td>
+
+                          </tr>
+
+                          <tr class="table-light table-sm">
+                            <th scope="row" class="text-left">Contact Name</th>
+                            <td class="text-left"><span id="detailBuilding_contact">{{building.contact}}</span></td>
+
+                          </tr>
+                          <tr class="table-light table-sm">
+                            <th scope="row" class="text-left">Phone No.</th>
+                            <td class="text-left"><span id="detailBuilding_phone">{{building.phone}}</span></td>
+                          </tr>
+                          <tr class="table-light table-sm">
+                            <th scope="row" class="text-left">Email</th>
+                            <td class="text-left"><span id="detailBuilding_email">{{building.email}}</span>
+
+                          </tr>
+                          <tr>
+                            <th scope="row" class="text-left"><a href="#updateBuildingModal"
+                                class="btn btn-sm btn-secondary rounded-5 text-white "
+                                style="background-color: #055ba6;" data-toggle="modal">Edit</a></th>
+                            <td></td>
+
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% if tasks%}
+          {% include "buildings/buildingMenu.html" %}
+      {%else%}
+      <div class="col-sm">
+        <div class="row m-3">
+            <h6 class="mt-2">You have not added any performance tests for this building.</h6>
+            <button  class="btn btn-primary btn-white ml-3" onclick="window.location.href='/tasks/add_performance_test/{{building.id}}';">
+              {%include "partials/notificationTask.html"%}
+              <span class="material-icons align-middle theme-color"> add
+            </span>
+
+          Add a Performance Test</button>
+          </div>
+      </div>
+      {%endif%}
+    </div>
+    {%if tasks%}
+    <div class="row w-100 p-3">
+      <div class="w-100 -h100">
+          <h4>Performance Test</h4>
+          <p>Please upload the necessary files on the correct Performance Test. Click on the Performance Test to add your files.</p>
+      </div>
+        {%include "tasks/tasks.html"%}
+    </div>
+    {%endif%}
+    {% comment %} this associates with eidt button {% endcomment %}
+    {% include 'buildings/buildingForm.html' with p_name="updateBuilding"%}
+    
+   {%include "tasks/elements.html"%}

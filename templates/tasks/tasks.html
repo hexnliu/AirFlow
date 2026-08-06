@@ -1,0 +1,156 @@
+{%load tags%}
+{% comment %} task table in detail building view and task view
+context: 
+task: current task object
+{% endcomment %}
+<div class="w-100" >
+    <table class="table display w-100" id="tasksTable">
+      <thead class="bg-light">
+        <tr>
+          <th scope="col">Performance Test Name
+       
+          </th>
+          <th scope="col">Start Date 
+        
+          </th>
+          <th scope="col">End Date 
+        
+          </th>
+          <th scope="col">Status
+        
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% comment %} for loop get all listed data, the corresponding rows are handled by js which is handled by data table {% endcomment %}
+        {% if tasks%}
+          {%for t in tasks%}
+          {% comment %} .panel-title is the arrow icon at the end of the row {% endcomment %}
+          <tr id="version_{{t.id}}" class="panel-title" >
+              <th scope="row">{{t.name}}</th>
+              <td>{{t.start_date}}</td>
+              <td>{{t.end_date}}</td>
+              <td>
+                {%if t.notification%}
+                <span class="badge badge-pill bgstatus_{{t.status.name}}">
+                  {{t.notification}}
+                  
+                </span>
+                {%else%}
+                <span class="material-icons  align-middle status_{{t.status.name}}">fiber_manual_record</span>
+                {%endif%}
+                
+                <p style="display:none;">{{t.status.name}}</p> {{t.status.description}}
+             
+                  {% comment %} <span class="material-icons  align-middle status_{{t.status.name}}">fiber_manual_record</span><p style="display:none;">{{t.status.name}}</p> {{t.status.description}} {% endcomment %}
+ 
+
+              </td>
+              <td class="text-right pr-5">
+                <span data-target="#evModal" data-toggle="modal">
+                  <a class="btn btn-sm more_vert" href="/tasks/edit_performance_test/{{t.id}}" data-toggle="tooltip" data-placement="bottom" title="Edit Placement Test Information">
+                    <span class="material-icons" style="font-size:30px;">more_vert</span></a> 
+                    <p style="display:none">{{t.create_date|formate_datetime}}</p>
+                  </span>
+              </td>
+            </tr>
+          {%endfor%}
+          <script type="text/javascript">
+            var tasks={{tasks_list |safe}};//get a list of the task objects 
+            var user = "{{request.user.is_superuser |safe}}";//detect user type
+          </script>
+        {%endif%}
+        {% comment %} generate admin view for task {% endcomment %}
+        {%if request.user.is_superuser%}
+        <script type="text/javascript">
+              // format the html to generate row for admin user to performance task
+              //t: task object which is from global variable tasks
+              function formatUser(t){
+                return `<div class="order`+t["id"]+` bg-light row border-top">
+                  <div class="col-md-5">
+                      <div class="step3 p-2 border-right">
+                        <div class="row font-weight-bold mb-3 theme-color">
+                          Admin
+                        </div>  
+                        <div class="row mb-2"> 
+                          <div class="col-sm-4">
+                            <span class="`+formatStatus(t["is_weather_ready"])+` align-middle">fiber_manual_record</span>
+                            Weather File
+                          </div>
+                          <div class="col-sm-5" >
+                            <span class="font-italic">Last Updated: `+formatDate(t["weather_upload_time"])+formatFileName('Weather.csv',t)+`</span>
+                          </div>
+                          <div class="col-sm-2">
+                            <a href="#weatherModal" data-toggle="modal" class="btn btn-primary btn-sm" onclick="uploadTask('weather','/tasks/upload_weather_file/`+t["id"]+`','`+t['name']+`');">Upload</a>
+                          </div>
+        
+                        </div>      
+                        <div class="row mb-2">
+                            <div class="col-sm-4">
+                              <span class="`+formatStatus(t["is_buildingtest_report"])+` align-middle">fiber_manual_record</span>
+                              Customized Report
+                            </div>
+                            <div class="col-sm-5" >
+                              <span class="font-italic">Last Updated: `+formatDate(t["buildingtest_report_time"])+formatFileName('Building Test.pdf',t)+`</span>
+                            </div>
+                            <div class="col-sm-2">
+                              <a href="#reportModal" data-toggle="modal" class="btn btn-primary btn-sm" onclick="uploadTask('report','/tasks/upload_buildingTest_report_file/`+t["id"]+`','`+t['name']+`');">Upload</a>
+                            </div>
+                          </div>       
+                        </div>
+                      </div>
+                      `+getNotification(t)+`
+                    </div>`;
+                  
+              }
+              // format the html to generate row for admin user to notify regular request.user.is_superuser
+              //t: task object which is from global variable tasks
+              function getNotification(t){
+                //check if the user task is containing the regualr user email which means only working when users submit the task
+                if(t["submit_email"]!=null && t["submit_email"]!=""){
+                  return`<div class="col-md-5">
+                    <div class="step3 p-2">
+                      <div class="row font-weight-bold mb-3 theme-color">
+                        Send Notifications
+                      </div>  
+                      <div class="row mb-2"> 
+                        <div class="col-sm-4">
+                          <span class="`+formatStatus(t["notify_analysis"])+` align-middle">fiber_manual_record</span>
+                           Data Analysis
+                        </div>
+                        <div class="col-sm-5" >
+                          <span class="font-italic">Last Updated: `+formatDate(t["notify_analysis_time"])+`</span>
+                        </div>
+                        <div class="col-sm-2">
+                          <button  class="btn btn-primary btn-sm" onclick="sendNotification('/tasks/notify_user_analysis_ready/`+t["id"]+`')">Send</button>
+                        </div>
+      
+                      </div>      
+                      <div class="row mb-2">
+                        <div class="col-sm-4">
+                          <span class="`+formatStatus(t["notify_report"])+` align-middle">fiber_manual_record</span>
+                          Customized Report
+                        </div>
+                        <div class="col-sm-5" >
+                          <span class="font-italic">Last Updated: `+formatDate(t["notify_report_time"])+`</span>
+                        </div>
+                        <div class="col-sm-2">
+                          <button  class="btn btn-primary btn-sm" onclick="sendNotification('/tasks/notify_user_report_ready/`+t["id"]+`')">Send</button>
+                        </div>
+                        </div>       
+                      </div>
+                    </div>`
+                }
+                return ``;
+              }
+        </script>
+    
+      {%endif%}
+        
+      </tbody>
+    </table>
+  </div>
+  {% include "tasks/uploadSuccessCard.html" with message="You have uploaded the file successfully." %}
+  {% include "tasks/uploadErrorCard.html"  with message="Error - Failed to upload your file"%}
+  {% include "tasks/detailTask.html"%}

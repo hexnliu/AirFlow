@@ -1,0 +1,37 @@
+{%load static%}
+  
+{%include "partials/head.html"%}
+{% comment %} top navbar {% endcomment %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <a href="{% url 'home' %}"> <img src="{% static 'images/logo.png' %}"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'home' %}">My Buildings</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/inventory/management/">Sensor Inventory Management</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/locations/management/">Location Types and Definitions</a>
+      </li>
+    </ul>
+     {%include "partials/userOptions.html"%}
+  </div>
+</nav>
+{% comment %} ajax loading {% endcomment %}
+
+{% comment %} main content {% endcomment %}
+<main role="main" class="container-fluid">
+  {% block content %}
+
+  {% endblock content %}
+</main>
+
+<script type="text/javascript" src="{% static 'js/management.js'%}"></script>
+
+{% include "partials/bottom.html"%}

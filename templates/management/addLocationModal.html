@@ -1,0 +1,62 @@
+{% comment %} 
+
+This add location modal that is using ajax to post data 
+
+all element id with prefix addLocation_
+
+object:
+companies: all company information
+
+{% endcomment %}
+<div id="addLocationModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Location</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="container">
+                        <form id="addLocationForm" action="/locations/add_location/" method="POST" class="needs-validation" novalidate>
+                            <div class="form-group row">
+                                <label for="addLocation_name" class="col-sm-3 col-form-label">Name</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control form-control-sm" id="addLocation_name"
+                                        name="name" required/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="addLocation_description" class="col-sm-3 col-form-label">Description</label>
+                                <div class="col-sm-9">
+                                    <textarea rows="2" class="form-control form-control-sm" name="description" id="addLocation_description" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="addLocation_notes" class="col-sm-3 col-form-label">Notes</label>
+                                <div class="col-sm-9">
+                                    <textarea rows="2" class="form-control form-control-sm" name="notes" id="addLocation_description"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="addLocation_company" class="col-sm-3 col-form-label">Company</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control form-control-sm" id="addLocation_company" name="company" required>
+                                    {% for s in companies%}
+                                    <option value="{{s.id}}">{{s.name}}</option>
+                                    {%endfor%}
+                                  </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="float-right btn btn-primary" id="addLocation_saveBtn" >Save</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

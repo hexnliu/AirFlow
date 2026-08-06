@@ -1,0 +1,37 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+{%load tags%}
+{% load static %}
+{% comment %}
+purpose:This is the detail task for specific building
+context:
+building: building object that working on
+tasks: all version listed - array of objects
+
+all status should pass to class which having eg. status_1 to indicate level
+
+{% endcomment %}
+
+<div class="container-fluid">
+  {%include "partials/header.html" with page_name="Curated Report" link="reports"%}
+  <div id="curatedReport" class="bg-white h-100 p-2">
+    <p>Last Updated: <span class="utc2local">{{task.merge_time|formate_datetime}}<span></p>
+    <div class="row bg-light mx-auto h-90 p-3 ">
+      <div class="mx-auto" id="exportContent" style="height:460px;overflow-y:scroll;overflow-x:hidden;">
+
+        {% include 'reports/curated.html'%}
+      </div>
+    </div>
+    <div class="row d-flex justify-content-end">
+      <button type="button" class="btn btn-sm btn-primary m-3" onclick="document.location.href='/reports/download_curated_report/{{task.id}}'">Download as.pdf</button> 
+
+         </div>
+      </div>
+  {% endblock %}
+  
+  
+  
+  
+
+     

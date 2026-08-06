@@ -1,0 +1,117 @@
+{% comment %} this return any select option {% endcomment %}
+{%if options%}
+<option value="">{{options.key}}</option>
+{%for p in options.values %}
+<option value="{{p.name}}">{{p.name}}</option>
+{%endfor%}
+{%endif%}
+
+
+{% comment %} this is for data analaysis, form filter, any options return  {% endcomment %}
+{%if list%}
+    <option value="">Please Choose</option>
+    {% comment %} list.key, general option eg. all locations/all perimeters {% endcomment %}
+    {%if list.key != ""%}
+    <option value="{{list.key}}">{{list.key}}</option>
+    {%endif%}
+    {% comment %} rephase yes and no for perimeter options {% endcomment %}
+    {%if list.key == "Entire Space"%}
+    {%for p in list.values %}
+        {%if p == "Yes"%}
+        <option value="Perimeter">Perimeter</option>
+        {% elif p == "No"%}
+        <option value="Interior">Interior</option>
+        {%endif%}
+    {%endfor%}
+    {%else%}
+    {%for p in list.values %}
+         <option value="{{p}}">{{p}}</option>
+    {%endfor%}
+
+    {%endif%}
+
+{%endif%}
+
+{% comment %} list sensors with their type {% endcomment %}
+{%if list_sensors%}
+<option value="">Please Choose</option>
+    {%for k,v in list_sensors %}
+    <option value="{{k}}">{{k}} - {{v}}</option>
+    {%endfor%}
+{%endif%}
+
+{% comment %} for loop all graph and popluate them {% endcomment %}
+{%if div %}
+{%for q in div%}
+{{q|safe}}
+{%endfor%}
+{%endif%}
+
+{% comment %} 
+
+this is used for view original floor plan function in data analayis
+
+context:
+markers: a list of maker objects from sensormapping model
+image:  for specific floor plan(BuildingImage model)
+
+
+
+{% endcomment %}
+{%if image and markers%}
+
+<script>
+/******************** INIT ZoomMarker here *****************************/
+    var data={{markers|safe}};
+    var markers=[];
+    var imgwidth={{image.width |safe}};
+    var imgheight={{image.height |safe}};
+    var image_path ="{{image.img_path | safe}}";
+    //generate appropriate window size by getting user screen size
+    var divWidth =$("#viewImageModal .modal-content").width();
+    var  divHeight = divWidth*imgheight/imgwidth;
+    $("#zoom-marker-div").css("height",divHeight+"px");
+    if(divWidth>imgwidth){
+      divWidth=imgwidth;
+   }
+    for (var i = 0; i < data.length; i++) {
+        var marker = {};
+        var sensor_num = data[i]["snsr_num"];
+        var num=i+1;
+        var vx = parseFloat(data[i]["x"]);
+        //note that:  y coordinate in zoomMarker is opposite than the original we use
+        var vy = (imgheight -parseFloat(data[i]["y"]))*divHeight/imgheight;
+        marker["sensor"] =sensor_num;
+        marker["src"] =  "/media/ioAirFlow/marker.png";
+        marker["x"] = vx;
+        marker["y"] = vy;
+        marker["size"] = 30;
+        marker["draggable"]=false
+        marker["hint"] = {
+          "value": num+":" + sensor_num,
+          "style": {
+            "color": "#ffffff",
+            "top": "-25px",
+            "left":"-25%",
+            "position":"relative",
+            // "transform": "translateX(-50%,-50%)",
+            "background": "#055ba6",
+            "padding": "2px",
+            "border-radius": "2px",
+            "font-size": "12px",
+            "width": "max-content"
+          }
+        };
+        markers.push(marker);
+    }
+/******************** INIT ZoomMarker here *****************************/
+</script>
+
+{%endif%}
+
+{% comment %} display possible error text message
+usage on virus transmission
+{% endcomment %}
+{%if error%}
+<h5 style="color:red;">{{error | safe}}</h5>
+{%endif%}

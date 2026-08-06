@@ -1,0 +1,116 @@
+<style>
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 8px;
+    margin-top: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  }
+
+
+ 
+
+
+  div.scrollmenu {
+    overflow: auto;
+    white-space: nowrap;
+  }
+  
+  div.scrollmenu a {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+  }
+  .scrollmenu img{
+    width:15px;
+    height:15px;
+  }
+  .btn-active {
+    border:1px solid #055ba6 !important;
+    color:#055ba6 !important;
+  }
+  
+
+</style>
+
+
+<div class="mb-3 p-3 bg-white rounded box-shadow">
+
+  <div class="scrollmenu scrollmenu-ul ">
+    <a class="btn btn-sm m-2 btn-active" id="summary"  data-toggle="tab" href="#des_summary" onclick="liTabEmbed('summary')">
+    <img src="/static/images/analysisDashboard/PNG/icon-building-summary.png" alt="Building Summary">Summary
+    {% for c in menu%}
+    <a class="btn btn-sm m-2" id="{{c.id}}" data-toggle="pill" data-target="#{{c.id}}-tab" type="button" role="tab" aria-controls="{{c.id}}-tab" aria-selected="false" onclick="liTabEmbed('{{c.id}}')">
+      <img src="/static/images/analysisDashboard/PNG/{{c.label}}" alt="{{c.name}}"  >{{c.name}}</a>
+    {%endfor%}
+  </div>
+  <div class="scrollmenu scrollmenu-li">
+    <div class="tab-content border-top" id="pills-tabContent">
+      {% for c in menu%}
+    
+      <div class="tab-pane fade show" id="{{c.id}}-tab" role="tabpanel" aria-labelledby="{{c.id}}">
+        {%for key,value in c.sub_category.items%}
+        <button class="btn btn-sm m-2" id="{{value.id}}-tab" data-toggle="tab" href="#{{value.id}}" role="tab" type="button"
+        aria-controls="{{value.id}}" aria-selected="false" onclick="aTabEmbed('{{c.id}}', '{{value.id}}')">{{key}}</button>
+        {%endfor%}
+      </div>
+      
+      {% endfor%}
+    </div>
+  </div>
+  
+
+
+
+</div>
+
+<script>
+  function liTabEmbed(id) {
+
+    //hide the tab content
+    var des_id = "des_" + id;
+    $(".scrollmenu-ul a").removeClass("btn-active");
+    $(".scrollmenu-li button").removeClass("btn-active");
+    $(".tab-content .tab-pane").removeClass("active");
+    $("#"+id+"-tab").addClass("active");
+    //set the category active with its tab content
+    // $("#menu-content li").removeClass("active");
+    $("#" + des_id).addClass("active");
+    $("#" + id).addClass("btn-active");
+
+  }
+
+  //set the subcategory active and its category by clicking any subcategory
+  function aTabEmbed(id, v_id) {
+    //find its category id
+
+    var category = $(".scrollmenu-ul .btn-active").attr('id');
+    if (category !== id) {
+      $(".scrollmenu-ul a").removeClass("btn-active");
+      $("#" + id).addClass("btn-active");
+    }
+    $("#"+v_id).parent().find(".tab-pane ").removeClass("active");
+    $("#"+v_id).addClass("active");
+ 
+
+ 
+    $(".scrollmenu-li button").removeClass("btn-active");
+    $("#"+v_id+"-tab").addClass("btn-active");
+
+    $(".graphSection .active").removeClass("active");
+    //set the first form tab active
+    $("#g-" + v_id + "-1").addClass("active");
+    $("#g-" + v_id + "-1-tab").addClass("active");
+    $("#g-" + v_id + "-1").addClass("show");
+
+
+  }
+</script>

@@ -1,0 +1,26 @@
+
+{% comment %} This is user account options on the top right corner {% endcomment %}
+<ul class="nav navbar-nav navbar-right">
+    <li class="nav-item">
+       <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ request.user}}
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" data-toggle="modal" href="#settingsModal">Notification Settings</a>
+            <div class="dropdown-divider"></div>
+            {% if user.is_authenticated and request.user.is_superuser %}
+            <a class="dropdown-item" href="{%url 'admin:index' %}">Admin Page</a>
+            <div class="dropdown-divider"></div>             
+            <a class="dropdown-item" href="/inventory/management/">File Management</a>
+            <div class="dropdown-divider"></div>
+            {% else %}
+            <a class="dropdown-item" href="{%url 'account_change_password' %}">Change Password</a>
+            <div class="dropdown-divider"></div>
+            {% endif %}
+            <a class="dropdown-item" href="{%url 'logout' %}">Log out</a>
+          </div>
+        </li>
+    </li>
+  </ul>
+

@@ -1,0 +1,54 @@
+{% comment %}
+
+This is the upload file for Inventory 
+local variable:
+
+link: where to post to
+title: document name
+accept_type: accept file type eg. ".xlsx"
+
+object:
+companies: all companies that are available
+
+{% endcomment %}
+  <div id="uploadFileModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title">Upload {{title}}</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form  class="needs-validation"  name="uploadFileForm"  action="{{link}}" method="POST" enctype="multipart/form-data" novalidate style="max-width:400px;margin:auto;">
+                <div class="form-group">
+                  <label class="form-label" for="uploadFile_company">Company Name</label>
+                  <select class="form-control form-control-sm" id="uploadFile_company" name="company" required>
+                    <option value="">Choose</option>
+                    {% comment %} loading companies array {% endcomment %}
+                    {% for s in companies%}
+                    <option value="{{s.name}}">{{s.name}}</option>
+                    {%endfor%}
+                  </select>
+                  <div class="form-text text-muted font-italic"><small>All Companies Name</small></div>
+                  <div class="invalid-feedback">
+                    Please enter a valid value
+                  </div>
+                </div>
+            
+                <div class="drop-zone">
+                    <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                    <input type="file" name="data" class="drop-zone__input" id="uploadFile_file" accept="{{accept_type}}" required>
+                    <div class="invalid-feedback">
+                        Please select a {{accept_type}} file
+                    </div>
+                </div>
+                <button type="submit" class=" btn btn-primary float-right">Upload</button>
+            </form>
+            
+        </div>
+
+      </div>
+    </div>
+  </div>

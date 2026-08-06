@@ -1,0 +1,65 @@
+{%load static%}
+{% comment %}
+breadcrumb navigation
+
+app_name need to be added from all model.py
+
+
+{% endcomment %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+  {% comment %} <a href="{% url 'home' %}"> <img src="{% static 'images/logo.png' %}"></a> {% endcomment %}
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/buildings/building_embeded/{{building.id}}">
+          My Building</a>
+      </li>
+
+      {%if status_task_id%}
+      <li class="nav-item">
+        <a class="nav-link" href="/analysis/embeded_analysis/{{status_task_id}}" >Data Analysis</a>
+      </li>
+     
+      <li class="nav-item">
+        <a class="nav-link" href="/reports/embeded_report/{{status_task_id}}" >Performance Report</a>
+      </li>
+      {%endif%}
+     
+    </ul>
+  </div>
+</nav>
+
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    {% comment %} <li class="breadcrumb-item"><a href="{% url 'home' %}">My Buildings</a></li> {% endcomment %}
+    {% if request.resolver_match.app_name == "Building" or request.resolver_match.app_name == "Additional Building Information"%}
+    {% comment %} eg.My Buildings/Building - 55 donald {% endcomment %}
+    {% if request.resolver_match.url_name == "building"%}
+    <li class="breadcrumb-item active" aria-current="page">Building - {{building.name}}</li>
+    {%else%}
+    <li class="breadcrumb-item"><a href="/buildings/building_embeded/{{building.id}}">Building - {{building.name}}</a>
+    </li>
+    {%endif%}
+
+    {% comment %} My Buildings/Building - 55 donald/Tasks {% endcomment %}
+    {%elif request.resolver_match.app_name == "Data Analysis" %}
+    <li class="breadcrumb-item"><a href="/buildings/building_embeded/{{building.id}}">Building - {{building.name}}</a>
+    </li>
+
+    <li class="breadcrumb-item active" aria-current="page">Data Analysis</li>
+
+    {%elif request.resolver_match.app_name == "Performance Report"  %}
+    <li class="breadcrumb-item"><a href="/buildings/building_embeded/{{building.id}}">Building - {{building.name}}</a>
+    </li>
+
+    <li class="breadcrumb-item active" aria-current="page">Curated Report</li>
+
+    {%endif%}
+
+  </ol>
+</nav>

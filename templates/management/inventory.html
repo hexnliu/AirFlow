@@ -1,0 +1,123 @@
+{% extends 'management/base.html' %}
+{% comment %} 
+ This Inventory tab content
+ context: 
+ companies: company model, we need value as company name here
+ epEuis: sensors associated with the selected company
+ sensors: all sensors
+{% endcomment %}
+{%load tags%}
+{%load static%}
+
+
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="btngroup mt-5">
+    <button data-target="#transferSensorsModal" data-toggle="modal" class="btn btn-dark" id="transferSensorsBtn" disabled
+    >Transfer Sensors</button>
+    {% comment %} download sensor file {% endcomment %}
+    <button class="btn btn-dark" id="downloadSensorsBtn" onclick="downloadSensors()" disabled>Download Sensors File</button>
+    <button data-target="#uploadFileModal" data-toggle="modal" class="btn btn-primary" >Company Sensor Assignment File</button>
+  </div>
+  
+
+    <table id="manageSensors" class="table table-sm display w-100" >
+      <thead>
+        <tr>
+
+          <th><input type="checkbox" name="select_all" value="1" id="sensors-select-all"></th>
+          <th>Base Station ID</th>
+          <th>epEui</th>
+          <th>nwkSnKey</th>
+          <th>nwkKey</th>
+          <th>Short Address</th>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Location</th>
+          <th>Info</th>
+          <th>Company</th>
+          <th>Date Configured</th>
+          <th>Action</th>
+
+        </tr>
+      </thead>
+      <tbody>
+    
+        {% for i in sensors%}
+        <tr>
+          <td><input type="checkbox" name="id[]" value="{{i.id}}" class="row_id" onchange="select_checkBox();"></td>
+          <td data-search="{{i.bs_id}}" data-order="{{i.bs_id}}"><input type="text" style="font-size: 11px;"
+              class="form-control form-control-sm" id="{{i.id}}_bs_id" value='{{i.bs_id}}' /></td>
+          <td data-search="{{i.epEui}}" data-order="{{i.epEui}}"><input type="text" style="font-size: 11px;"
+              class="form-control form-control-sm" id="{{i.id}}_epEui" value='{{i.epEui}}' /></td>
+          <td data-search="{{i.nwkSnKey}}" data-order="{{i.nwkSnKey}}"><input type="text"
+              style="font-size: 11px;" class="form-control form-control-sm" id="{{i.id}}_nwkSnKey"
+              value='{{i.nwkSnKey}}' /></td>
+          <td data-search="{{i.nwkKey}}" data-order="{{i.nwkKey}}"><input type="text" style="font-size: 11px;"
+              class="form-control form-control-sm" id="{{i.id}}_nwkKey" value='{{i.nwkKey | safe}}' /></td>
+          <td data-search="{{i.shAddr}}" data-order="{{i.shAddr}}"><input type="text" style="font-size: 11px;"
+              class="form-control form-control-sm" id="{{i.id}}_shAddr" value='{{i.shAddr}}' /></td>
+          <td data-search="{{i.type}}" data-order="{{i.type}}">
+            <select class="icons_select2" style="font-size: 11px;width: max-content;" id="{{i.id}}_type"
+              name="type">
+              <option value="{{i.type}}">{{i.type}}</option>
+              <option></option>
+
+              <script type="text/javascript">
+                var group = {{types | safe}};
+                $("#{{i.id}}_type").select2({
+                  data: group,
+                  tags: true
+
+                });
+                
+              </script>
+            </select>
+          </td>
+          <td data-search="{{i.name}}" data-order="{{i.name}}"><input type="text" style="font-size: 11px;"
+              class="form-control form-control-sm" id="{{i.id}}_sensorNumber" value='{{i.name}}' /></td>
+          <td data-search="{{i.location}}" data-order="{{i.location}}"><input type="text"
+              style="font-size: 11px;" class="form-control form-control-sm" id="{{i.id}}_location"
+              value='{{i.location}}' /></td>
+          <td data-search="{{i.info}}" data-order="{{i.info}}"><input type="text" style="font-size: 11px;"
+              class="form-control form-control-sm" id="{{i.id}}_info" value='{{i.info}}' /></td>
+          <td data-search="{{i.company.name}}" data-order="{{i.company.name}}">
+            <select class="form-control form-control-sm" style="font-size: 11px;" id="{{i.id}}_company">
+              <option value=""></option>
+              {% for s in companies%}
+                {% if s.id  == i.company.id%}
+                  <option value="{{s.name}}" selected>{{s.name}}</option>
+                {%else%}
+                  <option value="{{s.name}}">{{s.name}}</option>
+                {%endif%}
+              {%endfor%}
+            </select>
+          </td>
+          <td data-search="{{i.dateConfigured}}" data-order="{{i.dateConfigured}}"><input type="text"
+              style="font-size: 11px;" class="form-control form-control-sm" id="{{i.id}}_date"
+              value='{{i.dateConfigured}}' /></td>
+
+          <td><img class="btn-img btn-img-update"  onclick="updateSensor('{{i.id}}')"
+              src="/static/images/save-ioairflowblue.svg" />
+              <img class="btn-img btn-img-delete"
+              src="/static/images/delete_outline-pink.svg" 
+              onclick="deleteRecord('/inventory/delete_sensor_to_inventory/{{i.id}}','{{i.name}}')" />
+          </td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+
+    <button class="btn btn-primary mb-5"
+      data-target="#addSensorModal" data-toggle="modal">Add New Sensor</button>
+</div>
+{% include 'management/addSensorModal.html' %}
+
+{% comment %} accept_type is required for validation purpose {% endcomment %}
+{%include "management/uploadFileModal.html" with link="/inventory/upload_sensor_file/" title="Company Sensor Assignment File" accept_type=".csv"%}
+
+{% include 'management/transferSensorsModal.html' %}
+{% include "tasks/uploadSuccessCard.html" with message="You have updated successfully." %}
+{%endblock%}

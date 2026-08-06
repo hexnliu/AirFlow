@@ -1,0 +1,348 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+{%load tags%}
+{% load static %}
+{% comment %} 
+This is the form for edit task and add task
+
+all element id have prefix test_
+
+context:
+task: task object for a building 
+sensors: sensors that are assigned to this company
+floors:(-2,20)
+trigger_change: this only apply when it is in editing 
+
+
+
+{% endcomment %}
+{%include "partials/header.html" with page_name="Performance Test" link="tasks"%}
+<div class="container-fluid">
+  <p class="font-weight-bold mt-3 mb-3">Performance Test Information for Building Usability Test</p>
+  {%if task%}
+  <p class="font-weight-bold mt-3 mb-3">You crated this task on {{task.create_date}}
+    {%if task.last_update_time%}
+    and last updated on {{task.last_update_time}}
+  {%endif%}
+  </p>
+  {%endif%}
+  <form id="performanceTestForm" class="needs-validation" novalidate onsubmit="return false;">
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="test_name">Performance Test Name</label>
+        <input type="text" class="form-control" id="test_name" name="name" oninput="validateTestName({{names}})" value="{{task.name}}" required>
+        <div class="invalid-feedback">
+          Please Enter a Performance Test Name
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="test_startDate">Start Date</label>
+        <input type="date" class="form-control" id="test_startDate" oninput="validateStartDate()" name="start_date" value="{{task.start_date |format_date}}" required>
+        <div class="invalid-feedback">
+          Please Enter a Start Date
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="test_endDate">End Date</label>
+        <input type="date" class="form-control" id="test_endDate" oninput="validateEndDate()" name="end_date"  value="{{task.end_date | format_date}}" required>
+        <div class="invalid-feedback">
+          Please Enter a End Date
+        </div>
+      </div>
+    </div>
+    <hr>
+    {% comment %} second section {% endcomment %}
+    <div class="form-row">
+     
+        <div class="form-group col-md-3  ">
+          <label for="test_sensors">Please Select the Sensors You're Using for the Test <br> <span class="text-muted"><span id="test_sensors_num"> 0 </span>
+              of {{ sensors | length }} are selected</span>
+            </label>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox">
+            <label class="form-check-label" for="checkBox">
+              Select All Sensors
+            </label>
+          </div>
+          <select class="js-select2" class="form-control" id="test_sensors" multiple="multiple" onchange="validateList('sensors')"
+            required>
+            <script type="text/javascript">
+              var group = {{ sensors | safe}};
+              $("#test_sensors").select2({
+                data: group,
+                tags: true
+              });
+            </script>
+          </select>
+          <div class="invalid-feedback">
+            Please Select a Value
+          </div>
+        </div>
+     
+ 
+        <div class="form-group col-md-3 offset-md-3">
+          <label for="test_floors">Please Select the Floors You're Using for the Test <br><span class="text-muted"> <span id="test_floors_num">0</span> of
+              22 are selected</span></label>
+          <select class="js-select2 form-control" id="test_floors" multiple="multiple" onchange="validateList('floors');"  required>
+            {%for f in floors%}
+                <option value="{{f}}">{{f |get_floor_text}}</option>
+            {%endfor%}
+            <option value="Other (Add to Notes)">Other (Add to Notes)</option>
+          </select>
+          <div class="invalid-feedback">
+            Please Select a Value
+          </div>
+        </div>
+ 
+
+
+    </div>
+
+    <hr>
+
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="test_setpoint">Temperature Setpoint</label>
+        <select class="form-control" id="test_setpoint" name="setpoint" onchange="validateSetPoint()" required>
+          <option value="">Choose...</option>
+          {%if task%}
+              {% if task.setpoint == True %}
+                  <option value="True" selected>Known</option>
+              {%else%}
+                  <option value="False" selected>Unknown</option>
+              {%endif%}
+
+              {% if task.setpoint == True %}
+                <option value="False" >Unknown</option>
+              {%else%}
+              <option value="True">Known</option>
+              {%endif%}
+            {%else%}
+                <option value="True">Known</option>
+                <option value="False" >Unknown</option>
+            {%endif%}
+        </select>
+        <div class="invalid-feedback">
+          Please Select a Value
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="test_weekendOccupancy">Weekend Occupancy</label>
+        <select class="form-control" id="test_weekendOccupancy" onchange="validateWeekendOccupancy()" name="weekend_occupancy" required>
+          <option value="">Choose...</option>
+          
+          {%if task%}
+              {% if task.weekend_occupancy == True %}
+                  <option value="True" selected>Known</option>
+              {%else%}
+                  <option value="False" selected>Unknown</option>
+              {%endif%}
+              
+              {% if task.weekend_occupancy == True %}
+                <option value="False" >Unknown</option>
+              {%else%}
+              <option value="True">Known</option>
+              {%endif%}
+          {%else%}
+              <option value="True">Known</option>
+              <option value="False" >Unknown</option>
+          {%endif%}
+        
+         
+        </select>
+        <div class="invalid-feedback">
+          Please Select a Value
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="form-row">
+      <div class="col-md-6 border-right">
+        <div class="form-row">
+          <p  class="font-weight-bold ml-2">Weekday Occupied Time (Monday - Friday)</p>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="test_weekdayOccupiedStart">Start Time</label>
+            <input type="time" class="form-control" name="weekday_occupied_start" onchange="validateStartTime('weekday')" id="test_weekdayOccupiedStart" value="{{task.weekday_occupied_start | format_time}}" required>
+            <div class="invalid-feedback">
+              Please Select a Value
+            </div>
+          </div>
+    
+          <div class="form-group col-md-3">
+            <label for="test_weekdayOccupiedEnd">End Time</label>
+            <input type="time" class="form-control" name="weekday_occupied_end" onchange="validateEndTime('weekday')" id="test_weekdayOccupiedEnd" value="{{task.weekday_occupied_end | format_time}}" required>
+            <div class="invalid-feedback">
+              Please Select a Value
+            </div>
+          </div>
+    
+          <div class="form-group col-md-3 setpoint">
+            <label for="test_weekdayOccupiedSetpoint">Temperature Setpoint</label>
+            <input type="number" min="15" max="30" class="form-control" name="weekday_occupied_temperature" value="{{task.weekday_occupied_temperature}}"
+              id="test_weekdayOccupiedSetpoint">
+            <div class="invalid-feedback">
+              Temperature Must Be Within 15  &#8451; - 30  &#8451;
+            </div>
+          </div>
+          <div class="form-group col-md-3 setpoint">
+            <label for="test_weekdayOccupiedSetpoint_unit">Measurement</label>
+            <select class="form-control" id="test_weekdayOccupiedSetpoint_unit">
+              <option value="celsius">&#8451;</option>
+              <option value="fahrenheit">&#8457;</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    
+
+
+      <div class="col-md-6">
+        <div class="form-row">
+          <p  class="font-weight-bold ml-2">Weekday Unoccupied Time (Monday - Friday)</p>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="test_weekdayUnoccupiedStart">Start Time</label>
+            <input type="time" class="form-control" name="weekday_unoccupied_start"  id="test_weekdayUnoccupiedStart" value="{{task.weekday_unoccupied_start | format_time}}"required disabled>
+            <div class="invalid-feedback">
+              Please Select a Value
+            </div>
+          </div>
+
+          <div class="form-group col-md-3">
+            <label for="test_weekdayUnoccupiedEnd">End Time</label>
+            <input type="time" class="form-control" name="weekday_unoccupied_end" id="test_weekdayUnoccupiedEnd" value="{{task.weekday_unoccupied_end | format_time}}"required disabled>
+            <div class="invalid-feedback">
+              Please Select a Value
+            </div>
+          </div>
+
+          <div class="form-group col-md-3 setpoint">
+            <label for="test_weekdayUnoccupiedSetpoint">Temperature Setpoint </label>
+            <input type="number" min="15" max="30" class="form-control" name="weekday_unoccupied_temperature" value="{{task.weekday_unoccupied_temperature}}"
+              id="test_weekdayUnoccupiedSetpoint">
+            <div class="invalid-feedback">
+              Temperature Must Be Within 15  &#8451; - 30  &#8451;
+            </div>
+          </div>
+
+        <div class="form-group col-md-3 setpoint">
+          <label for="test_weekdayUnoccupiedSetpoint_unit">Measurement</label>
+          <select class="form-control" id="test_weekdayUnoccupiedSetpoint_unit">
+            <option value="celsius">&#8451;</option>
+            <option value="fahrenheit">&#8457;</option>
+          </select>
+        </div>
+
+      </div>
+      </div>
+    </div>
+    <hr>
+    <div class="form-row weekend" style="display:none;">
+      <div class="col-md-6 border-right">
+        <div class="form-row">
+          <p  class="font-weight-bold ml-2">Weekend Occupied Time (Monday - Friday)</p>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="test_weekendOccupiedStart">Start Time</label>
+            <input type="time" class="form-control" name="weekend_occupied_start" onchange="validateStartTime('weekend')" value="{{task.weekend_occupied_start | format_time}}" id="test_weekendOccupiedStart">
+            <div class="invalid-feedback">
+              Please Select a Value
+            </div>
+          </div>
+    
+          <div class="form-group col-md-3">
+            <label for="test_weekendOccupiedEnd">End Time</label>
+            <input type="time" class="form-control" name="weekend_occupied_end" onchange="validateEndTime('weekend')" value="{{task.weekend_occupied_end | format_time}}" id="test_weekendOccupiedEnd">
+            <div class="invalid-feedback">
+              Please Select a Value
+            </div>
+          </div>
+    
+          <div class="form-group col-md-3 setpoint">
+            <label for="test_weekendOccupiedSetpoint">Temperature Setpoint</label>
+            <input type="number" min="15" max="30" class="form-control" name="weekend_occupied_temperature" value="{{task.weekend_occupied_temperature}}"
+              id="test_weekendOccupiedSetpoint">
+            <div class="invalid-feedback">
+              Please Select a Value
+            </div>
+          </div>
+
+          <div class="form-group col-md-3 setpoint">
+            <label for="test_weekendOccupiedSetpoint_unit">Measurement</label>
+            <select class="form-control" id="test_weekendOccupiedSetpoint_unit">
+              <option value="celsius">&#8451;</option>
+              <option value="fahrenheit">&#8457;</option>
+            </select>
+          </div>
+
+          
+        </div>
+      </div>
+  
+      <div class="col-md-6">
+        <div class="form-row">
+          <p  class="font-weight-bold ml-2">Weekend Unoccupied Time (Monday - Friday)</p>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="test_weekendUnoccupiedStart">Start Time</label>
+            <input type="time" class="form-control" name="weekend_unoccupied_start" value="{{task.weekend_unoccupied_start | format_time}}" id="test_weekendUnoccupiedStart" disabled>
+            <div class="invalid-feedback">
+              Please Select a Value
+            </div>
+          </div>
+  
+          <div class="form-group col-md-3">
+            <label for="test_weekendUnoccupiedEnd">End Time</label>
+            <input type="time" class="form-control" name="weekend_unoccupied_end" value="{{task.weekend_unoccupied_end | format_time}}" id="test_weekendUnoccupiedEnd" disabled>
+            <div class="invalid-feedback">
+              Please Select a Value
+            </div>
+          </div>
+  
+          <div class="form-group col-md-3 setpoint">
+            <label for="test_weekendUnoccupiedSetpoint">Temperature Setpoint</label>
+            <input type="number" min="15" max="30" class="form-control" name="weekend_unoccupied_temperature" value="{{task.weekend_unoccupied_temperature}}"
+              id="test_weekendUnoccupiedSetpoint">
+            <div class="invalid-feedback">
+              Please Select a Value
+            </div>
+          </div>
+
+          <div class="form-group col-md-3 setpoint">
+            <label for="test_weekendUnoccupiedSetpoint_unit">Measurement</label>
+            <select class="form-control" id="test_weekendUnoccupiedSetpoint_unit">
+              <option value="celsius">&#8451;</option>
+              <option value="fahrenheit">&#8457;</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button  class="btn btn-primary mb-5 mt-5" onclick="submitTask('{{action}}')">Save</button>
+  </form>
+ 
+</div>
+{% include "tasks/successMsgCard.html"%}
+<script type="text/javascript" src="{% static 'js/task.js'%}"></script>
+{%if trigger_change%}
+<script>
+  window.onload = function() {
+      $("input").trigger("change");
+      $("select").trigger("change");
+      $("#test_floors").val({{task.floor_list |safe}}).trigger('change');
+      $("#test_sensors").val({{sensors_copy_list |safe}}).trigger('change');
+  };
+</script>
+{%endif%}
+{%endblock%}

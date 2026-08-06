@@ -1,0 +1,129 @@
+<style>
+    ::-webkit-scrollbar {
+        width: 12px;
+        height: 8px;
+        margin-top: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    }
+
+
+    .wrapper {
+        /*  remove overflow-x if you want the dropdowns to appear outside of the .outer element */
+        overflow-x:hidden;
+        width: 100%;
+        margin: 0 auto;
+        min-height: 100%;
+
+      }
+      .external-dropdown {
+        position: relative;
+      }
+      .external-dropdown .dropdown, .external-dropdown .dropup {
+        position: static;
+  
+      }
+
+      .dropdown-menu{
+        margin-top:30px;
+      }
+      .outer {
+        
+        display: flex;
+        overflow-x: auto;
+      }
+      .side {
+        margin-right: 10px;
+      }
+</style>
+
+
+<div class="mb-3 p-3 bg-white rounded box-shadow">
+    {% comment %} <div class="wrapper m-3 p-3 bg-white rounded box-shadow"> {% endcomment %}
+        <div class="external-dropdown" >
+            <div class="outer">
+                <div class="side">
+                    <div class="dropdown">
+                        <button class="btn btn-sm border dropdown-toggle mb-2" id="summary" type="button" data-toggle="tab" href="#des_summary" role="tab"
+                        aria-controls="summary" aria-selected="true"  onclick="liTabEmbed('summary');">All Summary<span class="caret"></span></button>
+                    </div>
+                </div>
+                {%for c in menu%}
+                <div class="side">
+                    <div class="dropdown">
+                        <button class="btn btn-sm border dropdown-toggle mb-2" id="{{c.id}}" type="button" data-toggle="dropdown"  aria-expanded="false"  onclick="liTabEmbed('{{c.id}}');">{{c.name}}<span class="caret"></span></button>
+                        <div class="dropdown-menu" aria-labelledby="{{c.id}}-tab" style="font-size:13px;">
+                            {%for key,value in c.sub_category.items%}
+                            <a class="dropdown-item"id="{{value.id}}-tab" data-toggle="tab" href="#{{value.id}}" role="tab"
+                                    aria-controls="{{value.id}}" aria-selected="false"
+                                    onclick="aTabEmbed('{{c.id}}','{{value.id}}');">{{key}}</a>
+                            {%endfor%}
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+            <div>
+        </div>
+    {% comment %} </div> {% endcomment %}
+</div>
+
+<script>
+    function liTabEmbed(id) {
+        //remove the subcatgory active
+        $(".dropdown-toggle").removeClass("btn-primary");
+        $(".dropdown-item").removeClass("active");
+        $(".dropdown-item").parent().parent().find("button").removeClass("btn-primary");
+        //hide the tab content
+        var des_id = "des_" + id;
+        $(".tab-content .tab-pane").removeClass("active");
+        //set the category active with its tab content
+        // $("#menu-content li").removeClass("active");
+        $("#" + des_id).addClass("active");
+        $("#" + id).addClass("btn-primary");
+      
+      }
+      
+      //set the subcategory active and its category by clicking any subcategory
+      function aTabEmbed(id, v_id) {
+        //find its category id
+        var category = $(".dropdown-toggle .btn-primary").attr('id');
+        if (category !== id) {
+          $(".dropdown-toggle").removeClass("btn-primary");
+          $("#" + id).addClass("btn-primary");
+        }
+        $(".dropdown-item").removeClass("active");  
+        $(".graphSection .active").removeClass("active");
+        //set the first form tab active
+        $("#g-"+v_id+"-1").addClass("active");
+        $("#g-"+v_id+"-1-tab").addClass("active");
+        $("#g-"+v_id+"-1").addClass("show");
+        
+    
+      }
+      $(document).ready(function () {
+    $(".dropdown").on("show.bs.dropdown", function (event) {
+        // get offset position of selected button and subtract scroll .outer scroll position
+        var buttonPos = parseInt(event.currentTarget.offsetLeft) - parseInt($(".outer").scrollLeft());
+        // Apply button position to dropdown
+        $(this).find(".dropdown-menu").css("left", buttonPos);
+        // Store buttons offset position to be used to calculate the dropdowns position when .outer is scrolled
+        $(this).find(".dropdown-menu").attr("data-leftPos", event.currentTarget.offsetLeft);
+    });
+    // Detect when .outer is scrolled
+    $(".outer").on("scroll", function () {
+        var activeDropdown = $('.dropdown.open').find('.dropdown-menu');
+        // subtract scroll position from buttons offset position
+        var pos = parseInt(activeDropdown.attr('data-leftPos')) - parseInt($(this).scrollLeft());
+        // appply updated position to dropdown
+        activeDropdown.css("left", pos);
+    });
+});
+</script>

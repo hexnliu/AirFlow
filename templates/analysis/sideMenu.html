@@ -1,0 +1,61 @@
+{% comment %}
+ side bar navigation
+ file: analysis/file/menu.json
+ format: 
+   c->category(name,id,label(icon image),sub_category,decription)
+
+   key->subcategory name,
+   value-> subcategory attributes
+ 
+ {% endcomment %}
+
+
+<div class="nav-side-menu" style="min-height:100%;">
+    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+    <div class="menu-list">
+      <ul id="menu-content" class="menu-content collapse out">
+        {% comment %} <div class="click_advance"> {% endcomment %}
+        <li id="bs" class="active" onclick="liTab();" data-toggle="tab" href="#des_summary" role="tab"
+          aria-controls="summary" aria-selected="true">
+          <a data-toggle="collapse"
+            style="display:block;padding-top:4px;padding-bottom:4px;font-weight: bold;font-size: 1rem;"
+            data-target="#sub_floormap" class="collapsed" aria-expanded="false">
+            <img src="/static/images/analysisDashboard/PNG/icon-building-summary.png"
+              alt="Building Summary"> Summary
+            <i class="fa fa-chevron-right " style="font-size:15px;float:right;padding-top: 12px;" aria-hidden="true">
+            </i>
+          </a>
+        </li>
+        {%for c in menu%}
+      <div class="click_advance">
+        {% comment %} liTab displays category's decription {% endcomment %}
+        <li id="{{c.id}}" href="#des_{{c.id}}" role="tab" data-target="#sub_{{c.id}}" onclick="liTab('{{c.id}}');">
+          <a data-toggle="collapse"
+            style="display:block;padding-top:4px;padding-bottom:4px;font-weight: bold;font-size: 1rem;"
+            data-target="#sub_{{c.id}}" class="collapsed" aria-expanded="false">
+            <img src="/static/images/analysisDashboard/PNG/{{c.label}}" alt="{{c.name}}"> {{c.name}}
+            <i class="fa fa-chevron-right " style="font-size:15px;float:right;padding-top: 12px;" aria-hidden="true">
+            </i>
+          </a>
+
+        </li>
+      </div>
+      <ul class="sub-menu collapse" id="sub_{{c.id}}">
+        {%for key,value in c.sub_category.items%}
+        <li>
+          {% comment %} aTab displays subcategory's decription  {% endcomment %}
+          <a class="da_link" id="{{value.id}}-tab" style="display:block;font-size: 0.95rem;" data-toggle="tab"
+            href="#{{value.id}}" role="tab" aria-controls="{{value.id}}" aria-selected="false"
+            onclick="aTab('{{c.id}}','{{value.id}}');">
+            <i class="fa fa-chevron-right" style="font-size:8px;" aria-hidden="true"></i>{{key}}
+          </a>
+        </li>
+        {%endfor%}
+      </ul>
+      {%endfor%}
+  
+
+      </ul>
+  
+    </div>
+  </div>

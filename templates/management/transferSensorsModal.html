@@ -1,0 +1,42 @@
+{%load tags%}
+
+{% comment %} 
+This is the select building modal for any navigation
+Useage: 
+context: buildings - all buildings from the user's company
+local variable: url_name - url link eg. /buildings/detail_building/
+
+{% endcomment %}
+<div class="modal fade" id="transferSensorsModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="transferSensorsModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="modal-title h5" id="transferSensorsModalTitle">Transfer Sensors
+          </p>
+          <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="transferSensorsForm" name="transferSensorsForm"  class="needs-validation" onsubmit="return false;" novalidate>
+
+              <div class="form-group row">
+                <label for="transferSensors_name" class="col-sm-3 col-form-label"><strong>Transfer To: </strong></label>
+                <div class="col-sm-9">
+                  <select class="form-control form-control-sm" name="company" required>
+                    <option value=""></option>
+                    {% for s in companies%}
+                        <option value="{{s.name}}">{{s.name}}</option>
+                    {%endfor%}
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select a company
+                  </div>
+                </div>
+              </div>
+          <button  onclick="transferSensors()" class="btn btn-primary float-right">Save</button>
+       </div>
+      </div>
+    </div>
+  </div> 

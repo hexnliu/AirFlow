@@ -1,0 +1,31 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+{%load tags%}
+{% load static %}
+{% comment %}
+purpose:This is the detail task for specific building
+context:
+building: building object that working on
+tasks: all version listed - array of objects
+
+all status should pass to class which having eg. status_1 to indicate level
+
+{% endcomment %}
+
+  <div class="container-fluid">
+    {%include "partials/header.html" with page_name="Tasks" link="tasks"%}
+    <div class="bg-white p-3">
+        {%include "tasks/tasks.html"%}
+        <div class="border-top pt-2">
+          <button  class="btn btn-primary btn-white" onclick="window.location.href='/tasks/add_performance_test/{{building.id}}';"><span class="material-icons align-middle theme-color"> add
+            </span>
+           Add a Performance Test</button>
+        </div>
+      </div>
+
+  </div>
+
+  {%include "tasks/elements.html"%}
+
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends 'home/base.html' %}
+
+
+{% block content %}
+
+{% comment %}
+ This is home page list all buildings 
+
+ context buildings: all buildings from the user's company
+ {% endcomment %}
+{%load tags%}
+{%load static%}
+
+
+  <div class="container-fluid">
+    <div class="d-flex flex-wrap align-items-center">
+      <div class="mr-auto p-2">
+        <h2>My Buildings</h2>
+      </div>
+
+      {% comment %} filter out the company by company name, only exists for admin users {% endcomment %}
+      {% if request.user.is_superuser%}
+      <div class="p-2"> 
+        <form action="/" method="GET">
+          <select  class="form-control form-control-sm blockItems search-select2" 
+          onchange="document.location.href='?company='+$(this).val()">
+              <option value="all">All Buildings</option>
+              {% for  c in companies%}
+                {%if c.name == company%}
+                <option value="{{c.name}}" selected> {{c.name}}</option>
+                {%else%}
+                <option value="{{c.name}}"> {{c.name}}</option>
+                {%endif%}
+               
+              {% endfor%}
+          </select>
+        </form>
+      </div>
+      {%endif%}
+
+      <div class="p-2"> <button type="button" class="blockItems btn btn-sm btn-primary" data-toggle="modal"
+          data-target="#createBuildingModal">{%include 'partials/notificationBuilding.html'%}Add New Building</button></div>
+    
+      <div class="p-2">
+        <form action="/" method="GET">
+          <select class="form-control form-control-sm blockItems" id="sortBy" name="sortBy"
+            onchange="this.form.submit();">
+            <option value="">Sort by Default</option>
+            <option value="name_asc">Sort by Name (A-Z)</option>
+            <option value="country_asc">Sort by Country (A-Z)</option>
+            <option value="province_asc">Sort by Province (A-Z)</option>
+            <option value="city_asc">Sort by City (A-Z)</option>
+            <option value="name_desc">Sort by Name (Z-A)</option>
+            <option value="country_desc">Sort by Country (Z-A)</option>
+            <option value="province_desc">Sort by Province (Z-A)</option>
+            <option value="city_desc">Sort by City (Z-A)</option>
+          </select>
+        </form>
+      </div>
+
+      <div class="p-2">
+        <form class="form-inline mt-2 mt-md-0 searchBox" id="searchBox" action="/" method="GET">
+          <select class="m-0 rounded-0 bg-white blockItems" name="type">
+            <option value="name">Filter by Name</option>
+            <option value="country">Filter by Country</option>
+            <option value="province">Filter by Province / States</option>
+            <option value="city">Filter by City</option>
+          </select>
+          <input class="m-0 rounded-0 blockItems" type="text" placeholder="Search" aria-label="Search"
+            name="search_text">
+          <button class="m-0 btn-dark blockItems" type="submit"><span class="material-icons">search</span></button>
+        </form>
+      </div>
+      {% comment %} happen when there is search {% endcomment %}
+      {% if search_text != "" %}
+      <div class="p-2">
+        <a href="/clear_search/" class="btn btn-sm btn-secondary rounded-0 bg-dark m-0 blockItems" id="clear_search_session"> Clear
+          {{search_text}} </a>
+      </div>
+      {%endif%}
+
+    </div>
+  </div>
+
+
+
+  <div class="content container-fluid mt-2">
+
+    <div class="row" id="buildingBlock">
+      {% comment %} starting for loop col-md-4 within buildingBlock {% endcomment %}
+      {% for b in buildings%}
+      <div class="col-sm-5 col-md-4 col-lg-3 col-xl-2" style="margin-bottom:35px;">
+        <div class="card shadow-sm h-100">
+         {% comment %} bin_2_img, if there is no images populate default one {% endcomment %}
+          <a href="/buildings/building_detail/{{b.id}}" style='height: 90%;max-height: 287px; display:flex;'> <img
+              src="{{b.img_path | bin_2_img}}" class="mx-auto" alt="{{b.id}}"></a>
+          <div class="card-body">
+            <h5 class="card-title">{{b.name}}</h5>
+            <p class="card-text m-0">{{b.address}}, {{b.city}}, {{b.province}}, {{b.country}},
+              {{b.postal}}</p>
+          </div>
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+
+    {% comment %} pagination for building {% endcomment %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        {% if buildings.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ buildings.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+        <li class="disabled page-item"><a class="page-link" href="#">&laquo;</a></li>
+        {% endif %}
+
+        {% for num in buildings.paginator.page_range %}
+        {% ifequal num buildings.number %}
+        <li class="active page-item"><a class="page-link" href="#">{{ num }}<span class="sr-only">(current)</span></a>
+        </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% endifequal %}
+        {% endfor %}
+
+        {% if buildings.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ buildings.next_page_number }}">&raquo;</a></li>
+        {% else %}
+        <li class="disabled page-item"><a class="page-link" href="#">&raquo;</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+
+
+  </div>
+
+
+{% comment %} This is create building modal {% endcomment %}
+{% include 'buildings/buildingForm.html' with p_name="createBuilding"%}
+
+{% endblock %}

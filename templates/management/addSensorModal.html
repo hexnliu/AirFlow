@@ -1,0 +1,117 @@
+{% load static %}
+{% load tags%}
+{% comment %} 
+This is add sensors modal that is post data by action
+
+all element id with prefix addSensor_
+
+context:
+ types: sensor types
+ companies: company model, here we use value instead
+{% endcomment %}
+<div id="addSensorModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Sensor</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">  
+          <div class="container"> 
+          <form id="addSensor_Form" action="/inventory/add_sensor_to_inventory/" method="POST" enctype="multipart/form-data" class="needs-validation"  novalidate>
+            <div class="form-group row">
+              <label for="addSensor_bs_id" class="col-sm-3 col-form-label">Base Station ID</label>
+              <div class="col-sm-9">
+                  <input type="text" class="form-control form-control-sm" id="addSensor_bs_id" name="bs_id" />
+              </div>
+          </div>
+              <div class="form-group row">
+                  <label for="addSensor_epEui" class="col-sm-3 col-form-label">epEui</label>
+                  <div class="col-sm-9">
+                      <input type="text" class="form-control form-control-sm" id="addSensor_epEui" name="epEui" required />
+                  </div>
+              </div>
+              <div class="form-group row">
+                <label for="addSensor_nwkSnKey" class="col-sm-3 col-form-label">nwkSnKey</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm" id="addSensor_nwkSnKey" name="nwkSnKey" />
+                </div>
+            </div>
+            <div class="form-group row">
+              <label for="addSensor_nwkSnKey" class="col-sm-3 col-form-label">nwkKey</label>
+              <div class="col-sm-9">
+                  <input type="text" class="form-control form-control-sm" id="addSensor_nwkKey" name="nwkKey"  />
+              </div>
+          </div>
+            <div class="form-group row">
+              <label for="addSensor_shAddr" class="col-sm-3 col-form-label">Short Address</label>
+              <div class="col-sm-9">
+                  <input type="text" class="form-control form-control-sm" id="addSensor_shAddr" name="shAddr" />
+              </div>
+          </div>
+          <div class="form-group row">
+            <label for="addSensor_type" class="col-sm-3 col-form-label">Sensor Type</label>
+            <div class="col-sm-9">
+                <select class="form-control form-control-sm"  id="addSensor_type" name="type" >                    
+                    <option></option>
+                    {% comment %} using to select2 to make it searchable {% endcomment %}
+                    <script type="text/javascript">
+                        var group = {{types| safe}};
+                        $("#addSensor_type").select2({
+                        data:group,
+                        tags: true,
+                        dropdownParent: $('#addSensorModal'),
+                      });
+                      </script>               
+                  </select>
+            </div>
+          </div> 
+            <div class="form-group row">
+                <label for="addSensor_sns" class="col-sm-3 col-form-label">Name</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm" id="addSensor_sns" name="sns_num" />
+                </div>
+            </div>
+            <div class="form-group row">
+              <label for="addSensor_loc" class="col-sm-3 col-form-label">Location</label>
+              <div class="col-sm-9">
+                  <input type="text" class="form-control form-control-sm" id="addSensor_loc" name="location" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="addSensor_info" class="col-sm-3 col-form-label">Info</label>
+              <div class="col-sm-9">
+                  <input type="text" class="form-control form-control-sm" id="addSensor_info" name="info" />
+              </div>
+            </div>  
+              <div class="form-group row">
+                  <label for="addSensor_company" class="col-sm-3 col-form-label">Company</label>
+                  <div class="col-sm-9">
+                  <select class="form-control form-control-sm" id="addSensor_company" name="company" required>
+                  <option value=""></option>
+                  {% for s in companies%}
+                    <option value="{{s.name}}">{{s.name}}</option>
+                  {%endfor%}
+                </select>
+              </div>
+              </div>
+              <div class="form-group row">
+                  <label for="addSensor_date" class="col-sm-3 col-form-label">Date Configured</label>
+                  <div class="col-sm-9">
+                      <input type="text" class="form-control form-control-sm" name="date" id="addSensor_date"  />
+                  </div>
+              </div>        
+        
+            <button type="submit" class="float-right btn btn-primary" id="addSensor_saveBtn">Save</button>
+          </form>
+          </div>
+          
+        </div>
+      </div>
+   
+    </div>
+  </div>
+</div>

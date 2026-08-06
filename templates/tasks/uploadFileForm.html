@@ -1,0 +1,44 @@
+{% comment %}
+ This upload Form for any useage in tasks
+local variable:
+
+file_type: the file name eg.Sensor File
+file_descrption: the description of file
+accept_type: file type for validation eg. .csv
+
+this need to work with js where populate the version value and url
+
+call taskUploadModal to clear history
+{% endcomment %}
+
+<div class="modal fade taskUploadModal" id="{{p_name}}Modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="{{p_name}}ModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content rounded-0">
+        <div class="modal-header border-0">
+          <h6 class="modal-title" id="{{p_name}}ModalTitle">Upload {{file_type}}</h6>      
+          
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <small><p style="color: grey;padding-left: 3.7%;padding-right: 3.7%;">{{file_descrption}}</p></small>
+        <div class="modal-body">
+          <div class="mb-3 border-bottom">
+              <small><b> Performance Test Name:</b> <span id="{{p_name}}_versionName"></span></small>
+          </div>
+          <form id="{{p_name}}Form" url="#" class="needs-validation" novalidate  method="POST" enctype="multipart/form-data" onsubmit="return false;">
+            <p id="{{p_name}}_file_descrption" ></p>
+            <div class="drop-zone">
+                <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                <input type="file" name="data" class="drop-zone__input" id="{{p_name}}_file" accept="{{accept_type}}" required>
+                <div class="invalid-feedback">
+                    Please select a {{accept_type}} file
+                </div>
+            </div>
+            <button type="submit" class="float-right btn btn-small btn-primary"id="{{p_name}}_saveBtn">Upload</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,289 @@
+{%  extends 'base.html' %}
+{% comment %} sensor mapping page {% endcomment %}
+{% block content %}
+ {%load tags%}
+ {% load static %}
+
+ <div class="container-fluid">
+    {% comment %} {% with "Sensor Mapping -"|addstr:task.name as p_name2 %} {% endcomment %}
+         {%include "partials/header.html" with page_name="Sensor Mapping" link="tasks"%}
+    {% comment %} {% endwith %} {% endcomment %}
+
+    {% comment %} check if floor plan is missing. add message banner to indicate if it is missing {% endcomment %}
+    {%include "tasks/missingFloors.html" with link="/buildings/upload_floor_plans/"|addstr:building.id|addstr:"?task="|addstr:task.id title="Add Missing Floor Plans" %}
+    <div class="bg-white p-4 h-100">
+        <div class="row"> 
+            {% comment %} floor list {% endcomment %}
+            <div class="col-sm-12 col-md-12 col-lg-3 col-xl-3">
+                <div class="row p-2 bg-light">
+                    <h5>Floor</h5>
+                </div>
+                    <div class="row">
+                        <ul class="list-group w-100 h-100 ">
+                            {%if floor is none %}
+                                    <a class="list-group-item border-0 list-group-item-action active"
+                                            href="/tasks/sensors_mapping/{{task.id}}">
+                                       Select a Floor
+                                    </a>
+                            {%else%}
+                            <a class="list-group-item border-0 list-group-item-action"
+                                        href="/tasks/sensors_mapping/{{task.id}}">
+                                        Select a Floor
+                                </a>
+                            {%endif%}
+                            {% comment %} floor selection from Performance Test {% endcomment %}
+                            {% for f in intersection%}
+                                {%if floor is not none and f == floor%}
+                                <a class="list-group-item border-0 list-group-item-action active"
+                                        href="/tasks/sensors_mapping/{{task.id}}?floor={{f}}">
+                                    {{f | get_floor_text}}
+                                </a>
+                                {%else%}
+                                    <a class="list-group-item border-0 list-group-item-action"
+                                    href="/tasks/sensors_mapping/{{task.id}}?floor={{f}}">
+                                        {{f | get_floor_text}}
+                                    </a>
+                                {%endif%}
+                              
+                      
+                            {%endfor%}
+                        </ul>
+                    </div>
+                </div>
+            
+                <div class="col-sm">
+                     <div class="row p-2">
+                         {% comment %} link a guide modal {% endcomment %}
+                        <button class="btn btn-sm btn-primary ml-5" data-toggle="modal" data-target="#guideModal">Help Guide on How to Place Sensors</button>
+                    </div> 
+                    <div class="row">
+                        {% comment %} set up zoom marker {% endcomment %}
+                        {%if floor is not none%}
+                        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 p-0">
+                            <div id="zoom-marker-div" class="zoom-marker-div" >
+                                <img class="zoom-marker-img" id="zoom-marker-img" alt="..." name="viewArea"
+                                    draggable="false" />
+                            </div>
+                        </div>
+                        <div class="col-sm p-0 m-0">
+                            <div class="mt-3 row">
+                                <div class="col-sm-9">
+                                <p id="successMsg" style="display:none;"><span class="material-icons align-middle text-success">
+                                    check_circle
+                                    </span>Changes Saved</p>
+                                </div>
+                                <div class="col-sm-3">
+                                <button class="btn-sm btn-primary" onclick="submitSensors('{{floor}}','{{task.id}}')">Save</button>
+                                </div>
+                            </div>
+                            <div class="table-responsive mt-3" style="height:700px;">
+                                <table class="table borderless" id="cyTable">
+                                    {% comment %} this will be popluate with js {% endcomment %}
+                                    <tbody> 
+                                    </tbody>
+                                </table>
+                        </div>
+                        {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+</div>
+
+
+{% comment %} load zoom marker {% endcomment %}
+{%include "tasks/zoomMarkerElements.html"%}
+{%include "tasks/guideModal.html"%}
+{% with "Sensor Mapping for performace Test '"|addstr:task.name|addstr:" ' was updated successfully!" as m  %}
+{% include "tasks/uploadSuccessCard.html" with message=m %}
+{% endwith %}
+
+{% with "Sensor Mapping for performace Test '"|addstr:task.name|addstr:" ' was not updated !" as m  %}
+{% include "tasks/uploadErrorCard.html" with message=m %}
+{% endwith %}
+
+<script type="text/javascript" src="{% static 'js/zoomMarker.js'%}"></script>
+
+{%if floor_plan%}
+    <script>
+        var sensors_copy_list = {{sensors_copy_list|safe}}; //sensors with type that are available for this company
+        var select_sensors_list = {{sensors_copy_list|safe}}; //make a copy of the available sensors for this company
+        var data={{markers|safe}};//makers that are from sensorMapping model
+        var list = {};//list that keep of the makers that have been placed
+        //floor_plan object from BuildingImage model, get the image width and height which need to generate the zoomMarker
+        var imgwidth={{floor_plan.width |safe}};
+        var imgheight={{floor_plan.height |safe}};
+        //generate the area by user's screen size
+        var  divWidth = $("#zoom-marker-div").width();
+        if(divWidth>imgwidth){
+            divWidth=imgwidth;
+         }
+        //if image is too small, we just use the image size, otherwise we use user'screen size to popluate the image
+   
+        var  divHeight = (divWidth*imgheight)/imgwidth;
+        //update the zoomMarker height to make sure the area cover the whole image
+        
+        $("#zoom-marker-div").css("height",divHeight+"px");
+        var markers=[];
+        //generate maker elements
+        for (var i = 0; i < data.length; i++) {
+            var marker = {};
+            var sensor_num = data[i]["snsr_num"];
+            var num=i+1;//number starting from 1, which helps the user indetify which marker they are using
+            var vx = parseFloat(data[i]["x"]);
+            var vy = (imgheight -parseFloat(data[i]["y"]));//Note that, in zoom marker, in y-axis, 0 statring from the top
+            marker["sensor"] =sensor_num;
+            marker["src"] =  "/media/ioAirFlow/marker.png";
+            marker["x"] = vx;
+            marker["y"] = vy;
+            marker["size"] = 30;
+            marker["hint"] = {
+            "value": num+":" + sensor_num,
+            "style": {
+                "color": "#ffffff",
+                "top": "-25px",
+                "left":"-25%",
+                "position":"relative",
+                // "transform": "translateX(-50%,-50%)",
+                "background": "#055ba6",
+                "padding": "2px",
+                "border-radius": "2px",
+                "font-size": "12px",
+                "width": "max-content"
+            }
+            };
+            markers.push(marker);
+            list[i]=Object.assign({}, marker);//deep copy of the makers to keep track 
+            list[i]["y"]=parseFloat(data[i]["y"]);
+            list[i]["x"]=parseFloat(data[i]["x"]);
+            $("#cyTable tbody").prepend(markerRecord(i));//populate the table with selected sensors
+            //setup select2
+            $("#select_"+i).select2();//make the selection searchable
+            $("#select_"+i).val(sensor_num).trigger("change");//trigger change will filter out the sensors that have been placed and change the maker color
+        }
+
+        //additional button could be used for cleaning all markers but we don't implement in here
+        $('#zoom-marker-btn-clean').click(function(e){
+            $('#zoom-marker-img').zoomMarker_CleanMarker();
+            $('#zoom-marker-img').zoomMarker_CanvasClean();
+        });
+
+        //initialize the zoomMarker function with specific floor plan
+        $('#zoom-marker-img').zoomMarker({
+            src: "{{floor_plan.img_path}}",
+            rate: 0,
+            width: divWidth,
+            max: 3000,
+            markers:markers,
+            enable_drag: false,
+            zoom_lock: true
+        });
+        //additional function for resetting image
+        $('#zoom-marker-btn-reset').click(function(e) {
+            $('#zoom-marker-img').zoomMarker_ResetImage();
+        });
+
+
+        // init item 
+
+        var initImg = function(item) {
+            // handle "TAP" event and add marker to image
+            item.on("zoom_marker_mouse_click", function(event, position){
+                const marker = item.zoomMarker_AddMarker({
+                    src: "/media/ioAirFlow/marker.png",
+                    x: position.x,
+                    y: position.y,
+                    size: 30,
+                    dialog: {},
+                    hint: {
+                    value: "New Sensor",
+                    style: {
+                        color: "#ffffff",
+                        top: "-25px",
+                        "top": "-25px",
+                        "left":"-25%",
+                        "position":"relative",
+                        background: "#C11671", //change this color on click
+                        padding: "2px",
+                        "border-radius": "2px",
+                        "font-size": "12px",
+                        width: "max-content"
+                    }
+                    }
+                });
+                var id = marker["id"];
+                    //prepend table
+                    $("#cyTable tbody").prepend(markerRecord(id));
+                    //setup select2
+                    $("#select_"+id).select2();
+                    //save the marker info which to be sent to upate the table
+                    obj = {}
+                    obj["sensor"] = $("#select_" + id).val();
+                    obj["x"] = position.x;
+                    obj["y"] = (imgheight - position.y);
+                    list[id] = obj;
+                    //remove the sensor options from the avaiilable senror list
+                    select_sensors_list = select_sensors_list.filter(function(el) { return el.name != $("#select_" + id).val(); });
+
+                
+                });
+            
+            //update markerRecord
+            item.on("zoom_marker_move_end", function (event, x, y, marker) {
+                    //$("#successMsg").hide();
+                    var value = x["markerObj"]["id"];
+                    var vx = x["x"];
+                    var vy = x["y"];
+                    console.log(x);
+                    list[value]["x"] = vx;
+                    list[value]["y"] = (imgheight- vy);
+                
+                });
+            // listen to marker click event, print to console and delete the marker
+            item.on("zoom_marker_click", function(event, marker){
+                console.log(JSON.stringify(marker));
+                $('#zoom-marker-img').zoomMarker_RemoveMarker(marker.id);
+                $("#successMsg").hide();//remvoe the message if updating
+                console.log(JSON.stringify(marker));
+                //get sensor 
+                var sensor_name =list[marker.id]["sensor"];
+                var sns_obj = sensors_copy_list.find(o => o.name === sensor_name);
+                //put back the sensors to available options
+                if(sns_obj!=undefined){
+                    select_sensors_list.push(sns_obj);
+                }
+                delete list[marker.id];//update the list object
+                var myobj = document.getElementById("row_" + marker.id);
+                myobj.remove();//remove the row
+                $('#zoom-marker-img').zoomMarker_RemoveMarker(marker.id);
+                
+            });
+
+            // message for the beginning of image loading process
+            item.on("zoom_marker_img_load", function(event, src){
+                console.log("loading started for image : "+src);
+            });
+
+            // message for image loaded
+            item.on("zoom_marker_img_loaded", function (event, size) {
+                $("#successMsg").hide();
+                console.log("image has been loaded with size: " + JSON.stringify(size));
+                imgwidth = size.width;
+                imgheight = size.height;
+                divWidth = $("#zoom-marker-div").width();
+                $("#zoom-marker-div").css("height", (divWidth*imgheight/imgwidth)+"px");
+                $('#zoom-marker-img').zoomMarker_ResetImage(); 
+                // we have to set a timer in order to watching the loader in local environment, cause the loading speed is too fast
+                setTimeout(function () {
+                EasyLoading.hide();
+                }, 3000);
+            });
+        }
+
+        initImg($('#zoom-marker-img'));
+
+    </script>
+{%endif%}
+{%endblock%}

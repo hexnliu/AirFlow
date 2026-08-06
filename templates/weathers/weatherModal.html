@@ -1,0 +1,47 @@
+{% load static %}
+{% load tags%}
+<div class="modal fade" id="weatherModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="loTModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content rounded-0">
+      <div class="modal-header border-0">
+        <h6 class="modal-title" id="weatherModalTitle">Upload Weather File</h6>      
+        
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <small><p style="color: grey;padding-left: 3.7%;padding-right: 3.7%;">This is the weather file. It has a .CSV file format</p></small>
+      <div class="modal-body">
+        <div class="mb-3 border-bottom">
+            <small id="weather_versionName"><b> Performace Test Name:</b></small>
+        </div>
+       
+
+        <form id="weatherForm" class="needs-validation"  novalidate>
+         <input type="hidden"  id="weather_action" name="action" value="weather">
+         <input type="hidden"  id="weather_company" name="company" value="{{building.userName}}">
+          <input type="hidden" id="weather_building" name="building" value="{{result.id}}">
+          <input type="hidden" id="weather_version" name="version" value>
+          <input type="hidden" id="version_weather_name" value />
+          <input type="hidden" id="weather_open_place" name="weather_open_place" value />
+          <p id="weather_file_descrption" ></p>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">weather File</span>
+            </div>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="weather_file" name="data" accept=".csv, .xls, .xlsx"  required>
+              <label class="custom-file-label" for="weather_file" style="overflow: hidden;">Choose file</label>
+            </div>
+
+        </div>
+        <div class="invalid-msg text-danger" id="weather_error"></div>
+        
+        
+      
+          <button type="submit" class="float-right btn btn-small  btn-primary" id="weather_saveBtn">Upload</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

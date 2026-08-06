@@ -1,0 +1,8 @@
+{% comment %} 
+    notification badage
+    context:
+        notification: a number
+{% endcomment %}
+{%if notification_image%}
+<span class="badge badge-pill bgstatus_1">{{notification_image}}</span>
+{%endif%}

@@ -1,0 +1,12 @@
+<div class="form-group">
+    <label for="{{value.id}}_occupied_{{count}}" class="mb-2 mr-sm-2 font-weight-bold">Time Period</label>
+    <select class="form-control form-control-sm mb-3 mr-sm-3" id="{{value.id}}_occupied_{{count}}" name="occupied"
+      required>
+      <option value="">Please Choose</option>
+      <option value="Entire Day">All Hours</option>
+       {%if key != "Ventilation Rate"%} 
+      <option value="Occupied">Occupied Hours</option>
+      <option value="Unoccupied">Unoccupied Hours</option>
+       {%endif%} 
+    </select>
+  </div>

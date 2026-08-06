@@ -1,0 +1,13 @@
+
+{%  extends 'accounts/account/account.html' %}
+
+{% load static %}
+{% block content %}
+   <h1 class="h3 mb-3 fw-normal">You have successfully created an account.</h1>
+   <div class="mt-3 border p-3 text-left rounded bg-white">
+    {% comment %} <p class="lead small">Username:{{user.username}}</p>
+    <p class="lead small">Email: {{user.email}}</p>
+    <p class="lead small">Password: {{user.password}}</p> {% endcomment %}
+    <a href="/"  class="w-100 btn btn-lg btn-primary mt-3" style="background-color: #055ba6;color: white;"> Go Back</a>
+  </div>
+{%endblock%}

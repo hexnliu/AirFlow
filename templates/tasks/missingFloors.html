@@ -1,0 +1,23 @@
+{%load tags%}
+
+{% comment %} message banner on the top indicate user that some data is missing {% endcomment %}
+{%if missing%}
+<div class="alert alert-danger" role="alert">
+    <span class="material-icons text-danger align-middle">fiber_manual_record</span>
+    Performance Test: {{task.name}} Requires Following Missing Floor Plans:
+    {%for s in missing%}
+        {% if forloop.last%}
+            {{s |get_floor_text}}.
+        {%else%}
+             {{s |get_floor_text}},
+        {%endif%}
+    {%endfor%}
+</div>
+{%else%}
+    {%if request.resolver_match.url_name == "upload_floor_plans"%}
+    <div class="alert alert-success" role="alert">
+        <span class="material-icons text-success align-middle">fiber_manual_record</span>
+        You have successfully uploaded all requires floor Plans for performance test: [{{task.name}}]
+    </div>
+    {%endif%}
+{%endif%}

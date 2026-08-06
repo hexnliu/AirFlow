@@ -1,0 +1,46 @@
+{% load static %}
+{%load tags%}
+{% comment %} 
+  This page for embed usage for data alysis page
+
+{% endcomment %}
+  {% include 'partials/head.html' %}
+  {% include 'breadcrumbEmbeded.html' %}
+  <main role="main" class="container-fluid">
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <h1 class="h2">{{building.name}}</h1>
+      {% comment %} {% include "buildings/buildingNavigation.html" with target="#detailBuildingModal"%} {% endcomment %}
+    </nav>
+    {% comment %} this lists all building information {% endcomment %}
+    
+    <div class="row p-3">
+      {% include "buildings/buildingCardEmbed.html" %}
+    </div>
+
+ 
+  </div>
+
+  {% include 'tasks/prompt.html'%}
+</main>
+
+  
+</body>
+
+<!-- JS, Popper.js, and jQuery -->
+<script type="text/javascript" src="{% static 'lib/jquery/jquery-ui.js'%}"></script>
+<script type="text/javascript" src="{% static 'lib/jquery/jquery.csv.js'%}"></script>
+<script type="text/javascript" src="{% static 'lib/jquery/popper.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'lib/bootstrap/js/bootstrap.js'%}"></script>
+<script type="text/javascript" src="{% static 'lib/bootstrap-multiselect-master/dist/js/bootstrap-multiselect.js'%}">
+</script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="{% static 'lib/geodata/jquery.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'lib/intl-tel-input/js/intlTelInput.js'%}"></script>
+<script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+{% comment %} <script type="text/javascript" src="{% static 'js/ui.js'%}"></script> {% endcomment %}
+<script type="text/javascript" src="{% static 'js/helper.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/building.js'%}"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.6.347/build/pdf.min.js"></script>

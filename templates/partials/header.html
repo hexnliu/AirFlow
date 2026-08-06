@@ -1,0 +1,46 @@
+{% comment %}
+ This is the header of any pages 
+ context:
+ building: building object
+ local variable:
+ page_name: page link name
+ link: app_name . eg.buildings/
+ {% endcomment %}
+{%load tags%}
+  <div class="d-flex flex-wrap align-items-center border-bottom">
+    <div class="mr-auto p-2">
+      <h2>{{page_name}}</h2>
+    </div>
+    <div class="p-2">
+        <h2>{{building.name}}</h2>
+        {%if tasks%}
+          {%if request.resolver_match.url_name == "sensors_mapping" or request.resolver_match.url_name == "view_report" or request.resolver_match.app_name == "Performance Report" or request.resolver_match.app_name == "Sensor Placement" or request.resolver_match.app_name == "Data Analysis" %}
+             {%if request.resolver_match.url_name == "embeded_analysis" or request.resolver_match.url_name == "embeded_report" %} 
+            <select class="search-select2" id="select_2_test" onchange="document.location.href='/{{link}}/{{request.resolver_match.url_name}}/'+$(this).val()">
+                  {%for t in tasks%}
+                    {%if t.id == task.id%}
+                      <option value="{{t.id}}" selected>{{t.name}}  [{{t.id}}]</option>
+                      {%else%}
+                      <option value="{{t.id}}" >{{t.name}}  [{{t.id}}]</option>
+                    {%endif%}
+                {%endfor%}
+              </select>
+              {%else%}
+              <select class="search-select2" id="select_2_test" onchange="document.location.href='/{{link}}/{{request.resolver_match.url_name}}/'+$(this).val()">
+                {%for t in tasks%}
+                  {%if t.id == task.id%}
+                    <option value="{{t.id}}" selected>{{t.name}}</option>
+                    {%else%}
+                    <option value="{{t.id}}" >{{t.name}}</option>
+                  {%endif%}
+              {%endfor%}
+            </select>
+
+              {%endif%}
+          {%endif%}
+        {%endif%}
+    </div>
+    <div class="p-2">
+        <img src="{{building.img_path | bin_2_img}}" alt="building-image" class="building-img-header">
+    </div>
+  </div>

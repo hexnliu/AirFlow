@@ -1,0 +1,8 @@
+{% comment %} This is all elements applied to tasks which can be used under building {% endcomment %}
+{%load static%}
+{%include "tasks/uploadFileForm.html" with p_name="loT" file_type="Sensor Data File" file_descrption="This is the sensor data file collected by the ioAirFlow sensors. It has a .CSV file format" accept_type=".csv"%}
+{%if request.user.is_superuser%}
+{%include "tasks/uploadFileForm.html" with p_name="weather" file_type="Weather File" file_descrption="Weather file - it has a .CSV file format" accept_type=".csv"%}
+{%include "tasks/uploadFileForm.html" with p_name="report" file_type="Report File" file_descrption="Customized Report for selected version" accept_type=".pdf"%}
+{%endif%}
+<script type="text/javascript" src="{% static 'js/task.js'%}"></script>

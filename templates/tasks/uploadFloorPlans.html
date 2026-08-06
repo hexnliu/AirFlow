@@ -1,0 +1,96 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+{%load tags%}
+{% load static %}
+{% comment %} 
+This is the form upload floor plans
+
+context:
+task: only exits when entering from task page
+floor_plans: BuildingImage model that associate with this building
+{% endcomment %}
+<div class="container-fluid">
+    {% comment %} if user eneter the page from specific task, check if the floor of the task, see if it is missing value. if so, add banner to indicate {% endcomment %}
+    {%if task%}
+   {% with "/tasks/sensors_mapping/"|addstr:task.id as url  %}
+            {%include "tasks/missingFloors.html" with link=url title="Return to Task - "|addstr:task.name%}
+    {% endwith %}
+    {%endif%}
+  
+    <div class="row">
+        {%include "partials/buildingCard.html" %}
+        <div class="col-sm">
+            <div class="bg-white p-4 h-100">
+                <div class="row">
+                    <div class="bg-light rounded-lg w-100 p-3">
+                        <h5>Upload Floor Plan</h5>
+                    </div>
+                </div>
+                <div class="row p-3">
+                    <p class="mt-2 mb-2">In order to see the graphs with floor plan in the data analysis and the
+                        report,
+                        you will need to
+                        upload a floor plan for each floor.
+                    </p>
+                </div>
+                <div id="floorPlans">
+                    {%for f in floor_plans%}
+                    <div class="row border m-3 p-3 rounded-lg">
+                        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                            <div class="row">
+                            <div class="col-sm-10 col-lg-10">
+                            <img id="img_id" src="{{f.img_path | bin_2_img}}" class="floor_plan_img"  onclick="viewImage('{{f.img_path}}','{{f.floor_building |get_floor_text}}')"
+                                alt="" style="width:100px;height:100px;cursor: default !important;" >
+                            </div>
+                             </div>
+                        </div>
+                        <div class="col-sm-5 col-md-5 col-lg-8 col-xl-5">
+                            <table class="table table-sm borderless">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Floor</th>
+                                        <td> {{f.floor_building |get_floor_text}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Date Added</th>
+                                        <td> {{f.date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Dimensions</th>
+                                        <td>{{f.width}} x {{f.height}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-3 col-md-3 col-lg-12 col-xl-3">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-primary m-2" onclick="viewImage('{{f.img_path}}','{{f.floor_building |get_floor_text}}')">View</button>
+                                <button class="btn btn-sm btn-primary m-2" onclick="updateFloorPlan('{{f.floor_building}}','{{f.floor_building | get_floor_text}}','{{f.img_path}}','{{f.img_path}}','{{f.width}}','{{f.height}}','{{f.id}}');">Update</button>
+                                <button class="btn btn-sm btn-primary btn-delete m-2" onclick="deleteRecord('/buildings/delete_floor_plan/{{f.id}}','{{f.floor_building | get_floor_text}}');"><span class="material-icons">delete</span></button>
+                            </div>
+                        </div>
+
+                    </div>
+                    {%endfor%}
+
+                </div>
+         
+                <div class="row def- justify-content-between">
+                    <button class="btn btn-primary"  id="addFloorPlans" data-target="#addFloorPlanModal" data-toggle="modal">Add Floor Plans</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%include "tasks/uploadSuccessCard.html" with message=""%}
+{%include "tasks/uploadErrorCard.html" with message=""%}
+{% with "/buildings/upload_floor_plan/"|addstr:building.id as url%}
+    {%include "tasks/floorPlanModal.html" with link=url p_name="addFloorPlan" title="Upload Floor Plan" accept_type="image/*"%}
+{%endwith%}
+
+{%include "tasks/floorPlanModal.html" with link="/buildings/edit_floor_plan" p_name="editFloorPlan" title="Update Floor Plan" accept_type="image/*"%}
+{% comment %} view floor plan modal {% endcomment %}
+{%include "tasks/viewImageModal.html"%}
+<script type="text/javascript" src="{% static 'js/task.js'%}"></script>
+{%endblock%}

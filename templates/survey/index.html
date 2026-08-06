@@ -1,0 +1,379 @@
+{%  extends 'base.html' %}
+
+{%load static%}
+{%load tags%}
+{% block content %}
+{% comment %} 
+  additional building information
+  context:
+  survey: survey object
+  
+  the following context are the links generated from aws
+  havc
+  lbcr
+  lea
+
+{% endcomment %}
+<div class="container-fluid">
+    <div class="row">
+      {% comment %} building information with card view {% endcomment %}
+        {%include "partials/buildingCard.html" %}
+        <div class="col-sm">
+          {% comment %} using ajax to submit the form because one reuqired field having multiple value{% endcomment %}
+            <form id="surveyForm" action="/survey/process_survey/{{building.id}}" method="POST" enctype="multipart/form-data"  onsubmit="return false;" class="needs-validation mb-5" novalidate>
+                <div id="s_section1">
+                    <h4 class="mb-4">Section 1: Building Overview </h4>
+                    <div class="form-group row">
+                      <label for="s1_q1" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left;"> 1) Building intended use: </label>
+                      <div class="col-sm-9">
+    
+                        <select class="form-control otherOption" id="s1_q1"  name="s1_q1" required>
+                          <option value="">Please Choose</option>
+                          <option value="office">Commercial - Office</option>
+                          <option value="retail">Commercial - Retail</option>
+                          <option value="hotel">Commercial - Hotel</option>
+                          <option value="data centre">Commercial - Data centre</option>
+                          <option value="school">Institutional - School</option>
+                          <option value="health care">Institutional - Health care</option>
+                          <option value="warehouse">Industrial - Warehouse</option>
+                          <option value="manufacturing">Industrial - Manufacturing</option>
+                          <option value="other">Other (please describe)</option>
+                        </select>
+                      </div>
+                    </div>
+    
+                    <div class="form-group row  s1_q1_other" style="display:none;">
+                      <label for="s1_q1_other" class="col-sm-3 col-form-label col-form-label-sm" style="text-align: left">Other</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="s1_q1_other" name="s1_q1_other" placeholder="(please describe)">
+                      </div>
+                    </div>
+    
+    
+    
+                  <div class="form-group row">
+                    <label for="s1_q3" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left">2) Gross floor area per floor:</label>
+                    <!-- <div class="col-sm-9"> -->
+                      <div class="col-auto">
+                      <input type="number" step="0.01" name="s1_q3" class="form-control" id="s1_q3" required>
+                    </div>
+                    <div class="col-auto">
+                      <select class="form-control" id="s1_q3_symbol"  name="s1_q3_symbol">
+                        <option value="m2">m² (square meter)</option>
+                        <option value="ft2">ft² (square feet)</option>
+                      </select>
+                    </div>
+                    <!-- </div> -->
+                  </div>
+    
+                  <div class="form-group row">
+                    <label for="s1_q4" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left">3) Year of building construction:</label>
+                    <div class="col-sm-9">
+                      <input type="number" name="s1_q4" class="form-control form-control-sm" min="1500" max="{{year}}" id="s1_q4" size="4" placeholder="YYYY" required>
+                      <div class="form-text text-muted font-italic"><small>Year of building construction should be between 1500 and {{year}}</small></div>
+                    </div>
+                    
+                  </div>
+    
+    
+                  <div class="form-group row">
+                    <label for="s1_q7" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left"> 4) Who has access to your building on a regular basis?  </label>
+                    <div class="col-sm-9">
+                      <select class="form-control otherOption" id="s1_q7"  name="s1_q7" required>
+                        <option value="">Please Choose</option>
+                        <option value="Employees">Employees only</option>
+                        <option value="Limited">Limited public access</option>
+                        <option value="Full">Full public access</option>
+                        <option value="other">Other (comment box)</option>
+                      </select>
+                    </div>
+                  </div>
+    
+                    <div class="form-group row  s1_q7_other" style="display:none;">
+                    <label for="s1_q7_other" class="col-sm-3 col-form-label col-form-label-sm" style="text-align: left">Other</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control form-control-sm" id="s1_q7_other" name="s1_q7_other" placeholder="(please describe)">
+                    </div>
+                  </div>
+    
+    
+    
+    
+    
+                  <div class="form-group row">
+                    <label for="s1_q9" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left">
+                       5) Does your building have any of the following services? Select all that apply
+                    </label>
+                    <div class="col-sm-9">
+                      <select class="form-control otherOption js-select2" id="s1_q9"  name="s1_q9[]" multiple="multiple">
+                       <option value="Optimized">Optimized operation schedules</option>
+                        <option value="Occupant">Occupant engagement programs</option>
+                        <option value="Service">Service agreement for preventative maintenance</option>
+                        <option value="Filter">Filter clearing or replacement schedule</option>
+                        <option value="Building">Building automation system or smart thermostats</option>
+                        <option value="other">Other (please describe)</option>
+                      </select>
+                    </div>
+                  </div>
+    
+                    <div class="form-group row  s1_q9_other" style="display:none;">
+                    <label for="s1_q9_other" class="col-sm-3 col-form-label col-form-label-sm" style="text-align: left"></label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control form-control-sm" id="s1_q9_other" name="s1_q9_other" placeholder="(please describe)">
+                    </div>
+                  </div>
+                  
+    
+                  <div class="form-group row">
+                    <label for="s1_q11" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left"> 6) Does your building have a Parking lot?  </label>
+                    <div class="col-sm-9">
+                      <select class="form-control otherOption" id="s1_q11"  name="s1_q11" required>
+                        <option value="">Please Choose</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                      </select>
+                    </div>
+                  </div>
+    
+    
+                  <div class="p-3 s1_q11_other"  style="display:none;">
+                      <h6> Section 1a: Building Parking lot</h6>
+                       <div class="form-group row">
+                          <label for="s1_q11_1" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left"> 1) Parking lot type?  </label>
+                          <div class="col-sm-9">
+                            <select class="form-control otherOption" id="s1_q11_1"  name="s1_q11_1">
+                              <option value="">Please Choose</option>
+                              <option value="Open">Open Parking Lot</option>
+                              <option value="Partially">Partially Enclosed Parking Lot</option>
+                              <option value="Completely">Completely Enclosed Parking Lot</option>
+                            </select>
+                          </div>
+                        </div>
+                       
+                      <div class="form-group row">
+                        <label for="s1_q11_2" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left"> 2) Is parkade adjacent to building?   </label>
+                        <div class="col-sm-9">
+                          <select class="form-control otherOption" id="s1_q11_2"  name="s1_q11_2">
+                            <option value="">Please Choose</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="p-3 s1_q11_2_other"  style="display:none;">
+                      <div class="form-group row ">
+                          <label for="s1_q11_2_other" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left" > 2b) What side of the building is parkade adjacent to? </label>
+                          <div class="col-sm-9">
+                            <select class="form-control otherOption" id="s1_q11_2_other" name="s1_q11_2_other">
+                              <option value="">Please Choose</option>
+                              <option value="North">North</option>
+                              <option value="East">East</option>
+                              <option value="South">South</option>
+                               <option value="West">West</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="s1_q11_3" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left"> 3) Does your parkade have supplemental heating?   </label>
+                        <div class="col-sm-9">
+                          <select class="form-control otherOption" id="s1_q11_3"  name="s1_q11_3">
+                            <option value="">Please Choose</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="s1_q11_4" class="col-sm-3 col-form-label font-weight-bold"style="text-align: left">4) Number of parking stalls:</label>
+                        <div class="col-sm-9">
+                          <input type="number" name="s1_q11_4" class="form-control form-control-sm" id="s1_q11_4">
+                        </div>
+                      </div>
+                  </div>
+               </div>
+               <div id ="s_section2">
+                  <h4 class="mb-4">Section 2: Existing Issues</h4>
+                    <div class="form-group row">
+                      <label for="s2_q1" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left"> 1) Do you have any current concerns in the building related to its performance or energy efficiency?  </label>
+                      <div class="col-sm-9">
+                        <select class="form-control otherOption" id="s2_q1"  name="s2_q1">
+                          <option value="">Please Choose</option>
+                          <option value="yes">Yes (If yes, please describe)</option>
+                          <option value="no">No</option>
+                        </select>
+                      </div>
+                    </div>
+    
+                      <div class="form-group row  s2_q1_other" style="display:none;">
+                      <label for="s2_q1_other" class="col-sm-3 col-form-label col-form-label-sm" style="text-align: left"></label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="s2_q1_other" name="s2_q1_other" placeholder="(please describe)">
+                      </div>
+                    </div>
+    
+                     <div class="form-group row">
+                      <label for="s2_q2" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left"> 2) Are there particular areas in your building that you have noticed performing worse than other areas?</label>
+                      <div class="col-sm-9">
+                        <select class="form-control otherOption" id="s2_q2"  name="s2_q2">
+                          <option value="">Please Choose</option>
+                          <option value="yes">Yes (If yes, please describe)</option>
+                          <option value="no">No</option>
+                        </select>
+                      </div>
+                    </div>
+    
+                    <div class="form-group row  s2_q2_other" style="display:none;">
+                      <label for="s2_q2_other" class="col-sm-3 col-form-label col-form-label-sm" style="text-align: left"></label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="s2_q2_other" name="s2_q2_other" placeholder="(please describe)">
+                      </div>
+                    </div>
+    
+                    <div class="form-group row">
+                      <label for="s2_q3" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left"> 3) Do you have a mechanism for collecting tenant feedback about areas of concern in your building?</label>
+                      <div class="col-sm-9">
+                        <select class="form-control otherOption" id="s2_q3"  name="s2_q3">
+                          <option value="">Please Choose</option>
+                          <option value="yes">Yes (If yes, please describe)</option>
+                          <option value="no">No</option>
+                        </select>
+                      </div>
+                    </div>
+    
+                    <div class="form-group row  s2_q3_other" style="display:none;">
+                      <label for="s2_q3_other" class="col-sm-3 col-form-label col-form-label-sm" style="text-align: left"></label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="s2_q3_other" name="s2_q3_other" placeholder="(please describe)">
+                      </div>
+                    </div>
+    
+                    <div class="form-group row">
+                      <label for="s2_q4" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left"> 4) Have you taken any steps to increase your building’s performance or energy efficiency in the past?</label>
+                      <div class="col-sm-9">
+                        <select class="form-control otherOption" id="s2_q4"  name="s2_q4">
+                          <option value="">Please Choose</option>
+                          <option value="yes">Yes (If yes, please describe)</option>
+                          <option value="no">No</option>
+                        </select>
+                      </div>
+                    </div>
+    
+                    <div class="form-group row  s2_q4_other" style="display:none;">
+                      <label for="s2_q4_other" class="col-sm-3 col-form-label col-form-label-sm" style="text-align: left"></label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="s2_q4_other" name="s2_q4_other" placeholder="(please describe)">
+                      </div>
+                    </div>
+    
+                    <div class="form-group row">
+                      <label for="s2_q5" class="col-sm-3 col-form-label font-weight-bold" style="text-align: left"> 5)Is there any particular performance or energy efficiency initiative you are interested in implementing in your building?</label>
+                      <div class="col-sm-9">
+                        <select class="form-control otherOption" id="s2_q5"  name="s2_q5">
+                          <option value="">Please Choose</option>
+                          <option value="yes">Yes (If yes, please describe)</option>
+                          <option value="no">No</option>
+                        </select>
+                      </div>
+                    </div>
+    
+                    <div class="form-group row  s2_q5_other" style="display:none;">
+                      <label for="s2_q5_other" class="col-sm-3 col-form-label col-form-label-sm" style="text-align: left"></label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="s2_q5_other" name="s2_q5_other" placeholder="(please describe)">
+                      </div>
+                    </div>
+    
+              </div>
+              <div id="s_section3">
+                <h4 class="mb-4">Section 3: Additional Documents</h4>
+                <h6> Additional information will help ioAirFlow better understand your building. If you can, please provide any of the following documents:</h6>
+                   
+                   
+                <div class="row"> 
+                  <div class="col">
+                    <div class="drop-zone">
+                      <span class="drop-zone__prompt"> HVAC zoning layout File</span>
+                         <input type="file"  class="drop-zone__input" id="s3_hvac" name="s3_hvac" >
+                      <div class="invalid-feedback">
+                          Please select a  file
+                      </div>
+                  </div>
+                   
+                     <a href="{{hvac|safe}}" id="upload_hvac" download></a>
+                  </div>
+                    <div class="col">
+                      <div class="drop-zone">
+                        <span class="drop-zone__prompt">Latest building condition report</span>
+                        <input type="file"class="drop-zone__input" id="s3_lbcr" name="s3_lbcr" >
+                        <div class="invalid-feedback">
+                            Please select a  file
+                        </div>
+                    </div>
+                       <a href="{{lbcr|safe}}" id="upload_lbcr" download></a>
+                    </div>
+              
+                    <div class="col">     
+                      <div class="drop-zone">
+                          <span class="drop-zone__prompt">Latest energy audit</span>
+                          <input type="file" class="drop-zone__input" id="s3_lea" name="s3_lea" >
+                          <div class="invalid-feedback">
+                              Please select a  file
+                          </div>
+                      </div>
+                      <a href="{{lea|safe}}" id="upload_lea" download></a>
+                      </div>
+                </div>
+          
+              
+         
+       
+    
+              </div>
+              <div class="d-flex justify-content-center mt-4">
+                  <button type="submit"class="btn btn-primary" id="surveyBtn">Submit</button>
+              </div>
+          </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'js/survey.js'%}"></script>
+{% comment %} if suevery object exists for a building, popluate the value {% endcomment %}
+{%if survey%}
+<script>
+  var test={{test|safe}};
+  window.onload = function() {
+    
+    $("#s1_q1").val("{{survey.intend_use|safe}}").trigger("change");
+    $("#s1_q1_other").val("{{survey.intend_use_desc|safe}}").trigger("change");
+    $("#s1_q3").val("{{survey.gross_floor_area_per_storey|safe}}").trigger("change");
+    $("#s1_q3_symbol").val("{{survey.symbol|safe}}").trigger("change");
+    $("#s1_q4").val("{{survey.year_of_building_con|safe}}").trigger("change");
+    $("#s1_q7").val("{{survey.who_access|safe}}").trigger("change");
+    $("#s1_q7_other").val("{{survey.who_access_desc|safe}}").trigger("change");
+    $("#s1_q9_other").val("{{survey.service_desc|safe}}").trigger("change");
+    $("#s1_q11").val("{{survey.parkade|safe}}").trigger("change");
+    $("#s1_q11_1").val("{{survey.parking_type|safe}}").trigger("change");
+    $("#s1_q11_2").val("{{survey.adjacent_to_building|safe}}").trigger("change");
+    $("#s1_q11_2_other").val("{{survey.side_adjacent|safe}}").trigger("change");
+    $("#s1_q11_3").val("{{survey.supplemental_heating|safe}}").trigger("change");
+    $("#s1_q11_4").val("{{survey.num_of_parking_stalls|safe}}").trigger("change");
+    $("#s2_q1").val("{{survey.energy_efficiency|safe}}").trigger("change");
+    $("#s2_q1_other").val("{{survey.energy_efficiency_desc|safe}}").trigger("change");
+    $("#s2_q2").val("{{survey.performing_worse_than_other_areas|safe}}").trigger("change");
+    $("#s2_q2_other").val("{{survey.performing_worse_than_other_areas_desc|safe}}").trigger("change");
+    $("#s2_q3").val("{{survey.concern|safe}}").trigger("change");
+    $("#s2_q3_other").val("{{survey.concern_desc|safe}}").trigger("change");
+    $("#s2_q4_other").val("{{survey.increase_performance_desc|safe}}").trigger("change");
+    $("#s2_q5").val("{{survey.particular_performance|safe}}").trigger("change");
+    $("#s2_q5_other").val("{{survey.particular_performance_desc|safe}}").trigger("change");
+    $("#upload_hvac").text("{{survey.hvac|safe}}").trigger("change");
+    $("#upload_lbcr").text("{{survey.lbcr|safe}}").trigger("change");
+    $("#upload_lea").text("{{survey.lea|safe}}").trigger("change");
+    $("#s1_q9").val(JSON.parse("{{survey.services}}".replace(/&quot;/g, '"'))).trigger('change');
+    $("#s1_q9").multiselect("refresh");
+  }
+</script>
+{%endif%}
+
+{% endblock %}

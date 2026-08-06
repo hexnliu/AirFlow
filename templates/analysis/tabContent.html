@@ -1,0 +1,139 @@
+{%load tags%}
+
+{% comment %}
+  tab content of analysis 
+ 
+ objects:
+menu: file-> analysis/file/menu.json
+floor_plan_floors: floors from sensor mapping model if current_task has sensor mapping done.
+
+
+ format: 
+   c->category(name,id,label(icon image),sub_category,decription)
+
+   key->subcategory name,
+   value-> subcategory attributes(id, analysis,decription, tabs:{tab_name,url, form, url(link where to go)} )
+ 
+ {% endcomment %}
+<div class="tab-content">
+    {% comment %} display general summary information {% endcomment %}
+    <div class="tab-pane active" id="des_summary" role="tabpanel" aria-labelledby="summary-tab">
+      {%include "analysis/summary.html"%}
+    </div>
+
+
+    {%for c in menu%}
+    {% comment %} display category's decription {% endcomment %}
+    <div class="tab-pane bg-white" id="des_{{c.id}}" role="tabpanel" aria-labelledby="{{c.id}}-tab">
+      <div class="container-fluid p-3">
+        <div class="row">
+          <div class="col">
+            <h3 class="theme-color">{{c.name}}</h3>
+            <br>
+            <div class="row pl-3">
+              <div id="{{c.id}}_description">
+                <h4>Description</h4>
+                <br>
+                <p style="font-size: 1rem;">{{c.description}}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {% comment %} key is subcatgory's name, value is attributes {% endcomment %}
+    {%for key,value in c.sub_category.items%}
+    <div class="tab-pane bg-white" id="{{value.id}}" role="tabpanel" aria-labelledby="{{value.id}}-tab">
+      <div class="container-fluid p-3">
+        <div class="row">
+          <div class="col">
+            <h3 class="theme-color" id="{{value.id}}_key">{{key}}</h3>
+            <input type="hidden" id="{{key}}_active_tab" value>
+            {% comment %} <a class="" onclick="Export2Word('{{value.id}}', 'word-content');">Exportas .doc</a>
+            <a class="" onclick="Export2PDF('{{value.id}}', 'pdf-content');">Export as.pdf</a> {% endcomment %}
+            <br>
+          </div>
+        </div>
+        {% comment %} top decription of this subcatgory {% endcomment %}
+        <div class="row pl-3">
+          <div class="row" id="{{value.id}}_des_ana">
+            <div id="{{value.id}}_description" class="col-sm-6">
+              <h4 class="an_des_text">Description</h4>
+              <p style="font-size: 0.95rem;" id="{{value.id}}_description_detail">{{value.description}}</p>
+            </div>
+            <div id="{{value.id}}_analysis" class="col-sm-6">
+              <h4 class="an_des_text">Analysis</h4>
+              <p style="font-size: 0.95rem;" id="{{value.id}}_des_analysis">{{value.analysis}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% comment %} analysis graph section {% endcomment %}
+      <div class="graphSection pb-5 mb-5">
+        <ul class="nav nav-tabs" id="graph_{{value.id}}" role="tablist">
+        {% comment %} grab all tab conetents from the subcategory, loop through them and generate {% endcomment %}
+        {% for tab in value.tabs%}
+          <li class="nav-item" role="presentation">
+            {% comment %} active_class checks if this is the first tab in the page or not, if so set it active {% endcomment %}
+            <a class="nav-link {{1|active_class:forloop.counter}}" id="g-{{value.id}}-{{forloop.counter}}-tab" data-toggle="tab" href="#g-{{value.id}}-{{forloop.counter}}" role="tab"
+              aria-controls="g-{{value.id}}-{{forloop.counter}}" aria-selected="{{1|str_equal:forloop.counter}}">{{tab.tab_name}}</a>
+          </li>
+        {%endfor%}
+      </ul>
+        <div class="tab-content" id="graph_{{value.id}}_content">
+          {% comment %} create the form elements {% endcomment %}
+          {% for tab in value.tabs%}
+            <div class="tab-pane fade {{1|active_tab:forloop.counter}}" id="g-{{value.id}}-{{forloop.counter}}" role="tabpanel"
+                 aria-labelledby="g-{{value.id}}-{{forloop.counter}}-tab">
+                 {% comment %} url: send analysis request url {% endcomment %}
+                 <form id="g-{{value.id}}-{{forloop.counter}}-form" action="/analysis/{{tab.url}}/{{task.id}}" class="form-inline p-2 analysisForm"  onsubmit="return false;">
+                  <div class="container-fluid">
+                   <div class="row">
+                  {% comment %}
+                   get the elements from form elements and add them to the section
+
+                    f:  the element's name from tab.form (eg. analsysi/formElements/building_floor_all.html, building_floor_all is the element)
+                    count: length of the tabs has beem created
+
+                    forloop.counter -> how many tabs are generated
+
+                  {% endcomment %}
+                  {%with count2=forloop.counter%}
+                  {%for f in tab.form%}
+                      {% include 'analysis/formElements/'|addstr:f|addstr:'.html' with count=count2%}
+                    {%endfor%}
+                    {% endwith %}
+                   </div>
+                    <div class="row">
+                      {% comment %} submit analsysis(arg1: subsmit which form, arg2: where the graphs are going to rertun) {% endcomment %}
+                      <button type="submit" onclick="submitAnalysis('g-{{value.id}}-{{forloop.counter}}-form','g-plotly-{{value.id}}-{{forloop.counter}}')" class="btn btn-primary btn-sm">Generate Graph</button>
+                      {% comment %} added view floor plan with marker function if there is floor plan tab or floor plan subcategory {% endcomment %}
+                      {%if tab.tab_name == "Floor Plan"  or key == "Floor Plan"%}
+                      {% comment %} make sure that users have done sensor mapping {% endcomment %}
+                      {%if floor_plan_floors|length > 0 %}
+                          <a style="display:none;" class="ml-4 mr-4 btn btn-sm btn-primary" href="#" id="f-{{value.id}}-{{forloop.counter}}"></a>
+                      {%endif%}
+
+                      {%endif%}
+                    </div>
+                  </div>
+                 </form>
+                 {% comment %} this is the section from ajax plotly graph return {% endcomment %}
+                 <div class="plotly-graph" id="g-plotly-{{value.id}}-{{forloop.counter}}">
+                 </div>
+            </div>
+          
+            {%endfor%}
+         </div>
+      </div>
+
+    </div>
+    {%endfor%}
+
+    {%endfor%}
+
+
+
+
+  </div>

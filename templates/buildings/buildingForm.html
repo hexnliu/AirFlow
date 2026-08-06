@@ -1,0 +1,163 @@
+ {% load tags%}
+ {% comment %} 
+ This is building form for create a building and update building
+ local context: p_name - id name
+ context: building - this only use when it is used for updating
+ {% endcomment %}
+ <div class="modal fade" id="{{p_name}}Modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+   aria-labelledby="{{p_name}}ModalTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content rounded-0">
+       <div class="modal-header">
+         <h5 class="modal-title" id="{{p_name}}ModalTitle">{{p_name | sep_camel_case}}</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <div class="container">
+           {% if p_name == "createBuilding"%}
+           <form id="{{p_name}}Form" name="buildingForm"  action="/buildings/create_building/" method="POST" enctype="multipart/form-data"
+             class="needs-validation" novalidate>
+            {%else%}
+            {% comment %} this is update part which requires building id {% endcomment %}
+            <form id="{{p_name}}Form" name="buildingForm"  action="/buildings/update_building/{{building.id}}" method="POST" enctype="multipart/form-data"
+            class="needs-validation" novalidate>
+            <input type="hidden" id="{{p_name}}_id" name="building" value="{{building.id}}" required>
+            {%endif%}
+
+             <div class="form-group row">
+               <label for="{{p_name}}_name" class="col-sm-3 col-form-label"><strong>Building Name</strong></label>
+               <div class="col-sm-9">
+                 <input type="text" class="form-control form-control-sm" oninput="validateBuildingName('{{p_name}}');" maxlength="50" id="{{p_name}}_name" name="name" value="{{building.name}}"
+                   required>
+                 <div class="invalid-feedback">
+                   Please enter a building name
+                 </div>
+               </div>
+             </div>
+
+             <div class="form-group row">
+               <label for="{{p_name}}_country" class="col-sm-3 col-form-label"><strong>Country</strong></label>
+               <div class="col-sm-9">
+                 <select class="countries form-control form-control-sm" id="{{p_name}}_country" name="country" value="{{building.country}}"
+                   onchange="onCountryChange('{{p_name}}')" required>
+                   <option value="">Select Country</option>
+                   {% comment %} iso2 value {% endcomment %}
+                   <option value="Austria">Austria</option>
+                   <option value="Canada">Canada</option>
+                   <option value="United States">United States</option>
+                 </select>
+               </div>
+             </div>
+             <div class="form-group row">
+               <label for="{{p_name}}_province" class="col-sm-3 col-form-label"><strong>Province/State</strong></label>
+               <div class="col-sm-9">
+                 <select class="states form-control form-control-sm" id="{{p_name}}_province" name="province"
+                   onchange="onProvinceChange('{{p_name}}')" value="{{building.province}}" required>
+                   <option value="">Select Province/ State</option>
+                   {%for s in states %}
+                   <option value="{{s.name}}">{{s.name}}</option>
+                   {%endfor%}
+                 </select>
+               </div>
+             </div>
+             <div class="form-group row">
+               <label for="{{p_name}}_city" class="col-sm-3 col-form-label"><strong>City</strong></label>
+               <div class="col-sm-9">
+                 <select class="states form-control form-control-sm" id="{{p_name}}_city" name="city" value="{{building.city}}" required>
+                   <option value="">Select City</option>
+                   {%for c in cities %}
+                   <option value="{{c.name}}">{{c.name}}</option>
+                   {%endfor%}
+                 </select>
+               </div>
+             </div>
+
+             <div class="form-group row">
+               <label for="{{p_name}}_address" class="col-sm-3 col-form-label"><strong>Address</strong></label>
+               <div class="col-sm-9">
+                 <input type="text" class="form-control form-control-sm" oninput="validateBuildingAddress('{{p_name}}');" id="{{p_name}}_address" name="address" value="{{building.address}}"
+                   required>
+                 <div class="invalid-feedback">
+                   Please provide an address.
+                 </div>
+               </div>
+             </div>
+             <div class="form-group row">
+               <label for="{{p_name}}_postal_code" class="col-sm-3 col-form-label"><strong>Postal Code</strong></label>
+               <div class="col-sm-9">
+                 <input type="text" class="form-control form-control-sm" oninput="validatePostalCode('{{p_name}}');" id="{{p_name}}_postal_code" name="postalCode" value="{{building.postal}}"
+                   required>
+                 <div class="invalid-feedback">
+                   Please provide a valid postal code / zip code
+                 </div>
+               </div>
+             </div>
+             <div class="form-group row">
+               <label class="col-sm-6 col-form-label" style="font-size: 110%;"><strong>Building Contact
+                   Information</strong></label>
+             </div>
+             <div class="form-group row">
+               <label for="{{p_name}}_contact" class="col-sm-3 col-form-label"><strong>Contact Name</strong></label>
+               <div class="col-sm-9">
+                 <input type="text" class="form-control form-control-sm" id="{{p_name}}_contact" name="contact" value="{{building.contact}}">
+                 <div class="invalid-feedback">
+                   Please provide a contact name
+                 </div>
+               </div>
+             </div>
+             <div class="form-group row">
+               <label for="{{p_name}}_phone" class="col-sm-3 col-form-label"><strong>Phone No.</strong></label>
+               <div class="col-sm-9">
+                 <input type="tel" class="form-control form-control-sm" id="{{p_name}}_phone" name="phone" value="{{building.phone}}"
+                   oninput="validatePhone('{{p_name}}');" placeholder="">
+                 <div class="invalid-feedback">
+                   Please provide a valid phone number
+                 </div>
+               </div>
+             </div>
+             <div class="form-group row">
+               <label for="{{p_name}}_email" class="col-sm-3 col-form-label"><strong>Email</strong></label>
+               <div class="col-sm-9">
+                 <input type="email" class="form-control form-control-sm" pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                   id="{{p_name}}_email" placeholder="ex: example@gmail.com" name="email" value="{{building.email}}">
+                 <div class="invalid-feedback">
+                   Please provide a valid email
+                 </div>
+               </div>
+             </div>
+             <div class="form-group row" id="{{p_name}}_images">
+               <label class="col-sm-6 col-form-label" style="font-size: 110%;"><strong>Building Photos</strong></label>
+               <div class="container">
+                 <div class="row">
+                   <div class="col">
+                     <label>
+                       <img class="building_images" id="{{p_name}}_img"
+                         src="{{building.img_path | bin_2_img:True}}" alt="building image" style="width:100%;height:50px;">
+                       <input type="file" accept="image/*" name="img" id="{{p_name}}_img_file"
+                         onchange="previewImage('{{p_name}}',this.files[0])">
+                       <input type="hidden" id="{{p_name}}_img_type" name="img_type"
+                         value="current" />
+                     </label>
+
+                     <div class="row">
+                       <div class="col">
+                         <a href="#" class="{{p_name}}_img_delete"
+                           onclick="deleteImage('{{p_name}}');return false;"><i
+                             class="fa fa-trash-o fa-lg" aria-hidden="true"></i></a>
+                       </div>
+                     </div>
+                   </div>
+
+                 </div>
+               </div>
+             </div>
+             <button class="float-right btn btn-primary" id="{{p_name}}_save" type="submit">Save</button>
+           </form>
+         </div>
+       </div>
+
+     </div>
+   </div>
+ </div>

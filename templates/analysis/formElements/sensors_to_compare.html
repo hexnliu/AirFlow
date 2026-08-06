@@ -1,0 +1,19 @@
+<div class="form-group" id="parent">
+    <label for="{{value.id}}_compare_{{count}}" class="mb-2 mr-sm-2 font-weight-bold">Select Sensors to Compare</label>
+    <select class="form-control form-control-sm mb-2 mr-sm-2 " id="{{value.id}}_compareOne_{{count}}" name="sensor1"
+      required>
+      <option value=""> Please Choose</option>
+      {%for s in sensors_copy_list%}
+      <option value="{{s.name}}">Sensor {{s.name}} - {{s.type}}</option>
+      {% comment %} <option value="{{s.name}}">Sensor {{s.name}}</option> {% endcomment %}
+      {%endfor%}
+    </select>
+    <p></p>
+    <select class="form-control form-control-sm mb-2 mr-sm-2 " id="{{value.id}}_compareTwo_{{count}}" name="sensor2">
+      <option value=""> Please Choose</option>
+      {%for s in sensors_copy_list%}
+      <option value="{{s.name}}">Sensor {{s.name}} - {{s.type}}</option>
+      {% comment %} <option value="{{s.name}}">Sensor {{s.name}}</option> {% endcomment %}
+      {%endfor%}
+    </select>
+  </div>

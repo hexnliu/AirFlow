@@ -1,0 +1,70 @@
+{%load tags%}
+  {% comment %} 
+  floor plan modal for add and edit function
+  
+  local variable:
+  p_name: all elements in this modal will have a prefix {{p_name}}
+  accept_type: type of file is accepted for validation purpose
+
+  context:
+  floors: number (-1,20)
+  
+  {% endcomment %}
+  <div id="{{p_name}}Modal" class="modal floorPlanModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title"  id="{{p_name}}ModalTitle">{{title}}</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form  class="needs-validation"  name="{{p_name}}Form"  action="{{link}}" method="POST" enctype="multipart/form-data" novalidate style="max-width:400px;margin:auto;" onsubmit="return false;">
+
+                <div class="form-group">
+                  <label class="form-label" for="{{p_name}}_floors">Floor</label>
+                  <select class="form-control form-control-sm" id="{{p_name}}_floors" name="floors" required>
+                      <option value="">Select a floor</option>
+                      {%for f in floors%}
+                           <option value="{{f}}">{{f |get_floor_text}}</option>
+                      {%endfor%}
+                      <option value="Other (Add to Notes)">Other (Add to Notes)</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please enter a valid value
+                  </div>
+                </div>
+            
+                <div class="drop-zone">
+                    <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                    {% comment %} turn off validation for file when editing {% endcomment %}
+                    {% if p_name == "addFloorPlan"%}
+                        <input type="file" name="data" class="drop-zone__input" id="{{p_name}}_file" accept="image/*" required>
+                    {%else%}
+                       <input type="file" name="data" class="drop-zone__input" id="{{p_name}}_file" accept="image/*" >
+                    {%endif%}
+                    <div class="invalid-feedback">
+                        Please select a {{accept_type}} file
+                    </div>
+                </div>
+                <div id="{{p_name}}_dimensions">
+                   Dimensions: <span id="{{p_name}}_width">width</span> x  <span id="{{p_name}}_height">height</span>
+                   <input type="hidden" name="width" id="{{p_name}}_width_input" value="">
+                   <input type="hidden" name="height" id="{{p_name}}_height_input" value="">
+                </div>
+                <button type="submit"  class=" btn btn-primary float-right">
+
+                  {%if p_name == "addFloorPlan"%}
+                    Upload
+                  {%else%}
+                    Update
+                  {%endif%}
+                </button>
+            </form>
+            
+        </div>
+
+      </div>
+    </div>
+  </div>
