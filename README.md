@@ -21,8 +21,6 @@ This site is designed to collect data from sensors and display the results on th
     * s3fs
 
 
-    
-
 ## Website Structure
 
 This system is divided into two parts according to the service: `Application` and `Website`.
@@ -42,7 +40,7 @@ We are using ` visual studio ` for development, in order to avoid problems becau
 
 After you install , right click the directory folder, open git bush, `git clone git@github.com:ioairflow/ioAirflow.git`.
 
-then open `visual studio` File-> `open floder` add ioAirFlow folder to work place.
+then open `visual studio` File-> `open floder` add airFlow folder to work place.
 * To run `Application`, click Terminal, change powershell to cmd, activate virtual environment, run `python manage.py runserver`
     * `Host`: localhost
     * `Port`: 8000
