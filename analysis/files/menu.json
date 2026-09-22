@@ -1,0 +1,329 @@
+
+
+    { "menu":
+      [
+        {
+          "name":"Thermal Comfort",
+          "id":"tc",
+          "label":"icon-thermostat-settings.png",
+          "description":"Acceptable temperature and humidity ranges during occupied hours are defined in building code standards and are designed to keep occupants comfortable. The comfortable range is determined by factors such as clothing insulation, activities performed within the space, and local climate. Buildings conditioned within the comfortable range experience fewer tenant complaints, reduced illness rates, and increased productivity. The comfortable temperature range is typically 20° to 24° C and 20% - 60% for the relative humidity.",
+          "sub_category":{
+                              "Occupant Comfort":{
+                                "id":"tc_p1",
+                                "description":"Acceptable temperature and humidity ranges during occupied hours are defined in building code standards and are designed to keep occupants comfortable. The comfortable range is determined by factors such as clothing insulation, activities performed within the space, and local climate. Buildings conditioned within the comfortable range experience fewer tenant complaints, reduced illness rates, and increased productivity. The comfortable temperature range is typically 20° to 24° C and 20% - 60% for the relative humidity.",
+                                "analysis":"For the purpose of this analysis, a comfortable space is defined by ASHRAE 55-2017. These ranges consider typical commercial office occupancy, clothing insulation, and local climate. Measurements were made to determine whether the building is conditioned to levels generally considered comfortable for its occupants during occupied hours.",
+                                "tabs":[
+                                  {
+                                  "tab_name":"Summary",
+                                  "form":["building_floor_all"],
+                                  "url":"occupant_comfort/summary"
+                                  },
+                                  {
+                                    "tab_name":"Location",
+                                    "form":["building_floor_all","location","building_perimeter"],
+                                    "url":"occupant_comfort/location"
+                                  },
+                                  {
+                                    "tab_name":"Sensor",
+                                    "form":["building_floor_all","sensor_number"],
+                                    "url":"occupant_comfort/sensor"
+                                    },
+                                    {
+                                      "tab_name":"Floor Plan",
+                                      "form":["building_floor"],
+                                      "url":"occupant_comfort/floor_plan"
+                                    },
+                                    {
+                                      "tab_name":"Temperature vs. Relative Humidity",
+                                      "form":["building_floor_all","location","building_perimeter"],
+                                      "url":"occupant_comfort/temp_RH"
+                                    }
+                                 ]
+                                  
+                                
+                                  
+  
+                              }
+                          }
+        },
+        {
+          "name":"Temperature",
+          "id":"temperature",
+          "label":"icon-thermal-comfort.png",
+          "description":"Temperature is the primary variable used to control a building’s heating, ventilation, and air conditioning system (HVAC). Thermostats measure the current temperature of a space and compare that to a setpoint value. A measured temperature above the setpoint in a warm external environment (i.e. summer) will trigger a call for cooling to reduce the temperature, and the reciprocal is true for a cool environment (i.e. winter). Buildings are typically divided into zones to accommodate similar loads. For example, computer rooms that generate more heat would be zoned separately from cubicles or offices that typically generate less heat.",
+          "sub_category":{
+
+                              "Cluster Analysis":{
+                                "id":"temperature_p1",
+                                "description":"Temperature is the primary variable used to control a building’s heating, ventilation, and air conditioning system (HVAC). Thermostats measure the current temperature of a space and compare that to a setpoint value. A measured temperature above the setpoint in a warm external environment (i.e. summer) will trigger a call for cooling to reduce the temperature, and the reciprocal is true for a cool environment (i.e. winter). Buildings are typically divided into zones to accommodate similar loads. For example, computer rooms that generate more heat would be zoned separately from cubicles or offices that typically generate less heat.",
+                                "analysis":"The purpose of this analysis was to identify the number of unique thermal performance clusters per building floor. Each cluster represents a group of sensors that measured statistically similar temperature trends over time. While not identical, each cluster illustrates the sensors and locations that responded similarly to the weather and the HVAC system.",
+                                "tabs":[
+                                  {
+                                  "tab_name":"Summary",
+                                  "form":["building_floor"],
+                                  "url":"temperature/cluster_analysis/summary"
+                                  }]
+                              },
+                              "Floor Plan":{
+                                "id":"temperature_p2",
+                                "description":"Temperature is the primary variable used to control a building’s heating, ventilation, and air conditioning system (HVAC). Thermostats measure the current temperature of a space and compare that to a setpoint value. A measured temperature above the setpoint in a warm external environment (i.e. summer) will trigger a call for cooling to reduce the temperature, and the reciprocal is true for a cool environment (i.e. winter). Buildings are typically divided into zones to accommodate similar loads. For example, computer rooms that generate more heat would be zoned separately from cubicles or offices that typically generate less heat.",
+                                "analysis":"The average temperature values for specific time periods were analyzed and illustrated in a heatmap overlaid on a floor plan.",
+                                "tabs":[
+                                  {
+                                  "tab_name":"Summary",
+                                  "form":["building_floor","time_period"],
+                                  "url":"temperature/floor_plan/summary"
+                                  }]
+                                
+                              },
+
+                              "Temperature vs. Time":{
+                                "id":"temperature_p3",                               
+                                "description":"Temperature is the primary variable used to control a building’s heating, ventilation, and air conditioning system (HVAC). Thermostats measure the current temperature of a space and compare that to a setpoint value. A measured temperature above the setpoint in a warm external environment (i.e. summer) will trigger a call for cooling to reduce the temperature, and the reciprocal is true for a cool environment (i.e. winter). Buildings are typically divided into zones to accommodate similar loads. For example, computer rooms that generate more heat would be zoned separately from cubicles or offices that typically generate less heat.",
+                                "analysis":"Temperature values over time for specific locations and sensors were analyzed.",
+                                "tabs":[
+                                  {
+                                  "tab_name":"Location",
+                                  "form":["building_floor_all","location","building_perimeter"],
+                                  "url":"temperature/temp_vs_time/location"
+                                  },
+                                  {
+                                    "tab_name":"Sensor",
+                                    "form":["building_floor_all","sensor_number"],
+                                    "url":"temperature/temp_vs_time/sensor"
+                                  }
+                                ]
+                              },
+
+                              "Temperature Differential":{
+                                "id":"temperature_p4",
+                               "description":"The temperature differential is the temperature difference between when the heating or cooling system engages and disengages. For example, if the heating setpoint temperature was 20°C with a 2°C temperature differential, the heating system would engage at 18°C and disengage at 20°C. Typical thermostat temperature differentials range from 0.5°C to 2°C (~1°F to ~3°F).",
+                                "analysis":"The percentage of time the space was within 0.5°C, 1°C, and 2°C (~1°F, ~2°F, ~3°F) from the setpoint temperature was analyzed. Although there is no single, ideal temperature differential value, this analysis highlights how locations within the space perform with respect to each other. Comparing these temperature differential values to those set by the building controller or thermostat provides an additional layer of analysis.",
+                                "tabs":[
+                                  {
+                                    "tab_name":"Summary",
+                                    "form":["building_floor_all","based_on"],
+                                    "url":"temperature/temperature_differential/summary"
+                                    },
+                                  
+                                  {
+                                  "tab_name":"Location",
+                                  "form":["building_floor_all","location","building_perimeter","temperature_differential"],
+                                  "url":"temperature/temperature_differential/location"
+                                  },
+                                  {
+                                    "tab_name":"Sensor",
+                                    "form":["building_floor_all","temperature_differential","sensor_number"],
+                                    "url":"temperature/temperature_differential/sensor"
+                                  }
+                                ]
+                              },
+                              "Temperature Variations":{
+                                "id":"temperature_p5",
+                               "description":"To maintain occupant comfort, temperature variations within defined time intervals should not exceed certain thresholds. ASHRAE 55 section 5.3.4 states the maximum allowable temperature variations are: 1.1°C (2°F), 1.7°C (3°F), 2.2°C (4°F), 2.8°C (5°F), and 3.3°C (6°F) per time periods of 15 minutes, 30 minutes, 1 hour, 2 hours, and 4 hours respectively. These temperature variations only apply during a building’s occupied hours, and when the temperature setpoint is not under direct control of the individual occupant.",
+                                "analysis":"The percentage of the time that locations within a space comply with ASHRAE 55 temperature variations during occupied hours was analyzed.",
+                                "tabs":[
+                                  {
+                                    "tab_name":"Summary",
+                                    "form":["building_floor_all","time_interval"],
+                                    "url":"temperature/temperature_variations/summary"
+                                    },
+                                  
+                                  {
+                                  "tab_name":"Location",
+                                  "form":["building_floor_all","location","building_perimeter","time_interval"],
+                                  "url":"temperature/temperature_variations/location"
+                                  },
+                                  {
+                                    "tab_name":"Sensor",
+                                    "form":["building_floor_all","time_interval","sensor_number"],
+                                    "url":"temperature/temperature_variations/sensor"
+                                  }
+                                ]
+                              }
+                          }
+        },
+
+        {
+          "name":"Relative Humidity",
+          "id":"humidty",
+          "label":"icon-humidty.png",
+          "description":"Relative humidity (RH) is the ratio of the amount of water vapor present in the air compared to the maximum amount of water vapor that could exist in air of a certain temperature. An RH value of 100% means that the air is completely saturated and condensation will form on surfaces cooler than the air temperature. RH values between 20% and 60% are typically considered ideal. Values above 60% can promote mold and mildew growth, while values lower than 20% can contribute to sick building syndrome.",
+          "sub_category":{
+                                "Cluster Analysis":{
+                                  "id":"humidity_p1",
+                                  "description":"Relative humidity (RH) is the ratio of the amount of water vapor present in the air compared to the maximum amount of water vapor that could exist in air of a certain temperature. An RH value of 100% means that the air is completely saturated and condensation will form on surfaces cooler than the air temperature. RH values between 20% and 60% are typically considered ideal. Values above 60% can promote mold and mildew growth, while values lower than 20% can contribute to sick building syndrome.",
+                                  "analysis":"The purpose of this analysis was to identify the number of unique relative humidity (RH) clusters per building floor. Each cluster represents a group of sensors that measured statistically similar RH trends over time. While not identical, each cluster illustrates the sensors and locations that responded similarly to the weather and the HVAC system.",
+                                  "tabs":[
+                                    {
+                                      "tab_name":"Summary",
+                                      "form":["building_floor"],
+                                      "url":"rh/cluster_analysis/summary"
+                                      }
+                                    ]
+                                },
+                                "Floor Plan":{
+                                  "id":"humidity_p2",
+                                  "description":"Relative humidity (RH) is the ratio of the amount of water vapor present in the air compared to the maximum amount of water vapor that could exist in air of a certain temperature. An RH value of 100% means that the air is completely saturated and condensation will form on surfaces cooler than the air temperature. RH values between 20% and 60% are typically considered ideal. Values above 60% can promote mold and mildew growth, while values lower than 20% can contribute to sick building syndrome.",
+                                  "analysis":"The average relative humidity (RH) values for specific time periods were analyzed and illustrated in a heatmap overlaid on a floor plan.",
+                                  "tabs":[
+                                    {
+                                      "tab_name":"Summary",
+                                      "form":["building_floor","time_period"],
+                                      "url":"rh/floor_plan/summary"
+                                      }
+                                    ]
+                                },
+                                "Relative Humidity vs. Time":{
+                                  "id":"humidity_p3",
+                                  "description":"Relative humidity (RH) is the ratio of the amount of water vapor present in the air compared to the maximum amount of water vapor that could exist in air of a certain temperature. An RH value of 100% means that the air is completely saturated and condensation will form on surfaces cooler than the air temperature. RH values between 20% and 60% are typically considered ideal. Values above 60% can promote mold and mildew growth, while values lower than 20% can contribute to sick building syndrome.",
+                                  "analysis":"Relative humidity (RH) values for specific time periods for specific locations and sensors were determined and illustrated.",
+                                  "tabs":[
+                                    {
+                                      "tab_name":"Location",
+                                      "form":["building_floor_all","location","building_perimeter"],
+                                      "url":"rh/rh_vs_time/location"
+                                      },
+                                      {
+                                      "tab_name":"Sensor",
+                                      "form":["building_floor_all","sensor_number"],
+                                      "url":"rh/rh_vs_time/sensor"
+                                      }
+                                    ]
+                                }
+                          }
+        },
+        {
+          "name":"Air Pressure",
+          "id":"pressure",
+          "label":"icon-airflow.png",
+          "description":"Balanced airflow in a building is important to maintain temperature and humidity levels, remove and replace contaminated (or “used”) air, and maintain balanced air pressure. Unbalanced pressure levels can result in increased energy consumption, reduced or uncontrolled airflow, and may also indicate a poor envelope seal. A well-balanced building floor should have minimal pressure differences between offices and shared spaces within close proximity. Air flows from areas of high pressure to low pressure unless otherwise acted on.",
+          "sub_category":{
+                            "Air Pressure vs. Time":{
+                              "id":"pressure_p2",
+                              "description":"The average air pressure per floor will vary depending on many factors, specifically outside weather conditions. When the weather is cold outside, the warm buoyant indoor air rises to the top of the building generating increased pressure in the upper levels, and relatively low pressure in the lower levels. This can result in warm, conditioned air escaping from the upper levels, and cool air that requires conditioning being drawn in to the lower levels. The reverse is true when the weather is warm outside, as the cool, dense air escapes the building at the lower levels and is drawn in at the upper levels. This is known as the stack effect and can negatively affect building efficiency since the outdoor air drawn into the building requires conditioning.",
+                              "analysis":"The average air pressure values per floor over time were analyzed. In general, the curves for each floor tested should not intersect. Deviations from general trends could indicate improper airflow into a space from the heating, ventilation, and air conditioning system (HVAC) or leaks and cracks in the building envelope.",
+                              "tabs":[
+                                {
+                                  "tab_name":"Summary",
+                                  "form":[],
+                                  "url":"pressure/pressure_vs_time/summary"
+                                  }
+                                ]
+                            },
+                              "Air Pressure Differential":{
+                                "id":"pressure_p1",
+                                "description":"Balanced airflow in a building is important to maintain temperature and humidity levels, remove and replace contaminated (or 'used') air, and maintain balanced air pressure. Unbalanced pressure levels can result in increased energy consumption, reduced or uncontrolled airflow, and may also indicate a poorly sealed envelope. A well-balanced building floor should have minimal pressure differences between offices and shared spaces within close proximity. Air flows from areas of high pressure to low pressure.",
+                                "analysis":"The pressure differences within a space or building floor using the mean, median, minimum, or maximum pressure measurement within that space as reference were analyzed. The results are illustrated in a heatmap overlaid on a floor plan to visualize the pressure balance and magnitude of the pressure difference values. The pressure differential between specific sensor pairs was also analyzed. This analysis is intended to be used as an exploratory or diagnostic tool to evaluate the air pressure within a space.",
+                                "tabs":[
+                                  {
+                                    "tab_name":"Floor Plan",
+                                    "form":["building_floor","stat"],
+                                    "url":"pressure/pressure_differential/floor_plan"
+                                    },
+                                     {
+                                      "tab_name":"Sensor Pair",
+                                      "form":["building_floor_all","sensors_to_compare"],
+                                      "url":"pressure/pressure_differential/sensor_pair"
+                                      }
+                                  ]
+                               
+                              }
+                              
+                          }
+        },
+        
+        {
+          "name":"Air Quality",
+          "id":"airquality",
+          "label":"icon-air-quality.png",
+          "description":"The quality of indoor air inside buildings is important not only for the occupants' comfort but also for their health. Poor indoor air quality (IAQ) has been tied to sick building symptoms (SBS) such as headaches, fatigue, trouble concentrating, and irritation of the eyes, nose, throat and lungs.  TVOC and CO2 concentrations were used to assess the indoor air quality.",
+          "sub_category":{
+                            "Total Volatile Organic Compounds":{
+                              "id":"tvoc",
+                              "description":"Volatile organic compounds (VOCs) – such as formaldehyde, benzene, and acetaldehyde – are compounds that readily evaporate at room-temperature and can be emitted by common materials such as paints, flooring, upholstery, and cleaning supplies. Newly built or renovated buildings are especially prone to high VOC emissions due to new materials, but furnishings can release VOCs for several years after installation. Total volatile organic compounds is a measurement of the total combination of individual VOCs present in the air. Short term effects of frequent VOC exposure include eye, throat, and skin irritation, headaches, and fatigue. Occupant discomfort can result in decreased productivity and increased absenteeism. In the long term, VOCs aggravate the respiratory tract, increase the chances of developing respiratory issues, and are suspected to cause cancer.",
+                              "analysis":"To analyze the TVOC values, concentrations measured throughout the test period are compared to acceptable exposure thresholds. All buildings, regardless of age or type, should keep TVOC levels as low as possible and minimize their sources. The data presented here can be used to prioritize remediation efforts."  ,                           
+                              "tabs":[
+                                {
+                                  "tab_name":"Summary",
+                                  "form":["building_floor_all","time_period"],
+                                  "url":"air_quality/tvoc/summary"
+                                  },
+                                  {
+                                    "tab_name":"Location",
+                                    "form":["building_floor_all","location","building_perimeter","time_period"],
+                                    "url":"air_quality/tvoc/location"
+                                    },
+                                    {
+                                      "tab_name":"Sensor",
+                                      "form":["building_floor_all","sensor_number"],
+                                      "url":"air_quality/tvoc/sensor"
+                                      },
+                                  {
+                                  "tab_name":"Floor Plan",
+                                  "form":["building_floor","time_period"],
+                                  "url":"air_quality/tvoc/floor_plan"
+                                  }
+                                   
+                                ]
+                            },
+                            "Carbon Dioxide":{
+                              "id":"cd",
+                              "description":"Carbon dioxide (CO2) is odorless, tasteless, and colorless gas. The level of CO2 in a building in comparison with the occurring level outside the building, is a rough indicator of the freshness of the air being introduced inside. CO2 concentration increases with higher occupancy, and is diluted and removed from buildings based on air ventilation rates. Therefore, examining levels of CO2 in indoor air can provide information of the building's occupant densities and the effectiveness of the ventilation. High CO2 levels may indicate a problem with overcrowding or inadequate outdoor air ventilation rates . ASHRAE states that acceptable CO2 concentrations typically range from 300-500 ppm above ambient and  adverse health effects may occur at higher concentrations.",
+                              "analysis":"Measured carbon dioxide concentrations were analyzed and compared to industry standards. ",
+                              "tabs":[
+                                {
+                                  "tab_name":"Summary",
+                                  "form":["building_floor_all","time_period"],
+                                  "url":"air_quality/co2/summary"
+                                  },
+                                  {
+                                    "tab_name":"Location",
+                                    "form":["building_floor_all","location","building_perimeter","time_period"],
+                                    "url":"air_quality/co2/location"
+                                    },
+                                    {
+                                      "tab_name":"Sensor",
+                                      "form":["building_floor_all","sensor_number"],
+                                      "url":"air_quality/co2/sensor"
+                                      },
+                                  {
+                                  "tab_name":"Floor Plan",
+                                  "form":["building_floor","time_period"],
+                                  "url":"air_quality/co2/floor_plan"
+                                  }
+                                   
+                                ]
+                            }                           
+                          }
+        },
+        {
+          "name":"Virus Transmission",
+          "id":"virustransmission",
+          "label":"icon-virus-transmission.png",
+          "description":"Buildings are frequently hotspots for the spread of diseases and viruses. A properly maintained indoor environment can maintain occupant health and immune systems and lessen the risk of becoming infected by a virus. The quality and condition of the indoor air has an effect on virus transmissibility. ",
+          "sub_category":{
+                            "Risk of Virus Transmission":{
+                              "id":"rvt",
+                              "description":"The risk of virus transmission can be inferred from the amount of carbon dioxide (CO2) in the air, as well as the relative humidity (RH). CO2 is an indicator of the air quality and accompanying infectious particles exhaled by occupants. In typical commercial buildings, occupants are the major source of CO2, so a rise in CO2 indicates that exhaled air is building up in a space. The more exhaled air that is present, the more likely it is for another occupant to encounter infectious particles. Thus, long term CO2 concentrations can indicate areas where infectious particles may linger; occupants using these spaces are at higher risk. RH is the amount of water vapor present in the air at a given temperature. Low RH can dry out the mucosal membranes in the eyes, nose, mouth, and lungs. These membranes play a vital role in the human immune system and are the first point of contact of many viruses. A dry mucous membrane can render an individual more susceptible to infection. Airborne particles also travel farther and remain suspended for longer in dry air, increasing the risk of infection. It is recommended that indoor spaces achieve moderate-range humidity levels; in the case of COVID-19, this is between 40 – 60% relative humidity.",
+                              "analysis":"The carbon dioxide concentration thresholds are based on CO2 levels added to the ambient levels. They range from ideal (< 400 ppm), to good (400 to 700 ppm), to bad (1000 to 5000 ppm), to hazardous (> 5000 ppm). The ideal relative humidity value is between 40 – 60%, and so the measured value was either within this range (good) or outside of this range (bad).",                             
+                              "tabs":[
+                                {
+                                  "tab_name":"Summary",
+                                  "form":["building_floor_all","time_period"],
+                                  "url":"virus_transmission/summary"
+                                  },
+                                  {
+                                    "tab_name":"Location",
+                                    "form":["building_floor_all","location","building_perimeter","time_period"],
+                                    "url":"virus_transmission/location"
+                                    }
+                           
+                                   
+                                ]
+                            }                              
+                          }
+        }
+
+    ]
+  }
